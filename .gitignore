@@ -1,0 +1,16 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Export templates and builds
+/builds/
+/export.cfg
+/export_presets.cfg
+*.tmp
+
+# System
+.DS_Store
+Thumbs.db
+
+# Editor
+*.import
