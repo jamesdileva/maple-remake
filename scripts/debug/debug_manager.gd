@@ -70,6 +70,8 @@ func kill_all_enemies() -> int:
 		return 0
 	var killed := 0
 	for enemy: Node in get_tree().get_nodes_in_group("enemies"):
+		if enemy.has_method("is_dead") and enemy.is_dead():
+			continue
 		if enemy.has_method("apply_debug_kill"):
 			enemy.apply_debug_kill()
 			killed += 1

@@ -131,6 +131,7 @@ debug_reload_scene={
 [autoload]
 
 DebugManager="*res://scripts/debug/debug_manager.gd"
+EventBus="*res://scripts/core/event_bus.gd"
 
 [game]
 

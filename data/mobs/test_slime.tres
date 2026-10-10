@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MobDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/mob_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"test_slime"
+display_name = "Slime"
+max_hp = 30.0
+move_speed = 70.0
+contact_damage = 5.0
+contact_interval = 0.8
+xp = 5.0
+gravity = 900.0
+defense = 0.0

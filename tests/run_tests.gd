@@ -4,6 +4,7 @@ const TEST_SUITES := [
 	"res://tests/debug/test_debug_manager.gd",
 	"res://tests/input/test_input_bindings.gd",
 	"res://tests/player/test_player_movement.gd",
+	"res://tests/entities/test_mob.gd",
 ]
 
 var _checks := 0

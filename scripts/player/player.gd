@@ -18,6 +18,17 @@ enum State { IDLE, RUN, JUMP, FALL }
 @export var coyote_time := 0.09
 @export var jump_buffer_time := 0.1
 @export var visual_path: NodePath = NodePath("Visual")
+@export var attack_hitbox_path: NodePath = NodePath("AttackHitbox")
+
+@export var max_hp := 100.0
+@export var hp := 100.0
+@export var basic_attack_damage := 12.0
+@export var basic_attack_cooldown := 0.35
+@export var basic_attack_duration := 0.12
+@export var basic_attack_range := 52.0
+
+signal died
+signal attack_started
 
 var state: State = State.IDLE:
 	set(value):
@@ -31,21 +42,97 @@ var facing := 1
 
 var _coyote := 0.0
 var _jump_buffer := 0.0
+var _attack_timer := 0.0
+var _attack_active := 0.0
+var _attack_hit_targets: Array = []
 var _visual: Node2D
+var _attack_hitbox: Area2D
 
 func _ready() -> void:
 	_visual = get_node_or_null(visual_path) as Node2D
+	_attack_hitbox = get_node_or_null(attack_hitbox_path) as Area2D
+	if _attack_hitbox != null:
+		_attack_hitbox.monitoring = false
 	add_to_group("player")
+
+func take_damage(amount: float, source: Node = null) -> float:
+	if DebugManager.is_invulnerable():
+		return 0.0
+	var applied := minf(amount, hp)
+	hp -= amount
+	DebugManager.register_combat_event("damage_taken", {"amount": applied, "source": str(source)})
+	if hp <= 0.0:
+		_die()
+	return applied
+
+func is_dead() -> bool:
+	return hp <= 0.0
+
+func apply_debug_kill() -> void:
+	hp = 0.0
+
+func heal_full() -> void:
+	hp = max_hp
+
+func _die() -> void:
+	DebugManager.register_combat_event("death", {})
+	died.emit()
+	hp = max_hp
+	global_position = Vector2(0.0, -60.0)
+	velocity = Vector2.ZERO
 
 func _physics_process(delta: float) -> void:
 	_update_timers(delta)
+	_tick_attack(delta)
 	move_direction = Input.get_axis("move_left", "move_right")
 	_update_facing()
 	_apply_horizontal(delta)
 	_apply_gravity(delta)
 	_apply_jump()
+	if _casting_locked():
+		velocity.x = 0.0
 	move_and_slide()
 	_update_state()
+
+func _casting_locked() -> bool:
+	return false
+
+func _tick_attack(delta: float) -> void:
+	_attack_timer = maxf(0.0, _attack_timer - delta)
+	if _attack_active > 0.0:
+		_attack_active = maxf(0.0, _attack_active - delta)
+		if _attack_active == 0.0:
+			_end_basic_attack()
+	if Input.is_action_just_pressed("attack") and _attack_timer <= 0.0 and _attack_active <= 0.0:
+		_start_basic_attack()
+
+func _start_basic_attack() -> void:
+	_attack_timer = basic_attack_cooldown
+	_attack_active = basic_attack_duration
+	_attack_hit_targets.clear()
+	if _attack_hitbox == null:
+		return
+	var hit_size: Vector2 = (_attack_hitbox.get_node("Collision").shape as RectangleShape2D).size
+	_attack_hitbox.position = Vector2(float(facing) * basic_attack_range * 0.5, 0.0)
+	_attack_hitbox.scale = Vector2(basic_attack_range / hit_size.x, 1.0)
+	_attack_hitbox.monitoring = true
+	for body: Node in _attack_hitbox.get_overlapping_bodies():
+		_attack_hit(body)
+	if not _attack_hitbox.body_entered.is_connected(_attack_hit):
+		_attack_hitbox.body_entered.connect(_attack_hit)
+	attack_started.emit()
+
+func _end_basic_attack() -> void:
+	if _attack_hitbox != null:
+		_attack_hitbox.monitoring = false
+
+func _attack_hit(body: Node) -> void:
+	if not body is Mob:
+		return
+	if _attack_hit_targets.has(body):
+		return
+	_attack_hit_targets.append(body)
+	(body as Mob).take_damage(basic_attack_damage, self)
 
 static func _state_name(state_value: int) -> StringName:
 	match state_value:
