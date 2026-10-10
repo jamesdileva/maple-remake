@@ -49,41 +49,37 @@ func _physics_process(delta: float) -> void:
 	_try_contact_damage(player)
 
 func take_damage(amount: float, source: Node = null) -> float:
-	if dead:
-		return 0.0
-	var applied := minf(amount, hp)
-	hp -= applied
-	DebugManager.register_combat_event("damage_dealt", {
-		"amount": applied,
-		"source": str(source),
-		"target": mob_id(),
-	})
-	if hp <= 0.0:
-		_die()
-	return applied
+	return DamageSystem.apply(DamageEvent.create(self, amount, source)).applied
+
+func apply_damage(amount: float) -> float:
+	hp -= amount
+	return hp
 
 func is_dead() -> bool:
 	return dead
 
-func apply_debug_kill() -> void:
-	take_damage(999999.0, null)
-
-func defense() -> float:
-	return definition.defense if definition != null else 0.0
-
-func mob_id() -> StringName:
-	return definition.id if definition != null else &"mob"
-
-func xp_reward() -> float:
-	return _xp
-
-func _die() -> void:
+func die(_event: DamageEvent) -> void:
 	if dead:
 		return
 	dead = true
 	DebugManager.register_combat_event("kill", {"mob": mob_id()})
 	EventBus.mob_died.emit(mob_id(), xp_reward(), definition)
 	queue_free()
+
+func apply_debug_kill() -> void:
+	take_damage(999999.0, null)
+
+func get_defense() -> float:
+	return definition.defense if definition != null else 0.0
+
+func get_crit_chance() -> float:
+	return 0.0
+
+func mob_id() -> StringName:
+	return definition.id if definition != null else &"mob"
+
+func xp_reward() -> float:
+	return _xp
 
 func _animate_visual(delta: float) -> void:
 	_bob_time += delta
@@ -98,7 +94,6 @@ func _try_contact_damage(player: Node2D) -> void:
 	_contact_cooldown = _contact_interval
 	if player.has_method("take_damage"):
 		player.take_damage(_contact_damage, self)
-	DebugManager.register_combat_event("damage_taken", {"amount": _contact_damage, "target": "player"})
 
 func _touching(player: Node2D) -> bool:
 	for index in range(get_slide_collision_count()):

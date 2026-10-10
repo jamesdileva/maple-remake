@@ -22,6 +22,9 @@ enum State { IDLE, RUN, JUMP, FALL }
 
 @export var max_hp := 100.0
 @export var hp := 100.0
+@export var defense := 0.0
+@export var crit_chance := 0.05
+@export var crit_multiplier := 2.0
 @export var basic_attack_damage := 12.0
 @export var basic_attack_cooldown := 0.35
 @export var basic_attack_duration := 0.12
@@ -58,28 +61,37 @@ func _ready() -> void:
 func take_damage(amount: float, source: Node = null) -> float:
 	if DebugManager.is_invulnerable():
 		return 0.0
-	var applied := minf(amount, hp)
+	return DamageSystem.apply(DamageEvent.create(self, amount, source)).applied
+
+func apply_damage(amount: float) -> float:
 	hp -= amount
-	DebugManager.register_combat_event("damage_taken", {"amount": applied, "source": str(source)})
-	if hp <= 0.0:
-		_die()
-	return applied
+	return hp
 
 func is_dead() -> bool:
 	return hp <= 0.0
 
-func apply_debug_kill() -> void:
-	hp = 0.0
-
-func heal_full() -> void:
-	hp = max_hp
-
-func _die() -> void:
+func die(_event: DamageEvent) -> void:
 	DebugManager.register_combat_event("death", {})
+	EventBus.player_died.emit()
 	died.emit()
 	hp = max_hp
 	global_position = Vector2(0.0, -60.0)
 	velocity = Vector2.ZERO
+
+func get_defense() -> float:
+	return defense
+
+func get_crit_chance() -> float:
+	return crit_chance
+
+func get_crit_multiplier() -> float:
+	return crit_multiplier
+
+func apply_debug_kill() -> void:
+	take_damage(999999.0, null)
+
+func heal_full() -> void:
+	hp = max_hp
 
 func _physics_process(delta: float) -> void:
 	_update_timers(delta)
