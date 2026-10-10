@@ -7,6 +7,7 @@ func run(t) -> void:
 	var room: PackedScene = load("res://scenes/maps/test_room.tscn")
 	var world: Node2D = room.instantiate()
 	t.root.add_child(world)
+	t.register_world(world)
 	var player: Player = world.get_node("Player")
 	var observed_states: Array = []
 	player.state_changed.connect(func(new_state: StringName): observed_states.append(new_state))
@@ -94,3 +95,4 @@ func run(t) -> void:
 	Input.action_release("jump")
 	Input.action_release("move_right")
 	Input.action_release("move_left")
+	t.complete_suite(get_suite_name())

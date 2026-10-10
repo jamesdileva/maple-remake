@@ -103,3 +103,4 @@ func _test_overlay(t, manager: Node) -> void:
 	t.assert_false(overlay.visible, "overlay toggles off")
 	manager.toggle_overlay()
 	t.assert_true(overlay.visible, "overlay toggles on")
+	t.complete_suite(get_suite_name())

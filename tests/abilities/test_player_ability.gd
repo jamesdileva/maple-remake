@@ -7,11 +7,13 @@ func run(t) -> void:
 	var room: PackedScene = load("res://scenes/maps/test_room.tscn")
 	var world: Node2D = room.instantiate()
 	t.root.add_child(world)
+	t.register_world(world)
 	await t.physics_frame
 	var player: Player = world.get_node("Player")
 	player.hp = player.max_hp
 	player.mana = player.max_mana
 	player.mana_regen_per_second = 0.0
+	player.crit_chance = 0.0
 	DebugManager.disable_ai = true
 
 	for child: Node in world.get_children():
@@ -126,6 +128,7 @@ func run(t) -> void:
 	await t.physics_frame
 	DebugManager.disable_ai = false
 	Input.action_release("skill_1")
+	t.complete_suite(get_suite_name())
 
 func _press_ability(t, action: String, frames: int = 3) -> void:
 	Input.action_press(action)

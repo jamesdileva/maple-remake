@@ -5,12 +5,15 @@ const TEST_SUITES := [
 	"res://tests/input/test_input_bindings.gd",
 	"res://tests/player/test_player_movement.gd",
 	"res://tests/abilities/test_player_ability.gd",
+	"res://tests/abilities/test_fma.gd",
 	"res://tests/combat/test_damage_system.gd",
 	"res://tests/entities/test_mob.gd",
 ]
 
 var _checks := 0
 var _failures := 0
+var _completed_suites: Array = []
+var _worlds: Array = []
 
 func _initialize() -> void:
 	_run()
@@ -25,8 +28,14 @@ func _run() -> void:
 		var suite: RefCounted = script.new()
 		print("--- suite: %s" % suite.get_suite_name())
 		var failures_before := _failures
+		var completed_before := _completed_suites.size()
 		await suite.run(self)
+		if _completed_suites.size() == completed_before:
+			_failures += 1
+			printerr("FAIL: suite aborted before completion: ", suite_path)
 		_reset_input_state()
+		_reset_debug_flags()
+		await _cleanup_worlds()
 		print("--- %s: %s" % [suite.get_suite_name(), "PASS" if _failures == failures_before else "FAIL"])
 	print("")
 	print("TOTAL: %d checks, %d failures" % [_checks, _failures])
@@ -44,6 +53,28 @@ func _reset_input_state() -> void:
 	]:
 		if InputMap.has_action(action_name):
 			Input.action_release(action_name)
+
+func _reset_debug_flags() -> void:
+	var manager: Node = root.get_node_or_null("DebugManager")
+	if manager == null:
+		return
+	for flag: String in ["god_mode", "force_crit", "infinite_mana", "disable_ai"]:
+		manager.set(flag, false)
+
+func complete_suite(suite_name: String) -> void:
+	_completed_suites.append(suite_name)
+
+func register_world(world: Node) -> void:
+	_worlds.append(world)
+
+func _cleanup_worlds() -> void:
+	var had_worlds := not _worlds.is_empty()
+	for world in _worlds:
+		if is_instance_valid(world):
+			world.queue_free()
+	_worlds.clear()
+	if had_worlds:
+		await physics_frame
 
 func assert_true(condition: bool, message: String) -> void:
 	_checks += 1

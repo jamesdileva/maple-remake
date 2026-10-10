@@ -22,6 +22,8 @@ var _visual: Node2D
 var _bob_time := 0.0
 
 func _ready() -> void:
+	collision_layer = CollisionLayers.MOBS
+	collision_mask = CollisionLayers.WORLD
 	if definition != null:
 		hp = definition.max_hp
 		_gravity = definition.gravity

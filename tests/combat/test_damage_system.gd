@@ -138,6 +138,8 @@ func run(t) -> void:
 	t.assert_eq(result.invalid_reason, &"bad_interface", "bad interface reports its reason")
 	t.assert_eq(emitted.size(), before, "bad interface emits no damage event")
 
+	t.complete_suite(get_suite_name())
+
 func _hit(target: Object, base_amount: float, crit_chance: float) -> DamageEvent:
 	var event := DamageEvent.create(target, base_amount, null)
 	event.crit_chance_override = crit_chance

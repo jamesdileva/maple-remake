@@ -1,10 +1,16 @@
 class_name TargetQuery
 extends RefCounted
 
-const TARGET_MASK := 1
-const MAX_QUERY_HITS := 64
+const TARGET_MASK := CollisionLayers.MOBS
+const MAX_QUERY_HITS := 1024
 
 static func enemies_in_area(origin: Node2D, facing: int, range: float, width: float, max_targets: int = 0, exclude = null) -> Array:
+	return _query(origin, origin.global_position + Vector2(float(facing) * range * 0.5, 0.0), range, width, max_targets, exclude)
+
+static func enemies_in_blast(origin: Node2D, range: float, width: float, max_targets: int = 0, exclude = null) -> Array:
+	return _query(origin, origin.global_position, range, width, max_targets, exclude)
+
+static func _query(origin: Node2D, center: Vector2, range: float, width: float, max_targets: int, exclude) -> Array:
 	var space := origin.get_world_2d().direct_space_state
 	if space == null:
 		return []
@@ -12,7 +18,7 @@ static func enemies_in_area(origin: Node2D, facing: int, range: float, width: fl
 	var shape := RectangleShape2D.new()
 	shape.size = Vector2(range, width)
 	query.shape = shape
-	query.transform = Transform2D(0.0, origin.global_position + Vector2(float(facing) * range * 0.5, 0.0))
+	query.transform = Transform2D(0.0, center)
 	query.collision_mask = TARGET_MASK
 	var hits := space.intersect_shape(query, MAX_QUERY_HITS)
 	var found: Array = []

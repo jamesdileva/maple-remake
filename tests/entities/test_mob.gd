@@ -7,6 +7,7 @@ func run(t) -> void:
 	var room: PackedScene = load("res://scenes/maps/test_room.tscn")
 	var world: Node2D = room.instantiate()
 	t.root.add_child(world)
+	t.register_world(world)
 	await t.physics_frame
 	var player: Player = world.get_node("Player")
 	player.hp = player.max_hp
@@ -137,6 +138,7 @@ func run(t) -> void:
 	world.queue_free()
 	await t.physics_frame
 	Input.action_release("attack")
+	t.complete_suite(get_suite_name())
 
 func _wait_until(t, condition: Callable, max_frames: int) -> bool:
 	for _i in range(max_frames):

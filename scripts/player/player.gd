@@ -187,7 +187,7 @@ func _finish_cast() -> void:
 	_free_cast_telegraph()
 	if ability == null:
 		return
-	var targets := TargetQuery.enemies_in_area(self, facing, ability.range, ability.width, ability.max_targets, self)
+	var targets: Array = _resolve_targets(ability)
 	var targets_hit := 0
 	for target: Object in targets:
 		var result := DamageSystem.apply(DamageEvent.create(target, ability.damage, self))
@@ -202,6 +202,13 @@ func _finish_cast() -> void:
 	EventBus.ability_cast_completed.emit(ability, targets_hit)
 	cast_completed.emit(ability, targets_hit)
 
+func _resolve_targets(ability: AbilityDefinition) -> Array:
+	match ability.area_mode:
+		AbilityDefinition.AreaMode.CENTERED:
+			return TargetQuery.enemies_in_blast(self, ability.range, ability.width, ability.max_targets, self)
+		_:
+			return TargetQuery.enemies_in_area(self, facing, ability.range, ability.width, ability.max_targets, self)
+
 func _spawn_cast_telegraph(ability: AbilityDefinition) -> void:
 	if ability.cast_effect == null:
 		return
@@ -209,7 +216,10 @@ func _spawn_cast_telegraph(ability: AbilityDefinition) -> void:
 	telegraph.add_to_group("effects")
 	add_child(telegraph)
 	telegraph.scale = Vector2(ability.range / CastTelegraph.BASE_SIZE.x, ability.width / CastTelegraph.BASE_SIZE.y)
-	telegraph.position = Vector2(float(facing) * ability.range * 0.5, 0.0)
+	if ability.area_mode == AbilityDefinition.AreaMode.CENTERED:
+		telegraph.position = Vector2.ZERO
+	else:
+		telegraph.position = Vector2(float(facing) * ability.range * 0.5, 0.0)
 	_cast_telegraph = telegraph
 
 func _free_cast_telegraph() -> void:

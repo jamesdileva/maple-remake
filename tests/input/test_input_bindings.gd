@@ -77,6 +77,8 @@ func run(t) -> void:
 	await t.process_frame
 	t.assert_false(Input.is_action_pressed("jump"), "gamepad A release clears jump action")
 
+	t.complete_suite(get_suite_name())
+
 func _assert_action_has_key(t, action_name: String, code: int) -> void:
 	var events: Array = InputMap.action_get_events(action_name)
 	t.assert_true(
