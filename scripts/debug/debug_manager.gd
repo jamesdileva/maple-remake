@@ -244,7 +244,19 @@ func _player_position() -> Dictionary:
 	var player := find_player()
 	if player == null:
 		return {"x": 0.0, "y": 0.0, "found": false}
-	return {"x": player.global_position.x, "y": player.global_position.y, "found": true}
+	var data := {
+		"x": player.global_position.x,
+		"y": player.global_position.y,
+		"found": true,
+	}
+	for key: String in ["hp", "max_hp", "mana", "max_mana"]:
+		var value = player.get(key)
+		if value != null:
+			data[key] = value
+	if player.has_method("is_casting"):
+		data["casting"] = player.current_ability().id if player.current_ability() != null else ""
+		data["cast_progress"] = player.cast_progress()
+	return data
 
 func _snapshot_config() -> Dictionary:
 	return {

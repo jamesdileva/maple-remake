@@ -107,8 +107,13 @@ func _refresh() -> void:
 	var counts: Dictionary = manager.entity_counts()
 	var player: Node2D = manager.find_player()
 	var player_text := "—"
+	var casting_text := ""
 	if player != null:
-		player_text = "(%.0f, %.0f)" % [player.global_position.x, player.global_position.y]
+		player_text = "(%.0f, %.0f) | %s" % [player.global_position.x, player.global_position.y, _vitals_text(player)]
+		if player.has_method("is_casting") and player.is_casting():
+			casting_text = "casting %s %d%%" % [
+				player.current_ability().id, int(player.cast_progress() * 100.0),
+			]
 	var memory_mb := float(Performance.get_monitor(Performance.MEMORY_STATIC)) / 1048576.0
 	_stats_label.text = "\n".join([
 		"FPS %d | frame %.2f ms (avg %.2f / min %.2f / max %.2f)" % [
@@ -126,7 +131,7 @@ func _refresh() -> void:
 		"debug %s | F3 overlay | F1 god | F2 kill | F5 reload | F8 export" % (
 			"ON" if manager.is_enabled() else "OFF"
 		),
-	])
+	] + ([casting_text] if casting_text != "" else []))
 	_flags_label.text = "GOD %s | mana %s | crit %s | hitbox %s | AI %s" % [
 		_on_off(manager.god_mode), _on_off(manager.infinite_mana),
 		_on_off(manager.force_crit), _on_off(manager.show_hitboxes), _on_off(manager.disable_ai),
@@ -142,6 +147,18 @@ func _show_result(text: String) -> void:
 
 func _on_off(value: bool) -> String:
 	return "ON" if value else "off"
+
+func _vitals_text(player: Node2D) -> String:
+	var hp = player.get("hp")
+	var max_hp = player.get("max_hp")
+	var mana = player.get("mana")
+	var max_mana = player.get("max_mana")
+	var parts: Array = []
+	if hp != null and max_hp != null:
+		parts.append("HP %.0f/%.0f" % [hp, max_hp])
+	if mana != null and max_mana != null:
+		parts.append("MP %.0f/%.0f" % [mana, max_mana])
+	return " | ".join(parts)
 
 func _ignore_mouse_on_containers() -> void:
 	_set_mouse_filter_recursive(self)

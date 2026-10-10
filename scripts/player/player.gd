@@ -22,6 +22,9 @@ enum State { IDLE, RUN, JUMP, FALL }
 
 @export var max_hp := 100.0
 @export var hp := 100.0
+@export var max_mana := 100.0
+@export var mana := 100.0
+@export var mana_regen_per_second := 8.0
 @export var defense := 0.0
 @export var crit_chance := 0.05
 @export var crit_multiplier := 2.0
@@ -29,9 +32,14 @@ enum State { IDLE, RUN, JUMP, FALL }
 @export var basic_attack_cooldown := 0.35
 @export var basic_attack_duration := 0.12
 @export var basic_attack_range := 52.0
+@export var ability_slots: Array[AbilityDefinition] = []
 
 signal died
 signal attack_started
+signal cast_started(ability: AbilityDefinition)
+signal cast_completed(ability: AbilityDefinition, targets_hit: int)
+
+const ABILITY_SLOT_COUNT := 4
 
 var state: State = State.IDLE:
 	set(value):
@@ -50,6 +58,9 @@ var _attack_active := 0.0
 var _attack_hit_targets: Array = []
 var _visual: Node2D
 var _attack_hitbox: Area2D
+var _cast_timer := 0.0
+var _cast_ability: AbilityDefinition
+var _cast_telegraph: Node2D
 
 func _ready() -> void:
 	_visual = get_node_or_null(visual_path) as Node2D
@@ -57,6 +68,22 @@ func _ready() -> void:
 	if _attack_hitbox != null:
 		_attack_hitbox.monitoring = false
 	add_to_group("player")
+
+func is_casting() -> bool:
+	return _cast_timer > 0.0
+
+func cast_progress() -> float:
+	if _cast_ability == null or _cast_ability.cast_time <= 0.0:
+		return 0.0
+	return 1.0 - (_cast_timer / _cast_ability.cast_time)
+
+func current_ability() -> AbilityDefinition:
+	return _cast_ability
+
+func ability_at(slot: int) -> AbilityDefinition:
+	if slot < 0 or slot >= ability_slots.size():
+		return null
+	return ability_slots[slot]
 
 func take_damage(amount: float, source: Node = null) -> float:
 	if DebugManager.is_invulnerable():
@@ -96,6 +123,8 @@ func heal_full() -> void:
 func _physics_process(delta: float) -> void:
 	_update_timers(delta)
 	_tick_attack(delta)
+	_tick_cast(delta)
+	_regenerate_mana(delta)
 	move_direction = Input.get_axis("move_left", "move_right")
 	_update_facing()
 	_apply_horizontal(delta)
@@ -107,7 +136,98 @@ func _physics_process(delta: float) -> void:
 	_update_state()
 
 func _casting_locked() -> bool:
-	return false
+	return _cast_timer > 0.0
+
+func _regenerate_mana(delta: float) -> void:
+	if DebugManager.infinite_mana or mana >= max_mana:
+		return
+	mana = minf(max_mana, mana + mana_regen_per_second * delta)
+
+func _tick_cast(delta: float) -> void:
+	if _cast_timer > 0.0:
+		_cast_timer = maxf(0.0, _cast_timer - delta)
+		if _cast_timer == 0.0:
+			_finish_cast()
+		return
+	for slot in ABILITY_SLOT_COUNT:
+		if Input.is_action_just_pressed("skill_%d" % (slot + 1)):
+			_try_cast_ability(slot)
+			return
+
+func _try_cast_ability(slot: int) -> void:
+	var ability := ability_at(slot)
+	if ability == null:
+		return
+	if not DebugManager.infinite_mana and ability.mana_cost > 0.0:
+		if mana < ability.mana_cost:
+			return
+		mana -= ability.mana_cost
+	_start_cast(ability)
+
+func _start_cast(ability: AbilityDefinition) -> void:
+	_cast_ability = ability
+	if ability.cast_time <= 0.0:
+		_finish_cast()
+		return
+	_cast_timer = ability.cast_time
+	_spawn_cast_telegraph(ability)
+	DebugManager.register_combat_event("cast", {
+		"ability": ability.id,
+		"phase": &"start",
+		"cast_time": ability.cast_time,
+		"mana_cost": ability.mana_cost,
+	})
+	EventBus.ability_cast_started.emit(ability)
+	cast_started.emit(ability)
+
+func _finish_cast() -> void:
+	var ability := _cast_ability
+	_cast_ability = null
+	_cast_timer = 0.0
+	_free_cast_telegraph()
+	if ability == null:
+		return
+	var targets := TargetQuery.enemies_in_area(self, facing, ability.range, ability.width, ability.max_targets, self)
+	var targets_hit := 0
+	for target: Object in targets:
+		var result := DamageSystem.apply(DamageEvent.create(target, ability.damage, self))
+		if result.valid:
+			targets_hit += 1
+			_spawn_impact_burst(ability, target)
+	DebugManager.register_combat_event("cast", {
+		"ability": ability.id,
+		"phase": &"complete",
+		"targets_hit": targets_hit,
+	})
+	EventBus.ability_cast_completed.emit(ability, targets_hit)
+	cast_completed.emit(ability, targets_hit)
+
+func _spawn_cast_telegraph(ability: AbilityDefinition) -> void:
+	if ability.cast_effect == null:
+		return
+	var telegraph: Node2D = ability.cast_effect.instantiate()
+	telegraph.add_to_group("effects")
+	add_child(telegraph)
+	telegraph.scale = Vector2(ability.range / CastTelegraph.BASE_SIZE.x, ability.width / CastTelegraph.BASE_SIZE.y)
+	telegraph.position = Vector2(float(facing) * ability.range * 0.5, 0.0)
+	_cast_telegraph = telegraph
+
+func _free_cast_telegraph() -> void:
+	if _cast_telegraph != null:
+		_cast_telegraph.queue_free()
+		_cast_telegraph = null
+
+func _spawn_impact_burst(ability: AbilityDefinition, target: Object) -> void:
+	if ability.impact_effect == null:
+		return
+	var burst: Node2D = ability.impact_effect.instantiate()
+	burst.add_to_group("effects")
+	var world := get_parent()
+	if world == null:
+		burst.queue_free()
+		return
+	world.add_child(burst)
+	burst.global_position = (target as Node2D).global_position
 
 func _tick_attack(delta: float) -> void:
 	_attack_timer = maxf(0.0, _attack_timer - delta)

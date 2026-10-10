@@ -4,6 +4,7 @@ const TEST_SUITES := [
 	"res://tests/debug/test_debug_manager.gd",
 	"res://tests/input/test_input_bindings.gd",
 	"res://tests/player/test_player_movement.gd",
+	"res://tests/abilities/test_player_ability.gd",
 	"res://tests/combat/test_damage_system.gd",
 	"res://tests/entities/test_mob.gd",
 ]
