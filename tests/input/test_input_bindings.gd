@@ -71,6 +71,12 @@ func run(t) -> void:
 	await t.process_frame
 	t.assert_true(Input.is_action_pressed("jump"), "gamepad A press triggers jump action")
 
+	var a_release := InputEventJoypadButton.new()
+	a_release.button_index = JOY_BUTTON_A
+	Input.parse_input_event(a_release)
+	await t.process_frame
+	t.assert_false(Input.is_action_pressed("jump"), "gamepad A release clears jump action")
+
 func _assert_action_has_key(t, action_name: String, code: int) -> void:
 	var events: Array = InputMap.action_get_events(action_name)
 	t.assert_true(

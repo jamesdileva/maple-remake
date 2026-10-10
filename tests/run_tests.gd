@@ -3,6 +3,7 @@ extends SceneTree
 const TEST_SUITES := [
 	"res://tests/debug/test_debug_manager.gd",
 	"res://tests/input/test_input_bindings.gd",
+	"res://tests/player/test_player_movement.gd",
 ]
 
 var _checks := 0
@@ -22,6 +23,7 @@ func _run() -> void:
 		print("--- suite: %s" % suite.get_suite_name())
 		var failures_before := _failures
 		await suite.run(self)
+		_reset_input_state()
 		print("--- %s: %s" % [suite.get_suite_name(), "PASS" if _failures == failures_before else "FAIL"])
 	print("")
 	print("TOTAL: %d checks, %d failures" % [_checks, _failures])
@@ -30,6 +32,15 @@ func _run() -> void:
 	if manager != null and manager._log != null:
 		manager._log.close()
 	quit(1 if _failures > 0 else 0)
+
+func _reset_input_state() -> void:
+	for action_name: String in [
+		"move_left", "move_right", "move_up", "move_down",
+		"jump", "attack", "interact",
+		"skill_1", "skill_2", "skill_3", "skill_4",
+	]:
+		if InputMap.has_action(action_name):
+			Input.action_release(action_name)
 
 func assert_true(condition: bool, message: String) -> void:
 	_checks += 1

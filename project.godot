@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Maple Remake"
 config/description="A fast, high-density 2D action RPG."
-run/main_scene="res://scenes/bootstrap/test_blank.tscn"
+run/main_scene="res://scenes/maps/test_room.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 
 [display]

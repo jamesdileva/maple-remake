@@ -1,0 +1,11 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+--- suite: debug_manager
+--- debug_manager: PASS
+--- suite: input_bindings
+--- input_bindings: PASS
+--- suite: player_movement
+--- player_movement: PASS
+
+TOTAL: 125 checks, 0 failures
+RESULT: PASS

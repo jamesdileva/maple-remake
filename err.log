@@ -1,0 +1,5 @@
+ERROR: Parameter "current_scene" is null.
+   at: reload_current_scene (scene/main/scene_tree.cpp:1749)
+   GDScript backtrace (most recent call first):
+       [0] reload_scene (res://scripts/debug/debug_manager.gd:82)
+       [1] run (res://tests/debug/test_debug_manager.gd:37)
