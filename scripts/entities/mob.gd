@@ -10,8 +10,10 @@ const BOB_SPEED := 5.0
 
 var hp := 0.0
 var dead := false
+var chain_depth := 0
 
 var pool_owner: Object
+var _pool_tracked := false
 
 var _contact_cooldown := 0.0
 var _gravity := 900.0
@@ -68,11 +70,62 @@ func die(_event: DamageEvent) -> void:
 	dead = true
 	DebugManager.register_combat_event("kill", {"mob": mob_id()})
 	EventBus.mob_died.emit(mob_id(), xp_reward(), definition)
+	_spawn_chain_children()
+	_spawn_explosion()
+	_return_to_pool()
+
+func _return_to_pool() -> void:
 	if pool_owner != null and pool_owner.has_method("queue_recycle"):
 		enter_pool()
 		pool_owner.queue_recycle(self)
-	else:
-		queue_free()
+		return
+	if _pool_tracked:
+		var spawner := _chain_spawner()
+		if spawner != null and spawner.has_method("release_orphan_mob"):
+			enter_pool()
+			spawner.release_orphan_mob(self)
+			return
+	queue_free()
+
+func _spawn_chain_children() -> void:
+	if definition == null or definition.chain == null:
+		return
+	if chain_depth >= definition.max_chain_depth:
+		return
+	var payload: ChainPayload = definition.chain
+	if payload.child_definition == null or payload.child_count <= 0:
+		return
+	var parent_node := get_parent()
+	if parent_node == null:
+		return
+	for index in range(payload.child_count):
+		var angle: float = TAU * float(index) / float(payload.child_count)
+		var offset: Vector2 = Vector2(cos(angle), sin(angle) * 0.35) * payload.spawn_radius
+		var spawner = _chain_spawner()
+		if spawner == null:
+			return
+		var child: Mob = spawner.acquire_chain_child(payload.child_definition, global_position + offset, parent_node)
+		if child == null:
+			continue
+		child.chain_depth = chain_depth + 1
+
+func _chain_spawner() -> Node:
+	var spawner: Node = get_tree().root.get_node_or_null("SpawnManager")
+	if spawner != null and spawner.has_method("acquire_chain_child"):
+		return spawner
+	return null
+
+func _spawn_explosion() -> void:
+	if definition == null or definition.chain == null:
+		return
+	var explosion: Node2D = load("res://scenes/effects/chain_explosion.tscn").instantiate()
+	explosion.add_to_group("effects")
+	var parent_node := get_parent()
+	if parent_node == null:
+		explosion.queue_free()
+		return
+	parent_node.add_child(explosion)
+	explosion.global_position = global_position
 
 func enter_pool() -> void:
 	dead = true
@@ -83,21 +136,29 @@ func enter_pool() -> void:
 	velocity = Vector2.ZERO
 	remove_from_group("enemies")
 
+func set_pool_tracked(tracked: bool) -> void:
+	_pool_tracked = tracked
+
 func exit_pool(mob_definition: MobDefinition, spawn_position: Vector2) -> void:
 	definition = mob_definition
 	hp = mob_definition.max_hp
 	dead = false
+	chain_depth = 0
 	global_position = spawn_position
 	velocity = Vector2.ZERO
 	_contact_cooldown = 0.0
 	_bob_time = 0.0
+	_gravity = mob_definition.gravity
+	_move_speed = mob_definition.move_speed
+	_contact_damage = mob_definition.contact_damage
+	_contact_interval = mob_definition.contact_interval
+	_xp = mob_definition.xp
 	collision_layer = CollisionLayers.MOBS
 	collision_mask = CollisionLayers.WORLD
 	process_mode = Node.PROCESS_MODE_INHERIT
 	visible = true
-	if _visual != null:
-		_visual.position = Vector2.ZERO
 	add_to_group("enemies")
+	_pool_tracked = true
 
 func apply_debug_kill() -> void:
 	take_damage(999999.0, null)

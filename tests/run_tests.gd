@@ -8,6 +8,7 @@ const TEST_SUITES := [
 	"res://tests/abilities/test_fma.gd",
 	"res://tests/combat/test_damage_system.gd",
 	"res://tests/density/test_spawn_manager.gd",
+	"res://tests/density/test_chain_mobs.gd",
 	"res://tests/entities/test_mob.gd",
 ]
 

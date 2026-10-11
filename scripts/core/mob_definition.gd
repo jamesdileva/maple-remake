@@ -11,3 +11,5 @@ extends Resource
 @export var gravity := 900.0
 @export var defense := 0.0
 @export var mob_scene: PackedScene
+@export var max_chain_depth := 0
+@export var chain: ChainPayload

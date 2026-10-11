@@ -4,11 +4,13 @@ const MAX_RECYCLES_PER_FRAME := 32
 
 @export var enabled := true
 @export var max_active_mobs := 250
+@export var max_total_mobs := 600
 
 var _pool: MobPool
 var _zones: Array = []
 var _recycle_queue: Array = []
 var _spawned_total := 0
+var _chain_total := 0
 
 func _ready() -> void:
 	_pool_ref()
@@ -39,10 +41,18 @@ func reset() -> void:
 	_recycle_queue.clear()
 	_pool_ref().clear()
 	_spawned_total = 0
+	_chain_total = 0
 	max_active_mobs = 250
+	max_total_mobs = 600
 
 func stats() -> Dictionary:
-	var data := {"active": active_mob_count(), "zones": _zones.size(), "spawned": _spawned_total}
+	var data := {
+		"active": active_mob_count(),
+		"zones": _zones.size(),
+		"spawned": _spawned_total,
+		"chain_spawned": _chain_total,
+		"total": _pool_ref().entity_count(),
+	}
 	data.merge(_pool_ref().stats())
 	return data
 
@@ -65,6 +75,30 @@ func spawn_zone(zone: SpawnZone) -> int:
 func queue_recycle(mob: Mob) -> void:
 	if mob != null and not _recycle_queue.has(mob):
 		_recycle_queue.append(mob)
+
+func acquire_chain_child(child_definition: MobDefinition, spawn_position: Vector2, world: Node = null) -> Mob:
+	if child_definition == null:
+		return null
+	if _pool_ref().entity_count() >= max_total_mobs:
+		DebugManager.register_combat_event("chain_cap_reached", {
+			"cap": max_total_mobs,
+			"total": _pool_ref().entity_count(),
+		})
+		return null
+	var child: Mob = _pool_ref().acquire(child_definition, spawn_position, world if world != null else _pool_ref().world_root())
+	if child == null:
+		return null
+	child.pool_owner = null
+	child.set_pool_tracked(true)
+	_chain_total += 1
+	return child
+
+func release_orphan_mob(mob: Mob) -> void:
+	if mob == null or not is_instance_valid(mob):
+		return
+	if _recycle_queue.has(mob):
+		_recycle_queue.erase(mob)
+	_pool_ref().release(mob)
 
 func _physics_process(delta: float) -> void:
 	_prune_zones()
