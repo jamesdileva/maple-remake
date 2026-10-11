@@ -34,6 +34,8 @@ enum State { IDLE, RUN, JUMP, FALL }
 @export var basic_attack_range := 52.0
 @export var ability_slots: Array[AbilityDefinition] = []
 
+var inventory := Inventory.new()
+
 signal died
 signal attack_started
 signal cast_started(ability: AbilityDefinition)
@@ -119,6 +121,16 @@ func apply_debug_kill() -> void:
 
 func heal_full() -> void:
 	hp = max_hp
+
+func get_inventory() -> Inventory:
+	return inventory
+
+func receive_loot(item: ItemDefinition, count: int) -> int:
+	if item == null or count <= 0:
+		return 0
+	if item.is_currency():
+		return inventory.add_currency(item.value * count)
+	return inventory.add_item(item, count)
 
 func _physics_process(delta: float) -> void:
 	_update_timers(delta)

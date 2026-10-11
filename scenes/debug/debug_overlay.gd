@@ -116,6 +116,13 @@ func _refresh() -> void:
 			spawn_stats.get("active", 0), spawn_stats.get("pooled", 0),
 			spawn_stats.get("created", 0), spawn_stats.get("reused", 0),
 		]
+	var loot_text := "—"
+	var loot: Node = manager.get_tree().root.get_node_or_null("LootManager")
+	if loot != null and loot.has_method("stats"):
+		var loot_stats: Dictionary = loot.stats()
+		loot_text = "drops %d | pooled %d | collected %d" % [
+			loot_stats.get("active", 0), loot_stats.get("pooled", 0), loot_stats.get("collected", 0),
+		]
 	if player != null:
 		player_text = "(%.0f, %.0f) | %s" % [player.global_position.x, player.global_position.y, _vitals_text(player)]
 		if player.has_method("is_casting") and player.is_casting():
@@ -137,6 +144,7 @@ func _refresh() -> void:
 			player_text, counts.enemies, counts.projectiles, counts.effects,
 		],
 		"spawner %s" % spawner_text,
+		"loot %s" % loot_text,
 		"debug %s | F3 overlay | F1 god | F2 kill | F5 reload | F8 export" % (
 			"ON" if manager.is_enabled() else "OFF"
 		),
@@ -167,6 +175,8 @@ func _vitals_text(player: Node2D) -> String:
 		parts.append("HP %.0f/%.0f" % [hp, max_hp])
 	if mana != null and max_mana != null:
 		parts.append("MP %.0f/%.0f" % [mana, max_mana])
+	if player.has_method("get_inventory"):
+		parts.append("gold %d" % player.get_inventory().currency)
 	return " | ".join(parts)
 
 func _ignore_mouse_on_containers() -> void:

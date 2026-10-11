@@ -13,3 +13,4 @@ extends Resource
 @export var mob_scene: PackedScene
 @export var max_chain_depth := 0
 @export var chain: ChainPayload
+@export var loot_table: LootTable

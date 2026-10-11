@@ -192,6 +192,7 @@ func export_debug_data() -> String:
 		},
 		"entity_counts": entity_counts(),
 		"spawner": _spawner_stats(),
+		"loot": _loot_stats(),
 		"player_position": _player_position(),
 		"recent_events": _get_log().recent_events(25),
 	}
@@ -245,6 +246,17 @@ func _spawner_stats() -> Dictionary:
 	var spawner: Node = get_tree().root.get_node_or_null("SpawnManager")
 	if spawner != null and spawner.has_method("stats"):
 		return spawner.stats()
+	return {}
+
+func _loot_stats() -> Dictionary:
+	var loot: Node = get_tree().root.get_node_or_null("LootManager")
+	if loot != null and loot.has_method("stats"):
+		var data: Dictionary = loot.stats()
+		var player := find_player()
+		if player != null and player.has_method("get_inventory"):
+			data["currency"] = player.get_inventory().currency
+			data["items"] = player.get_inventory().items
+		return data
 	return {}
 
 func _player_position() -> Dictionary:

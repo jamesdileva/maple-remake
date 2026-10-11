@@ -70,6 +70,7 @@ func die(_event: DamageEvent) -> void:
 	dead = true
 	DebugManager.register_combat_event("kill", {"mob": mob_id()})
 	EventBus.mob_died.emit(mob_id(), xp_reward(), definition)
+	EventBus.mob_died_at.emit(mob_id(), xp_reward(), definition, global_position)
 	_spawn_chain_children()
 	_spawn_explosion()
 	_return_to_pool()
