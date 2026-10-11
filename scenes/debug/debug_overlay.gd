@@ -81,6 +81,20 @@ func _on_console_submitted(command: String) -> void:
 		"killall", "kill_all":
 			var killed := DebugManager.kill_all_enemies()
 			_show_result("kill all: %d enemies" % killed)
+		"xp", "add_xp":
+			if tokens.size() < 2:
+				_show_result("usage: xp <amount>")
+				return
+			var player: Node = DebugManager.find_player()
+			if player == null or not player.has_method("grant_xp"):
+				_show_result("xp: no player found")
+				return
+			var amount := float(tokens[1])
+			player.grant_xp(amount)
+			_show_result("xp +%.0f → lv %d (%.0f/%s)" % [
+				amount, player.get("level"), player.get("xp"),
+				"MAX" if player.get("xp_table") and player.xp_table.is_max_level(player.get("level")) else "%.0f" % player.call("xp_to_next_level"),
+			])
 		"reload":
 			_show_result("reload scene: %s" % error_string(DebugManager.reload_scene()))
 		"export":
@@ -97,7 +111,7 @@ func _on_console_submitted(command: String) -> void:
 			else:
 				_show_result("teleport: no player found")
 		"help":
-			_show_result("commands: god, mana, crit, hitbox, killall, reload, export, fps, tp x y")
+			_show_result("commands: god, mana, crit, hitbox, killall, xp n, reload, export, fps, tp x y")
 		_:
 			_show_result("unknown command: %s (try 'help')" % tokens[0])
 
@@ -177,6 +191,8 @@ func _vitals_text(player: Node2D) -> String:
 		parts.append("MP %.0f/%.0f" % [mana, max_mana])
 	if player.has_method("get_inventory"):
 		parts.append("gold %d" % player.get_inventory().currency)
+	if player.has_method("level_progress"):
+		parts.append("Lv %d %d%%" % [player.get("level"), int(player.call("level_progress") * 100.0)])
 	return " | ".join(parts)
 
 func _ignore_mouse_on_containers() -> void:

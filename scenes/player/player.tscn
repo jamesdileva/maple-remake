@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="1"]
 [ext_resource type="Resource" path="res://data/abilities/arcane_burst.tres" id="2"]
 [ext_resource type="Resource" path="res://data/abilities/arc_storm.tres" id="3"]
+[ext_resource type="Resource" path="res://data/progression/default_xp.tres" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/ui/level_hud.tscn" id="5"]
 
 [sub_resource type="CapsuleShape2D" id="Capsule_1"]
 radius = 14.0
@@ -14,6 +16,7 @@ size = Vector2(52, 24)
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1")
 ability_slots = Array[AbilityDefinition]([ExtResource("2"), ExtResource("3"), null, null])
+xp_table = ExtResource("4")
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 shape = SubResource("Capsule_1")
@@ -42,3 +45,5 @@ collision_mask = 2
 
 [node name="Collision" type="CollisionShape2D" parent="AttackHitbox"]
 shape = SubResource("Rect_1")
+
+[node name="LevelHud" parent="." instance=ExtResource("5")]

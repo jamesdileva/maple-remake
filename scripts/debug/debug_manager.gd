@@ -272,6 +272,11 @@ func _player_position() -> Dictionary:
 		var value = player.get(key)
 		if value != null:
 			data[key] = value
+	if player.has_method("level_progress"):
+		data["level"] = player.get("level")
+		data["xp"] = player.get("xp")
+		data["xp_into_level"] = player.call("xp_into_level")
+		data["xp_to_next_level"] = player.call("xp_to_next_level")
 	if player.has_method("is_casting"):
 		data["casting"] = player.current_ability().id if player.current_ability() != null else ""
 		data["cast_progress"] = player.cast_progress()

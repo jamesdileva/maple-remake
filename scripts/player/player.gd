@@ -33,13 +33,20 @@ enum State { IDLE, RUN, JUMP, FALL }
 @export var basic_attack_duration := 0.12
 @export var basic_attack_range := 52.0
 @export var ability_slots: Array[AbilityDefinition] = []
+@export var xp_table: XpTable
+@export var hp_per_level := 8.0
+@export var mana_per_level := 4.0
 
 var inventory := Inventory.new()
+var level := 1
+var xp := 0.0
 
 signal died
 signal attack_started
 signal cast_started(ability: AbilityDefinition)
 signal cast_completed(ability: AbilityDefinition, targets_hit: int)
+signal leveled_up(new_level: int)
+signal xp_gained(amount: float)
 
 const ABILITY_SLOT_COUNT := 4
 
@@ -69,7 +76,14 @@ func _ready() -> void:
 	_attack_hitbox = get_node_or_null(attack_hitbox_path) as Area2D
 	if _attack_hitbox != null:
 		_attack_hitbox.monitoring = false
+	_apply_level_stats()
+	hp = max_hp
+	mana = max_mana
 	add_to_group("player")
+	EventBus.mob_died.connect(_on_mob_died)
+
+func _on_mob_died(_mob_id: StringName, mob_xp: float, _definition: Resource) -> void:
+	grant_xp(mob_xp)
 
 func is_casting() -> bool:
 	return _cast_timer > 0.0
@@ -124,6 +138,45 @@ func heal_full() -> void:
 
 func get_inventory() -> Inventory:
 	return inventory
+
+func grant_xp(amount: float) -> float:
+	if xp_table == null or amount <= 0.0:
+		return 0.0
+	var granted := amount
+	if xp_table.is_max_level(level):
+		return 0.0
+	xp += amount
+	xp_gained.emit(amount)
+	while not xp_table.is_max_level(level) and xp >= xp_table.xp_for_level(level + 1):
+		level += 1
+		_apply_level_stats()
+		leveled_up.emit(level)
+		DebugManager.register_combat_event("level_up", {"level": level})
+	return granted
+
+func xp_into_level() -> float:
+	if xp_table == null:
+		return 0.0
+	return xp - xp_table.xp_for_level(level)
+
+func xp_to_next_level() -> float:
+	if xp_table == null or xp_table.is_max_level(level):
+		return 0.0
+	return xp_table.xp_for_level(level + 1) - xp
+
+func level_progress() -> float:
+	if xp_table == null or xp_table.is_max_level(level):
+		return 1.0
+	var required := xp_table.xp_for_level(level + 1) - xp_table.xp_for_level(level)
+	if required <= 0.0:
+		return 1.0
+	return clampf(xp_into_level() / required, 0.0, 1.0)
+
+func _apply_level_stats() -> void:
+	max_hp = 100.0 + hp_per_level * float(level - 1)
+	max_mana = 100.0 + mana_per_level * float(level - 1)
+	hp = max_hp
+	mana = max_mana
 
 func receive_loot(item: ItemDefinition, count: int) -> int:
 	if item == null or count <= 0:
