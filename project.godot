@@ -134,6 +134,7 @@ DebugManager="*res://scripts/debug/debug_manager.gd"
 EventBus="*res://scripts/core/event_bus.gd"
 SpawnManager="*res://scripts/systems/spawn_manager.gd"
 LootManager="*res://scripts/systems/loot_manager.gd"
+SaveSystem="*res://scripts/systems/save_system.gd"
 
 [game]
 

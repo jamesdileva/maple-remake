@@ -117,6 +117,23 @@ func _on_console_submitted(command: String) -> void:
 					test_player.equip(gear)
 					equipped += 1
 			_show_result("equipped %d test items (power %d)" % [equipped, test_player.equipment_power()])
+		"save":
+			var save_error: Error = SaveSystem.save_game(_current_payload())
+			_show_result("save: %s (v%d)" % [error_string(save_error), SaveSystem.version()])
+		"load":
+			var payload := SaveSystem.load_game()
+			if payload.is_empty():
+				_show_result("load failed: %s" % SaveSystem.last_error)
+				return
+			var load_player: Node = DebugManager.find_player()
+			if load_player == null or not load_player.has_method("restore_state"):
+				_show_result("load: no player found")
+				return
+			load_player.restore_state(payload)
+			_show_result("loaded: lv %d, %d gold" % [load_player.get("level"), load_player.get_inventory().currency])
+		"reset_save":
+			SaveSystem.delete_save()
+			_show_result("save deleted")
 		"reload":
 			_show_result("reload scene: %s" % error_string(DebugManager.reload_scene()))
 		"export":
@@ -133,9 +150,15 @@ func _on_console_submitted(command: String) -> void:
 			else:
 				_show_result("teleport: no player found")
 		"help":
-			_show_result("commands: god, mana, crit, hitbox, killall, xp n, points n, gear, reload, export, fps, tp x y")
+			_show_result("commands: god, mana, crit, hitbox, killall, xp n, points n, gear, save, load, reset_save, reload, export, fps, tp x y")
 		_:
 			_show_result("unknown command: %s (try 'help')" % tokens[0])
+
+func _current_payload() -> Dictionary:
+	var player: Node = DebugManager.find_player()
+	if player == null or not player.has_method("capture_state"):
+		return {}
+	return player.capture_state()
 
 func _refresh() -> void:
 	var manager := DebugManager

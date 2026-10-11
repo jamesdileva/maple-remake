@@ -156,6 +156,59 @@ func unequip(slot_name: StringName) -> EquipmentDefinition:
 	_recalculate_stats()
 	return removed
 
+func capture_state() -> Dictionary:
+	var worn := {}
+	for slot_name in equipment:
+		var item: EquipmentDefinition = equipment[slot_name]
+		worn[slot_name] = item.resource_path if item != null else ""
+	var levels := {}
+	for ability_id: StringName in ability_levels:
+		levels[String(ability_id)] = ability_levels[ability_id]
+	var items := {}
+	for item_id: StringName in inventory.items:
+		items[String(item_id)] = inventory.items[item_id]
+	return {
+		"level": level,
+		"xp": xp,
+		"hp": hp,
+		"mana": mana,
+		"skill_points": skill_points,
+		"skill_points_spent": skill_points_spent,
+		"ability_levels": levels,
+		"equipment": worn,
+		"inventory_items": items,
+		"currency": inventory.currency,
+	}
+
+func restore_state(data: Dictionary) -> void:
+	if data.is_empty():
+		return
+	level = int(data.get("level", 1))
+	xp = float(data.get("xp", 0.0))
+	skill_points = int(data.get("skill_points", 0))
+	skill_points_spent = int(data.get("skill_points_spent", 0))
+	ability_levels.clear()
+	var levels: Dictionary = data.get("ability_levels", {})
+	for ability_id in levels:
+		ability_levels[StringName(ability_id)] = int(levels[ability_id])
+	equipment.clear()
+	var worn: Dictionary = data.get("equipment", {})
+	for slot_name in worn:
+		var item_path: String = worn[slot_name]
+		if item_path.is_empty():
+			continue
+		var loaded: EquipmentDefinition = load(item_path)
+		if loaded != null:
+			equipment[StringName(slot_name)] = loaded
+	inventory.items.clear()
+	var stored_items: Dictionary = data.get("inventory_items", {})
+	for item_id in stored_items:
+		inventory.items[StringName(item_id)] = int(stored_items[item_id])
+	inventory.currency = int(data.get("currency", 0))
+	_recalculate_stats()
+	hp = clampf(float(data.get("hp", max_hp)), 0.0, max_hp)
+	mana = clampf(float(data.get("mana", max_mana)), 0.0, max_mana)
+
 func _equipment_bonus(field: StringName) -> float:
 	var total := 0.0
 	for slot_name in equipment:

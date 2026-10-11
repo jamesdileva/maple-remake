@@ -14,13 +14,18 @@ func _ready() -> void:
 
 func bind(player: Player) -> void:
 	if _player != null:
-		_player.xp_gained.disconnect(_refresh)
-		_player.leveled_up.disconnect(_refresh)
+		if _player.xp_gained.is_connected(_on_xp_gained):
+			_player.xp_gained.disconnect(_on_xp_gained)
+		if _player.leveled_up.is_connected(_refresh):
+			_player.leveled_up.disconnect(_refresh)
 	_player = player
 	if _player == null:
 		return
-	_player.xp_gained.connect(_refresh)
+	_player.xp_gained.connect(_on_xp_gained)
 	_player.leveled_up.connect(_refresh)
+	_refresh()
+
+func _on_xp_gained(_amount: float) -> void:
 	_refresh()
 
 func _refresh() -> void:

@@ -13,6 +13,7 @@ const TEST_SUITES := [
 	"res://tests/progression/test_xp_leveling.gd",
 	"res://tests/progression/test_skill_points.gd",
 	"res://tests/progression/test_equipment.gd",
+	"res://tests/progression/test_save_system.gd",
 	"res://tests/entities/test_mob.gd",
 ]
 
