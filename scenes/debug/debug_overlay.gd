@@ -108,6 +108,14 @@ func _refresh() -> void:
 	var player: Node2D = manager.find_player()
 	var player_text := "—"
 	var casting_text := ""
+	var spawner_text := "—"
+	var spawner: Node = manager.get_tree().root.get_node_or_null("SpawnManager")
+	if spawner != null and spawner.has_method("stats"):
+		var spawn_stats: Dictionary = spawner.stats()
+		spawner_text = "active %d | pooled %d | created %d | reused %d" % [
+			spawn_stats.get("active", 0), spawn_stats.get("pooled", 0),
+			spawn_stats.get("created", 0), spawn_stats.get("reused", 0),
+		]
 	if player != null:
 		player_text = "(%.0f, %.0f) | %s" % [player.global_position.x, player.global_position.y, _vitals_text(player)]
 		if player.has_method("is_casting") and player.is_casting():
@@ -128,6 +136,7 @@ func _refresh() -> void:
 		"player %s | enemies %d | projectiles %d | effects %d" % [
 			player_text, counts.enemies, counts.projectiles, counts.effects,
 		],
+		"spawner %s" % spawner_text,
 		"debug %s | F3 overlay | F1 god | F2 kill | F5 reload | F8 export" % (
 			"ON" if manager.is_enabled() else "OFF"
 		),

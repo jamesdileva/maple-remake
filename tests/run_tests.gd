@@ -7,6 +7,7 @@ const TEST_SUITES := [
 	"res://tests/abilities/test_player_ability.gd",
 	"res://tests/abilities/test_fma.gd",
 	"res://tests/combat/test_damage_system.gd",
+	"res://tests/density/test_spawn_manager.gd",
 	"res://tests/entities/test_mob.gd",
 ]
 
@@ -36,6 +37,7 @@ func _run() -> void:
 		_reset_input_state()
 		_reset_debug_flags()
 		await _cleanup_worlds()
+		_reset_spawner()
 		print("--- %s: %s" % [suite.get_suite_name(), "PASS" if _failures == failures_before else "FAIL"])
 	print("")
 	print("TOTAL: %d checks, %d failures" % [_checks, _failures])
@@ -60,6 +62,11 @@ func _reset_debug_flags() -> void:
 		return
 	for flag: String in ["god_mode", "force_crit", "infinite_mana", "disable_ai"]:
 		manager.set(flag, false)
+
+func _reset_spawner() -> void:
+	var spawner: Node = root.get_node_or_null("SpawnManager")
+	if spawner != null and spawner.has_method("reset"):
+		spawner.reset()
 
 func complete_suite(suite_name: String) -> void:
 	_completed_suites.append(suite_name)

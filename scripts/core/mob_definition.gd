@@ -10,3 +10,4 @@ extends Resource
 @export var xp := 5.0
 @export var gravity := 900.0
 @export var defense := 0.0
+@export var mob_scene: PackedScene

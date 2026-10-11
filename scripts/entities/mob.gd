@@ -11,6 +11,8 @@ const BOB_SPEED := 5.0
 var hp := 0.0
 var dead := false
 
+var pool_owner: Object
+
 var _contact_cooldown := 0.0
 var _gravity := 900.0
 var _move_speed := 70.0
@@ -66,7 +68,36 @@ func die(_event: DamageEvent) -> void:
 	dead = true
 	DebugManager.register_combat_event("kill", {"mob": mob_id()})
 	EventBus.mob_died.emit(mob_id(), xp_reward(), definition)
-	queue_free()
+	if pool_owner != null and pool_owner.has_method("queue_recycle"):
+		enter_pool()
+		pool_owner.queue_recycle(self)
+	else:
+		queue_free()
+
+func enter_pool() -> void:
+	dead = true
+	visible = false
+	process_mode = Node.PROCESS_MODE_DISABLED
+	collision_layer = 0
+	collision_mask = 0
+	velocity = Vector2.ZERO
+	remove_from_group("enemies")
+
+func exit_pool(mob_definition: MobDefinition, spawn_position: Vector2) -> void:
+	definition = mob_definition
+	hp = mob_definition.max_hp
+	dead = false
+	global_position = spawn_position
+	velocity = Vector2.ZERO
+	_contact_cooldown = 0.0
+	_bob_time = 0.0
+	collision_layer = CollisionLayers.MOBS
+	collision_mask = CollisionLayers.WORLD
+	process_mode = Node.PROCESS_MODE_INHERIT
+	visible = true
+	if _visual != null:
+		_visual.position = Vector2.ZERO
+	add_to_group("enemies")
 
 func apply_debug_kill() -> void:
 	take_damage(999999.0, null)

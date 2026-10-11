@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/mobs/mob.tscn" id="2"]
 [ext_resource type="Resource" path="res://data/mobs/test_slime.tres" id="3"]
+[ext_resource type="Script" path="res://scripts/systems/spawn_zone.gd" id="4"]
 
 [sub_resource type="RectangleShape2D" id="Floor_1"]
 size = Vector2(1600, 40)
@@ -79,3 +80,10 @@ definition = ExtResource("3")
 [node name="MobB" parent="." instance=ExtResource("2")]
 position = Vector2(-420, -46)
 definition = ExtResource("3")
+
+[node name="ZoneFloor" type="Node2D" parent="."]
+script = ExtResource("4")
+zone_rect = Rect2(-600, -70, 1200, 70)
+definition = ExtResource("3")
+capacity = 12
+respawn_delay = 1.5

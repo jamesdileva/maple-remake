@@ -191,6 +191,7 @@ func export_debug_data() -> String:
 			"objects": Performance.get_monitor(Performance.OBJECT_COUNT),
 		},
 		"entity_counts": entity_counts(),
+		"spawner": _spawner_stats(),
 		"player_position": _player_position(),
 		"recent_events": _get_log().recent_events(25),
 	}
@@ -239,6 +240,12 @@ func _monitor_group_count(group: String) -> int:
 
 func _monitor_counter(key: String) -> float:
 	return float(counters.get(key, 0))
+
+func _spawner_stats() -> Dictionary:
+	var spawner: Node = get_tree().root.get_node_or_null("SpawnManager")
+	if spawner != null and spawner.has_method("stats"):
+		return spawner.stats()
+	return {}
 
 func _player_position() -> Dictionary:
 	var player := find_player()

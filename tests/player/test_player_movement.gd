@@ -8,6 +8,7 @@ func run(t) -> void:
 	var world: Node2D = room.instantiate()
 	t.root.add_child(world)
 	t.register_world(world)
+	SpawnManager.enabled = false
 	var player: Player = world.get_node("Player")
 	var observed_states: Array = []
 	player.state_changed.connect(func(new_state: StringName): observed_states.append(new_state))

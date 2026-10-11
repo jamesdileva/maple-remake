@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="MobDefinition" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="MobDefinition" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/core/mob_definition.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/mobs/mob.tscn" id="2"]
 
 [resource]
 script = ExtResource("1")
@@ -13,3 +14,4 @@ contact_interval = 0.8
 xp = 5.0
 gravity = 900.0
 defense = 0.0
+mob_scene = ExtResource("2")
