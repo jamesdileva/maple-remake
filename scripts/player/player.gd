@@ -43,6 +43,7 @@ var xp := 0.0
 var skill_points := 0
 var skill_points_spent := 0
 var ability_levels: Dictionary = {}
+var equipment: Dictionary = {}
 
 signal died
 signal attack_started
@@ -127,7 +128,41 @@ func die(_event: DamageEvent) -> void:
 	velocity = Vector2.ZERO
 
 func get_defense() -> float:
-	return defense
+	return defense + _equipment_bonus(&"defense_bonus")
+
+func equipment_power() -> float:
+	return _equipment_bonus(&"power")
+
+func equipped_in(slot_name: StringName) -> EquipmentDefinition:
+	return equipment.get(slot_name)
+
+func equip(item: EquipmentDefinition) -> EquipmentDefinition:
+	if item == null:
+		return null
+	if level < item.level_requirement:
+		return item
+	var slot_name := item.slot_name()
+	var replaced: EquipmentDefinition = equipment.get(slot_name)
+	equipment[slot_name] = item
+	_recalculate_stats()
+	DebugManager.register_combat_event("equip", {"item": item.id, "slot": slot_name})
+	return replaced
+
+func unequip(slot_name: StringName) -> EquipmentDefinition:
+	var removed: EquipmentDefinition = equipment.get(slot_name)
+	if removed == null:
+		return null
+	equipment.erase(slot_name)
+	_recalculate_stats()
+	return removed
+
+func _equipment_bonus(field: StringName) -> float:
+	var total := 0.0
+	for slot_name in equipment:
+		var item: EquipmentDefinition = equipment[slot_name]
+		if item != null:
+			total += float(item.get(field))
+	return total
 
 func get_crit_chance() -> float:
 	return crit_chance
@@ -217,12 +252,17 @@ func add_skill_points(count: int) -> int:
 	return count
 
 func _apply_level_stats() -> void:
-	max_hp = 100.0 + hp_per_level * float(level - 1)
-	max_mana = 100.0 + mana_per_level * float(level - 1)
+	_recalculate_stats()
 	hp = max_hp
 	mana = max_mana
 	if level > 1:
 		add_skill_points(1)
+
+func _recalculate_stats() -> void:
+	max_hp = 100.0 + hp_per_level * float(level - 1) + _equipment_bonus(&"max_hp_bonus")
+	max_mana = 100.0 + mana_per_level * float(level - 1) + _equipment_bonus(&"max_mana_bonus")
+	hp = minf(hp, max_hp)
+	mana = minf(mana, max_mana)
 
 func receive_loot(item: ItemDefinition, count: int) -> int:
 	if item == null or count <= 0:
@@ -301,7 +341,7 @@ func _finish_cast() -> void:
 		return
 	var targets: Array = _resolve_targets(ability)
 	var targets_hit := 0
-	var damage := ability.damage_at(ability_level(ability))
+	var damage := ability.damage_at(ability_level(ability)) + equipment_power()
 	for target: Object in targets:
 		var result := DamageSystem.apply(DamageEvent.create(target, damage, self))
 		if result.valid:
@@ -387,7 +427,7 @@ func _attack_hit(body: Node) -> void:
 	if _attack_hit_targets.has(body):
 		return
 	_attack_hit_targets.append(body)
-	(body as Mob).take_damage(basic_attack_damage, self)
+	(body as Mob).take_damage(basic_attack_damage + equipment_power(), self)
 
 static func _state_name(state_value: int) -> StringName:
 	match state_value:

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EquipmentDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/equipment_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"cloth_cap"
+display_name = "Cloth Cap"
+slot = 3
+level_requirement = 1
+power = 0.0
+defense_bonus = 2.0
+max_hp_bonus = 10.0
+max_mana_bonus = 0.0

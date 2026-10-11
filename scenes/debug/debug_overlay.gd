@@ -105,6 +105,18 @@ func _on_console_submitted(command: String) -> void:
 				return
 			player.add_skill_points(int(float(tokens[1])))
 			_show_result("skill points: %d" % player.get("skill_points"))
+		"gear", "equip_gear":
+			var test_player: Node = DebugManager.find_player()
+			if test_player == null or not test_player.has_method("equip"):
+				_show_result("gear: no player found")
+				return
+			var equipped := 0
+			for gear_id: String in ["iron_sword", "cloth_tunic", "traveler_pants", "cloth_cap"]:
+				var gear: EquipmentDefinition = load("res://data/equipment/%s.tres" % gear_id)
+				if gear != null and test_player.level >= gear.level_requirement:
+					test_player.equip(gear)
+					equipped += 1
+			_show_result("equipped %d test items (power %d)" % [equipped, test_player.equipment_power()])
 		"reload":
 			_show_result("reload scene: %s" % error_string(DebugManager.reload_scene()))
 		"export":
@@ -121,7 +133,7 @@ func _on_console_submitted(command: String) -> void:
 			else:
 				_show_result("teleport: no player found")
 		"help":
-			_show_result("commands: god, mana, crit, hitbox, killall, xp n, points n, reload, export, fps, tp x y")
+			_show_result("commands: god, mana, crit, hitbox, killall, xp n, points n, gear, reload, export, fps, tp x y")
 		_:
 			_show_result("unknown command: %s (try 'help')" % tokens[0])
 
@@ -205,6 +217,8 @@ func _vitals_text(player: Node2D) -> String:
 		parts.append("Lv %d %d%%" % [player.get("level"), int(player.call("level_progress") * 100.0)])
 	if player.has_method("get_inventory"):
 		parts.append("SP %d" % player.get("skill_points"))
+	if player.has_method("equipment_power"):
+		parts.append("PWR %d" % player.equipment_power())
 	return " | ".join(parts)
 
 func _ignore_mouse_on_containers() -> void:

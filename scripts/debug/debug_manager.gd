@@ -280,6 +280,13 @@ func _player_position() -> Dictionary:
 		data["skill_points"] = player.get("skill_points")
 		data["skill_points_spent"] = player.get("skill_points_spent")
 		data["ability_levels"] = player.get("ability_levels")
+	if player.has_method("equipped_in"):
+		var worn := {}
+		for slot_name in [&"weapon", &"top", &"bottom", &"helmet"]:
+			var item: EquipmentDefinition = player.equipped_in(slot_name)
+			worn[slot_name] = item.id if item != null else ""
+		data["equipment"] = worn
+		data["equipment_power"] = player.equipment_power()
 	if player.has_method("is_casting"):
 		data["casting"] = player.current_ability().id if player.current_ability() != null else ""
 		data["cast_progress"] = player.cast_progress()
