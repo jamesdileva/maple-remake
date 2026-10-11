@@ -95,6 +95,16 @@ func _on_console_submitted(command: String) -> void:
 				amount, player.get("level"), player.get("xp"),
 				"MAX" if player.get("xp_table") and player.xp_table.is_max_level(player.get("level")) else "%.0f" % player.call("xp_to_next_level"),
 			])
+		"points", "add_points":
+			if tokens.size() < 2:
+				_show_result("usage: points <count>")
+				return
+			var player: Node = DebugManager.find_player()
+			if player == null or not player.has_method("add_skill_points"):
+				_show_result("points: no player found")
+				return
+			player.add_skill_points(int(float(tokens[1])))
+			_show_result("skill points: %d" % player.get("skill_points"))
 		"reload":
 			_show_result("reload scene: %s" % error_string(DebugManager.reload_scene()))
 		"export":
@@ -111,7 +121,7 @@ func _on_console_submitted(command: String) -> void:
 			else:
 				_show_result("teleport: no player found")
 		"help":
-			_show_result("commands: god, mana, crit, hitbox, killall, xp n, reload, export, fps, tp x y")
+			_show_result("commands: god, mana, crit, hitbox, killall, xp n, points n, reload, export, fps, tp x y")
 		_:
 			_show_result("unknown command: %s (try 'help')" % tokens[0])
 
@@ -193,6 +203,8 @@ func _vitals_text(player: Node2D) -> String:
 		parts.append("gold %d" % player.get_inventory().currency)
 	if player.has_method("level_progress"):
 		parts.append("Lv %d %d%%" % [player.get("level"), int(player.call("level_progress") * 100.0)])
+	if player.has_method("get_inventory"):
+		parts.append("SP %d" % player.get("skill_points"))
 	return " | ".join(parts)
 
 func _ignore_mouse_on_containers() -> void:

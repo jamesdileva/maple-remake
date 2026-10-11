@@ -15,3 +15,13 @@ enum AreaMode { FRONTAL, CENTERED }
 @export var area_mode: AreaMode = AreaMode.FRONTAL
 @export var cast_effect: PackedScene
 @export var impact_effect: PackedScene
+@export var max_level := 5
+@export var unlock_level := 1
+@export var damage_per_level := 5.0
+@export var mana_per_level := 0.0
+
+func damage_at(ability_level: int) -> float:
+	return damage + damage_per_level * float(maxi(1, ability_level) - 1)
+
+func mana_cost_at(ability_level: int) -> float:
+	return maxf(0.0, mana_cost + mana_per_level * float(maxi(1, ability_level) - 1))

@@ -40,6 +40,9 @@ enum State { IDLE, RUN, JUMP, FALL }
 var inventory := Inventory.new()
 var level := 1
 var xp := 0.0
+var skill_points := 0
+var skill_points_spent := 0
+var ability_levels: Dictionary = {}
 
 signal died
 signal attack_started
@@ -47,6 +50,8 @@ signal cast_started(ability: AbilityDefinition)
 signal cast_completed(ability: AbilityDefinition, targets_hit: int)
 signal leveled_up(new_level: int)
 signal xp_gained(amount: float)
+signal skill_points_changed(total: int)
+signal skill_reset
 
 const ABILITY_SLOT_COUNT := 4
 
@@ -172,11 +177,52 @@ func level_progress() -> float:
 		return 1.0
 	return clampf(xp_into_level() / required, 0.0, 1.0)
 
+func ability_level(ability: AbilityDefinition) -> int:
+	if ability == null:
+		return 0
+	return ability_levels.get(ability.id, 1)
+
+func can_spend_skill_point(ability: AbilityDefinition) -> bool:
+	if ability == null:
+		return false
+	if skill_points <= 0:
+		return false
+	if level < ability.unlock_level:
+		return false
+	return ability_level(ability) < ability.max_level
+
+func spend_skill_point(ability: AbilityDefinition) -> bool:
+	if not can_spend_skill_point(ability):
+		return false
+	skill_points -= 1
+	skill_points_spent += 1
+	ability_levels[ability.id] = ability_level(ability) + 1
+	skill_points_changed.emit(skill_points)
+	return true
+
+func reset_skills() -> int:
+	var refunded: int = skill_points_spent
+	skill_points += refunded
+	skill_points_spent = 0
+	ability_levels.clear()
+	skill_reset.emit()
+	skill_points_changed.emit(skill_points)
+	return refunded
+
+func add_skill_points(count: int) -> int:
+	if count <= 0:
+		return 0
+	skill_points += count
+	skill_points_changed.emit(skill_points)
+	return count
+
 func _apply_level_stats() -> void:
 	max_hp = 100.0 + hp_per_level * float(level - 1)
 	max_mana = 100.0 + mana_per_level * float(level - 1)
 	hp = max_hp
 	mana = max_mana
+	if level > 1:
+		add_skill_points(1)
 
 func receive_loot(item: ItemDefinition, count: int) -> int:
 	if item == null or count <= 0:
@@ -223,10 +269,11 @@ func _try_cast_ability(slot: int) -> void:
 	var ability := ability_at(slot)
 	if ability == null:
 		return
-	if not DebugManager.infinite_mana and ability.mana_cost > 0.0:
-		if mana < ability.mana_cost:
+	var cost := ability.mana_cost_at(ability_level(ability))
+	if not DebugManager.infinite_mana and cost > 0.0:
+		if mana < cost:
 			return
-		mana -= ability.mana_cost
+		mana -= cost
 	_start_cast(ability)
 
 func _start_cast(ability: AbilityDefinition) -> void:
@@ -240,7 +287,7 @@ func _start_cast(ability: AbilityDefinition) -> void:
 		"ability": ability.id,
 		"phase": &"start",
 		"cast_time": ability.cast_time,
-		"mana_cost": ability.mana_cost,
+		"mana_cost": ability.mana_cost_at(ability_level(ability)),
 	})
 	EventBus.ability_cast_started.emit(ability)
 	cast_started.emit(ability)
@@ -254,8 +301,9 @@ func _finish_cast() -> void:
 		return
 	var targets: Array = _resolve_targets(ability)
 	var targets_hit := 0
+	var damage := ability.damage_at(ability_level(ability))
 	for target: Object in targets:
-		var result := DamageSystem.apply(DamageEvent.create(target, ability.damage, self))
+		var result := DamageSystem.apply(DamageEvent.create(target, damage, self))
 		if result.valid:
 			targets_hit += 1
 			_spawn_impact_burst(ability, target)
