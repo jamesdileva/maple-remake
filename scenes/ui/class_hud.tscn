@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/class_hud.gd" id="1"]
+
+[node name="ClassHud" type="CanvasLayer"]
+script = ExtResource("1")
+
+[node name="Panel" type="PanelContainer" parent="."]
+offset_left = 16.0
+offset_top = 340.0
+offset_right = 260.0
+offset_bottom = 420.0
+mouse_filter = 2
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+mouse_filter = 2
+
+[node name="ClassName" type="Label" parent="Panel/VBox"]
+unique_name_in_owner = true
+mouse_filter = 2
+text = "Adventurer"
+
+[node name="ClassLevel" type="Label" parent="Panel/VBox"]
+unique_name_in_owner = true
+mouse_filter = 2
+text = "Lv 1"
+
+[node name="Abilities" type="Label" parent="Panel/VBox"]
+unique_name_in_owner = true
+mouse_filter = 2
+
+[node name="ShieldLabel" type="Label" parent="Panel/VBox"]
+unique_name_in_owner = true
+mouse_filter = 2
+
+[node name="Summonlabel" type="Label" parent="Panel/VBox"]
+unique_name_in_owner = true
+mouse_filter = 2

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ClassDefinition" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/class_definition.gd" id="1"]
+[ext_resource type="Resource" path="res://data/abilities/mage_fire.tres" id="2"]
+[ext_resource type="Resource" path="res://data/abilities/mage_ice.tres" id="3"]
+[ext_resource type="Resource" path="res://data/abilities/mage_lightning.tres" id="4"]
+[ext_resource type="Resource" path="res://data/abilities/mage_fma.tres" id="5"]
+[ext_resource type="Resource" path="res://data/abilities/mage_summon.tres" id="6"]
+[ext_resource type="Resource" path="res://data/abilities/mage_mana_shield.tres" id="7"]
+
+[resource]
+script = ExtResource("1")
+id = &"mage"
+display_name = "Mage"
+ability_slots = Array[Resource]([ExtResource("2"), ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6"), ExtResource("7")])
+starting_hp = 100.0
+starting_mana = 100.0
+defense = 0.0
+crit_chance = 0.05
+crit_multiplier = 2.0
+mana_regen_per_second = 8.0

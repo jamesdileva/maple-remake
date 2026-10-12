@@ -33,6 +33,8 @@ enum State { IDLE, RUN, JUMP, FALL }
 @export var basic_attack_duration := 0.12
 @export var basic_attack_range := 52.0
 @export var ability_slots: Array[AbilityDefinition] = []
+@export var class_definition: ClassDefinition
+@export var max_summons := 3
 @export var xp_table: XpTable
 @export var hp_per_level := 8.0
 @export var mana_per_level := 4.0
@@ -44,6 +46,10 @@ var skill_points := 0
 var skill_points_spent := 0
 var ability_levels: Dictionary = {}
 var equipment: Dictionary = {}
+var _shield_hp := 0.0
+var _shield_lifetime := 0.0
+var _absorbed_total := 0.0
+var _summons: Array = []
 
 signal died
 signal attack_started
@@ -53,8 +59,11 @@ signal leveled_up(new_level: int)
 signal xp_gained(amount: float)
 signal skill_points_changed(total: int)
 signal skill_reset
+signal shield_broken
+signal shield_applied(amount: float)
+signal summon_spawned(summon: Summon)
 
-const ABILITY_SLOT_COUNT := 4
+const ABILITY_SLOT_COUNT := 6
 
 var state: State = State.IDLE:
 	set(value):
@@ -85,6 +94,8 @@ func _ready() -> void:
 	_apply_level_stats()
 	hp = max_hp
 	mana = max_mana
+	if class_definition != null:
+		apply_class(class_definition)
 	add_to_group("player")
 	EventBus.mob_died.connect(_on_mob_died)
 
@@ -103,14 +114,68 @@ func current_ability() -> AbilityDefinition:
 	return _cast_ability
 
 func ability_at(slot: int) -> AbilityDefinition:
-	if slot < 0 or slot >= ability_slots.size():
+	var slots := _effective_slots()
+	if slot < 0 or slot >= slots.size():
 		return null
-	return ability_slots[slot]
+	return slots[slot]
+
+func _effective_slots() -> Array:
+	if class_definition != null and class_definition.ability_slots.size() > 0:
+		return class_definition.ability_slots
+	return ability_slots
+
+func apply_class(character_class: ClassDefinition) -> void:
+	if character_class == null:
+		return
+	class_definition = character_class
+	defense = character_class.defense
+	crit_chance = character_class.crit_chance
+	crit_multiplier = character_class.crit_multiplier
+	mana_regen_per_second = character_class.mana_regen_per_second
+	max_hp = character_class.starting_hp
+	max_mana = character_class.starting_mana
+	_recalculate_stats()
+	hp = max_hp
+	mana = max_mana
+	DebugManager.register_combat_event("class_applied", {"class": character_class.id})
+
+func shield_hp() -> float:
+	return _shield_hp
+
+func is_shielded() -> bool:
+	return _shield_hp > 0.0
+
+func active_summons() -> int:
+	var count := 0
+	for summon: Object in _summons:
+		if is_instance_valid(summon):
+			count += 1
+	return count
+
+func release_summon(summon: Summon) -> void:
+	if is_instance_valid(summon):
+		summon.queue_free()
+	_summons.erase(summon)
 
 func take_damage(amount: float, source: Node = null) -> float:
 	if DebugManager.is_invulnerable():
 		return 0.0
-	return DamageSystem.apply(DamageEvent.create(self, amount, source)).applied
+	var incoming := amount
+	if _shield_hp > 0.0:
+		var absorbed := minf(_shield_hp, incoming)
+		_shield_hp -= absorbed
+		_absorbed_total += absorbed
+		incoming -= absorbed
+		DebugManager.register_combat_event("shield_absorb", {
+			"absorbed": absorbed,
+			"remaining": _shield_hp,
+		})
+		if _shield_hp <= 0.0:
+			shield_broken.emit()
+		if incoming <= 0.0:
+			return 0.0
+	var event := DamageEvent.create(self, incoming, source)
+	return DamageSystem.apply(event).applied
 
 func apply_damage(amount: float) -> float:
 	hp -= amount
@@ -353,10 +418,33 @@ func _tick_cast(delta: float) -> void:
 		if _cast_timer == 0.0:
 			_finish_cast()
 		return
+	_tick_shield(delta)
+	_tick_summons(delta)
 	for slot in ABILITY_SLOT_COUNT:
 		if Input.is_action_just_pressed("skill_%d" % (slot + 1)):
 			_try_cast_ability(slot)
 			return
+
+func _apply_shield(ability: AbilityDefinition) -> void:
+	_shield_hp = ability.shield_absorb
+	_shield_lifetime = ability.shield_duration
+	shield_applied.emit(_shield_hp)
+	DebugManager.register_combat_event("shield", {
+		"ability": ability.id,
+		"absorb": ability.shield_absorb,
+		"duration": ability.shield_duration,
+	})
+	EventBus.shield_applied.emit(ability.id, ability.shield_absorb)
+
+func _tick_shield(delta: float) -> void:
+	_shield_lifetime = maxf(0.0, _shield_lifetime - delta)
+	if _shield_lifetime <= 0.0 and _shield_hp > 0.0:
+		_shield_hp = 0.0
+
+func _tick_summons(delta: float) -> void:
+	for summon: Object in _summons.duplicate():
+		if not is_instance_valid(summon):
+			_summons.erase(summon)
 
 func _try_cast_ability(slot: int) -> void:
 	var ability := ability_at(slot)
@@ -392,6 +480,9 @@ func _finish_cast() -> void:
 	_free_cast_telegraph()
 	if ability == null:
 		return
+	if ability.is_shield():
+		_apply_shield(ability)
+		return
 	var targets: Array = _resolve_targets(ability)
 	var targets_hit := 0
 	var damage := ability.damage_at(ability_level(ability)) + equipment_power()
@@ -399,7 +490,11 @@ func _finish_cast() -> void:
 		var result := DamageSystem.apply(DamageEvent.create(target, damage, self))
 		if result.valid:
 			targets_hit += 1
+			if ability.slow_duration > 0.0 and ability.slow_factor > 0.0 and target is Mob:
+				(target as Mob).apply_slow(ability.slow_duration, ability.slow_factor)
 			_spawn_impact_burst(ability, target)
+	if ability.is_summon():
+		_spawn_summons(ability)
 	DebugManager.register_combat_event("cast", {
 		"ability": ability.id,
 		"phase": &"complete",
@@ -407,6 +502,31 @@ func _finish_cast() -> void:
 	})
 	EventBus.ability_cast_completed.emit(ability, targets_hit)
 	cast_completed.emit(ability, targets_hit)
+
+func _spawn_summons(ability: AbilityDefinition) -> void:
+	var slots := maxi(0, max_summons - active_summons())
+	var to_spawn := mini(ability.summon_count, slots)
+	var damage := ability.summon_damage + equipment_power()
+	for index in range(to_spawn):
+		var summon: Summon = ability.summon_scene.instantiate()
+		var world := get_parent()
+		if world == null:
+			summon.queue_free()
+			continue
+		world.add_child(summon)
+		summon.pool_owner = self
+		summon.attack_interval = ability.summon_interval
+		summon.damage = damage
+		summon.duration = ability.summon_duration
+		summon.global_position = global_position + Vector2(-24.0 + float(index) * 12.0, 24.0)
+		_summons.append(summon)
+		summon_spawned.emit(summon)
+	DebugManager.register_combat_event("summon", {
+		"ability": ability.id,
+		"count": to_spawn,
+		"active": active_summons(),
+	})
+	EventBus.summon_spawned.emit(ability.id, to_spawn)
 
 func _resolve_targets(ability: AbilityDefinition) -> Array:
 	match ability.area_mode:

@@ -28,9 +28,9 @@ func run(t) -> void:
 	DebugManager.god_mode = true
 	DebugManager.disable_ai = true
 
-	var ability: AbilityDefinition = load("res://data/abilities/arc_storm.tres")
+	var ability: AbilityDefinition = load("res://data/abilities/mage_fma.tres")
 	t.assert_true(ability != null, "fma ability loads from data")
-	t.assert_eq(ability.id, &"arc_storm", "fma ability carries its id")
+	t.assert_eq(ability.id, &"mage_fma", "fma ability carries its id")
 	t.assert_eq(ability.area_mode, AbilityDefinition.AreaMode.CENTERED, "fma targets a centered area")
 	t.assert_true(ability.range >= 400.0, "fma covers a large area (range=%s)" % ability.range)
 	t.assert_true(ability.mana_cost > 0.0, "fma is limited by a mana cost")
@@ -60,11 +60,11 @@ func run(t) -> void:
 	EventBus.ability_cast_completed.connect(func(cast: AbilityDefinition, targets_hit: int):
 		completions.append({"ability": cast.id, "targets_hit": targets_hit}))
 
-	await _press_ability(t, "skill_2")
+	await _press_ability(t, "skill_4")
 	t.assert_true(player.is_casting(), "fma starts casting")
 	t.assert_eq(player.mana, mana_before - ability.mana_cost, "mana is deducted exactly once at cast start")
 
-	await _press_ability(t, "skill_2")
+	await _press_ability(t, "skill_4")
 	t.assert_eq(player.mana, mana_before - ability.mana_cost, "casting again mid-cast does not spend mana")
 	t.assert_true(player.is_casting(), "cast cannot be repeated instantly")
 
@@ -78,7 +78,7 @@ func run(t) -> void:
 	t.assert_eq(player.mana, mana_before - ability.mana_cost, "one fma cast spends the cost once, not per target")
 
 	var mana_after_first: float = player.mana
-	await _press_ability(t, "skill_2")
+	await _press_ability(t, "skill_4")
 	t.assert_true(player.is_casting(), "fma can be cast again after completing (no cooldown)")
 	t.assert_eq(player.mana, mana_after_first - ability.mana_cost, "the repeat cast spends mana again")
 
@@ -88,7 +88,7 @@ func run(t) -> void:
 		player.mana = player.max_mana
 		var pack: Array = await _spawn_pack.call(count)
 		var pack_mana_before: float = player.mana
-		await _press_ability(t, "skill_2")
+		await _press_ability(t, "skill_4")
 		t.assert_eq(player.mana, pack_mana_before - ability.mana_cost,
 			"%d mobs: mana is deducted once, not per target" % count)
 		var cleared := await _wait_until(t, func() -> bool:
@@ -98,7 +98,7 @@ func run(t) -> void:
 
 	var outside_mob: Mob = await _spawn_single(t, world, mob_scene, definition, 420.0)
 	var inside_mana_before: float = player.mana
-	await _press_ability(t, "skill_2")
+	await _press_ability(t, "skill_4")
 	var outside_hp_before: float = outside_mob.hp
 	await _wait_until(t, func() -> bool: return not player.is_casting(), 120)
 	t.assert_false(outside_mob.is_dead(), "a mob outside the blast area is not hit")
@@ -113,7 +113,7 @@ func run(t) -> void:
 	DebugManager.disable_ai = false
 	world.queue_free()
 	await t.physics_frame
-	Input.action_release("skill_2")
+	Input.action_release("skill_4")
 	t.complete_suite(get_suite_name())
 
 func _spawn_single(t, world: Node2D, mob_scene: PackedScene, definition: MobDefinition, x: float) -> Mob:

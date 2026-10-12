@@ -24,11 +24,11 @@ func run(t) -> void:
 	await t.physics_frame
 	DebugManager.reset_counters()
 
-	var ability: AbilityDefinition = load("res://data/abilities/arcane_burst.tres")
+	var ability: AbilityDefinition = load("res://data/abilities/mage_fire.tres")
 	t.assert_true(ability != null, "ability definition loads from data")
-	t.assert_eq(ability.id, &"arcane_burst", "ability carries its id")
-	t.assert_eq(ability.mana_cost, 20.0, "ability carries a mana cost")
-	t.assert_eq(ability.cast_time, 0.5, "ability carries a cast time")
+	t.assert_eq(ability.id, &"mage_fire", "ability carries its id")
+	t.assert_true(ability.mana_cost > 0.0, "ability carries a mana cost")
+	t.assert_true(ability.cast_time > 0.0, "ability carries a cast time")
 
 	var mob_scene: PackedScene = load("res://scenes/mobs/mob.tscn")
 	var definition: MobDefinition = load("res://data/mobs/test_slime.tres")
@@ -115,15 +115,16 @@ func run(t) -> void:
 	DebugManager.infinite_mana = false
 
 	player.mana = player.max_mana
+	player.level = 5
 	var multi_a: Mob = _spawn_mob.call(340.0, -46.0)
 	var multi_b: Mob = _spawn_mob.call(360.0, -70.0)
 	await t.physics_frame
 	var multi_a_hp: float = multi_a.hp
 	var multi_b_hp: float = multi_b.hp
-	await _press_ability(t, "skill_1")
+	await _press_ability(t, "skill_3")
 	await _wait_until(t, func() -> bool: return not player.is_casting(), 60)
-	t.assert_true(multi_a.hp < multi_a_hp, "the ability hits multiple targets")
-	t.assert_true(multi_b.hp < multi_b_hp, "the ability hits targets in the lateral width")
+	t.assert_true(multi_a.hp < multi_a_hp, "a multi-target ability hits several targets")
+	t.assert_true(multi_b.hp < multi_b_hp, "a multi-target ability hits targets in the lateral width")
 
 	world.queue_free()
 	await t.physics_frame

@@ -16,6 +16,8 @@ var pool_owner: Object
 var _pool_tracked := false
 
 var _contact_cooldown := 0.0
+var _slow_remaining := 0.0
+var _slow_factor := 1.0
 var _gravity := 900.0
 var _move_speed := 70.0
 var _contact_damage := 5.0
@@ -42,17 +44,31 @@ func _physics_process(delta: float) -> void:
 	if dead:
 		return
 	_contact_cooldown = maxf(0.0, _contact_cooldown - delta)
+	_slow_remaining = maxf(0.0, _slow_remaining - delta)
 	velocity.y += _gravity * delta
 	var player := _find_player()
+	var speed_scale := _speed_scale()
 	if DebugManager.disable_ai:
 		velocity.x = 0.0
 	elif player == null:
 		velocity.x = move_toward(velocity.x, 0.0, _move_speed * delta * 4.0)
 	else:
-		velocity.x = signf(player.global_position.x - global_position.x) * _move_speed
+		velocity.x = signf(player.global_position.x - global_position.x) * (_move_speed * speed_scale)
 	move_and_slide()
 	_animate_visual(delta)
 	_try_contact_damage(player)
+
+func apply_slow(duration: float, factor: float) -> void:
+	if duration <= 0.0:
+		return
+	_slow_remaining = maxf(_slow_remaining, duration)
+	_slow_factor = clampf(1.0 - factor, 0.05, 1.0)
+
+func _speed_scale() -> float:
+	return _slow_factor if _slow_remaining > 0.0 else 1.0
+
+func is_slowed() -> bool:
+	return _slow_remaining > 0.0
 
 func take_damage(amount: float, source: Node = null) -> float:
 	return DamageSystem.apply(DamageEvent.create(self, amount, source)).applied

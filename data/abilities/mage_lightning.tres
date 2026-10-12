@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="AbilityDefinition" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/ability_definition.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/effects/cast_telegraph.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/effects/impact_burst.tscn" id="3"]
+
+[resource]
+script = ExtResource("1")
+id = &"mage_lightning"
+display_name = "Chain Spark"
+ability_class = &"mage"
+element = 3
+mana_cost = 16.0
+cast_time = 0.35
+damage = 17.0
+range = 220.0
+width = 200.0
+max_targets = 6
+area_mode = 0
+cast_effect = ExtResource("2")
+impact_effect = ExtResource("3")
+max_level = 5
+unlock_level = 2
+damage_per_level = 5.0
