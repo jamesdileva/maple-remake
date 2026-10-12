@@ -16,6 +16,7 @@ const TEST_SUITES := [
 	"res://tests/progression/test_save_system.gd",
 	"res://tests/classes/test_mage.gd",
 	"res://tests/classes/test_mage_advancement.gd",
+	"res://tests/classes/test_mage_party_buff.gd",
 	"res://tests/entities/test_mob.gd",
 ]
 

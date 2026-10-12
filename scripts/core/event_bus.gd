@@ -9,6 +9,7 @@ signal ability_cast_completed(ability: AbilityDefinition, targets_hit: int)
 signal loot_collected(item_id: StringName, amount: int)
 signal summon_spawned(ability_id: StringName, count: int)
 signal shield_applied(ability_id: StringName, amount: float)
+signal lethal_protection(new_hp: float, class_id: StringName)
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS

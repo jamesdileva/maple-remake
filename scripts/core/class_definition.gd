@@ -6,6 +6,8 @@ extends Resource
 @export var ability_slots: Array[AbilityDefinition] = []
 @export var advanced_ability_slots: Array[AbilityDefinition] = []
 @export var advancement_level := 20
+@export var party_buff_interval := 12.0
+@export var party_buff_duration := 2.0
 @export var starting_hp := 100.0
 @export var starting_mana := 100.0
 @export var defense := 0.0

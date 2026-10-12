@@ -118,7 +118,10 @@ func run(t) -> void:
 	var player_deaths: Array = []
 	EventBus.player_died.connect(func(): player_deaths.append(1))
 	player.hp = 10.0
+	var buff_class := player.class_definition
+	player.set("class_definition", null)
 	player.take_damage(50.0, null)
+	player.set("class_definition", buff_class)
 	t.assert_eq(player_deaths.size(), 1, "lethal hit emits player_died")
 	t.assert_eq(player.hp, player.max_hp, "player respawns at full hp")
 	t.assert_eq(player.global_position, Vector2(0.0, -60.0), "player respawns at spawn")

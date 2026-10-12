@@ -51,6 +51,9 @@ var _shield_hp := 0.0
 var _shield_lifetime := 0.0
 var _absorbed_total := 0.0
 var _summons: Array = []
+var _lethal_cooldown := 0.0
+var _lethal_window := 0.0
+var _lethal_triggers := 0
 
 signal died
 signal attack_started
@@ -64,6 +67,7 @@ signal shield_broken
 signal shield_applied(amount: float)
 signal summon_spawned(summon: Summon)
 signal class_advanced
+signal lethal_protection_triggered
 
 const ABILITY_SLOT_COUNT := 6
 
@@ -205,6 +209,8 @@ func take_damage(amount: float, source: Node = null) -> float:
 	if DebugManager.is_invulnerable():
 		return 0.0
 	var incoming := amount
+	if _lethal_window > 0.0:
+		return 0.0
 	if _shield_hp > 0.0:
 		var absorbed := minf(_shield_hp, incoming)
 		_shield_hp -= absorbed
@@ -218,8 +224,43 @@ func take_damage(amount: float, source: Node = null) -> float:
 			shield_broken.emit()
 		if incoming <= 0.0:
 			return 0.0
+	if incoming >= hp and _consume_lethal_protection():
+		return 0.0
 	var event := DamageEvent.create(self, incoming, source)
 	return DamageSystem.apply(event).applied
+
+func is_lethal_protected() -> bool:
+	return _lethal_window > 0.0
+
+func lethal_protection_remaining() -> float:
+	return _lethal_window
+
+func lethal_protection_cooldown() -> float:
+	return _lethal_cooldown
+
+func lethal_trigger_count() -> int:
+	return _lethal_triggers
+
+func _consume_lethal_protection() -> bool:
+	if class_definition == null:
+		return false
+	if _lethal_cooldown > 0.0:
+		return false
+	_lethal_cooldown = class_definition.party_buff_interval
+	_lethal_window = class_definition.party_buff_duration
+	_lethal_triggers += 1
+	hp = 1.0
+	lethal_protection_triggered.emit()
+	EventBus.lethal_protection.emit(1.0, class_definition.id)
+	DebugManager.register_combat_event("lethal_protection", {
+		"duration": class_definition.party_buff_duration,
+		"interval": class_definition.party_buff_interval,
+	})
+	return true
+
+func _tick_lethal_protection(delta: float) -> void:
+	_lethal_cooldown = maxf(0.0, _lethal_cooldown - delta)
+	_lethal_window = maxf(0.0, _lethal_window - delta)
 
 func apply_damage(amount: float) -> float:
 	hp -= amount
@@ -493,6 +534,7 @@ func _tick_shield(delta: float) -> void:
 	_shield_lifetime = maxf(0.0, _shield_lifetime - delta)
 	if _shield_lifetime <= 0.0 and _shield_hp > 0.0:
 		_shield_hp = 0.0
+	_tick_lethal_protection(delta)
 
 func _tick_summons(delta: float) -> void:
 	for summon in _summons.duplicate():

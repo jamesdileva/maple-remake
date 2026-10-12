@@ -287,6 +287,13 @@ func _player_position() -> Dictionary:
 			worn[slot_name] = item.id if item != null else ""
 		data["equipment"] = worn
 		data["equipment_power"] = player.equipment_power()
+	if player.has_method("lethal_protection_remaining"):
+		data["lethal_protection"] = {
+			"active": player.is_lethal_protected(),
+			"remaining": player.lethal_protection_remaining(),
+			"cooldown": player.lethal_protection_cooldown(),
+			"triggers": player.lethal_trigger_count(),
+		}
 	if player.has_method("is_casting"):
 		data["casting"] = player.current_ability().id if player.current_ability() != null else ""
 		data["cast_progress"] = player.cast_progress()
