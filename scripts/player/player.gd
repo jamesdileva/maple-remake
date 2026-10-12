@@ -463,6 +463,19 @@ func add_skill_points(count: int) -> int:
 	skill_points_changed.emit(skill_points)
 	return count
 
+func set_level(new_level: int) -> void:
+	var cap := xp_table.max_level if xp_table != null else 50
+	var target := clampi(new_level, 1, cap)
+	reset_skills()
+	level = target
+	xp = xp_table.xp_for_level(target) if xp_table != null else 0.0
+	skill_points = maxi(0, target - 1)
+	skill_points_spent = 0
+	_recalculate_stats()
+	hp = max_hp
+	mana = max_mana
+	DebugManager.register_combat_event("level_set", {"level": target})
+
 func _apply_level_stats() -> void:
 	_recalculate_stats()
 	hp = max_hp
