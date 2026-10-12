@@ -48,11 +48,13 @@ func _refresh() -> void:
 		_summon_label.text = ""
 		return
 	var lines: Array = []
-	for index in range(character_class.ability_slots.size()):
-		var ability: AbilityDefinition = character_class.ability_slots[index]
+	for index in range(6):
+		var ability: AbilityDefinition = _player.ability_at(index)
 		if ability == null:
 			continue
 		lines.append("%d %s" % [index + 1, ability.display_name])
 	_ability_label.text = "\n".join(lines)
+	if _player.advanced:
+		_class_label.text = "%s (Advanced)" % _class_label.text
 	_shield_label.text = "shield %d" % int(_player.shield_hp()) if _player.is_shielded() else ""
 	_summon_label.text = "summons %d" % _player.active_summons() if _player.active_summons() > 0 else ""

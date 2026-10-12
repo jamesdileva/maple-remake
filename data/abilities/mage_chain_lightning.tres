@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="AbilityDefinition" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/ability_definition.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/effects/cast_telegraph.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/effects/impact_burst.tscn" id="3"]
+
+[resource]
+script = ExtResource("1")
+id = &"mage_chain_lightning"
+display_name = "Storm Chain"
+ability_class = &"mage"
+element = 3
+mana_cost = 28.0
+cast_time = 0.5
+damage = 20.0
+range = 200.0
+width = 120.0
+max_targets = 0
+area_mode = 0
+cast_effect = ExtResource("2")
+impact_effect = ExtResource("3")
+max_level = 5
+unlock_level = 20
+damage_per_level = 6.0
+chain_jumps = 4
+chain_radius = 150.0
+chain_falloff = 0.8

@@ -46,6 +46,7 @@ var skill_points := 0
 var skill_points_spent := 0
 var ability_levels: Dictionary = {}
 var equipment: Dictionary = {}
+var advanced := false
 var _shield_hp := 0.0
 var _shield_lifetime := 0.0
 var _absorbed_total := 0.0
@@ -62,6 +63,7 @@ signal skill_reset
 signal shield_broken
 signal shield_applied(amount: float)
 signal summon_spawned(summon: Summon)
+signal class_advanced
 
 const ABILITY_SLOT_COUNT := 6
 
@@ -120,14 +122,18 @@ func ability_at(slot: int) -> AbilityDefinition:
 	return slots[slot]
 
 func _effective_slots() -> Array:
-	if class_definition != null and class_definition.ability_slots.size() > 0:
-		return class_definition.ability_slots
+	if class_definition != null:
+		if advanced and class_definition.advanced_ability_slots.size() > 0:
+			return class_definition.advanced_ability_slots
+		if class_definition.ability_slots.size() > 0:
+			return class_definition.ability_slots
 	return ability_slots
 
 func apply_class(character_class: ClassDefinition) -> void:
 	if character_class == null:
 		return
 	class_definition = character_class
+	advanced = false
 	defense = character_class.defense
 	crit_chance = character_class.crit_chance
 	crit_multiplier = character_class.crit_multiplier
@@ -137,7 +143,45 @@ func apply_class(character_class: ClassDefinition) -> void:
 	_recalculate_stats()
 	hp = max_hp
 	mana = max_mana
+	_apply_class_visual()
 	DebugManager.register_combat_event("class_applied", {"class": character_class.id})
+
+func can_advance() -> bool:
+	if advanced:
+		return false
+	if class_definition == null:
+		return false
+	if class_definition.advanced_ability_slots.is_empty():
+		return false
+	return level >= class_definition.advancement_level
+
+func advance() -> bool:
+	if not can_advance():
+		return false
+	advanced = true
+	_recalculate_stats()
+	hp = max_hp
+	mana = max_mana
+	_apply_class_visual()
+	class_advanced.emit()
+	DebugManager.register_combat_event("advanced", {
+		"class": class_definition.id,
+		"level": level,
+	})
+	return true
+
+func _apply_class_visual() -> void:
+	var aura := get_node_or_null("AdvancedAura") as ColorRect
+	if aura != null:
+		aura.visible = advanced
+	var body := get_node_or_null("Visual/Body") as ColorRect
+	if body != null:
+		if advanced:
+			if not body.has_meta("base_color"):
+				body.set_meta("base_color", body.color)
+			body.color = Color(0.75, 0.6, 1.0)
+		elif body.has_meta("base_color"):
+			body.color = body.get_meta("base_color")
 
 func shield_hp() -> float:
 	return _shield_hp
@@ -147,7 +191,7 @@ func is_shielded() -> bool:
 
 func active_summons() -> int:
 	var count := 0
-	for summon: Object in _summons:
+	for summon in _summons:
 		if is_instance_valid(summon):
 			count += 1
 	return count
@@ -243,15 +287,24 @@ func capture_state() -> Dictionary:
 		"equipment": worn,
 		"inventory_items": items,
 		"currency": inventory.currency,
+		"advanced": advanced,
+		"class_path": class_definition.resource_path if class_definition != null else "",
 	}
 
 func restore_state(data: Dictionary) -> void:
 	if data.is_empty():
 		return
+	var class_path: String = data.get("class_path", "")
+	if not class_path.is_empty():
+		var loaded_class: ClassDefinition = load(class_path)
+		if loaded_class != null:
+			apply_class(loaded_class)
 	level = int(data.get("level", 1))
 	xp = float(data.get("xp", 0.0))
 	skill_points = int(data.get("skill_points", 0))
 	skill_points_spent = int(data.get("skill_points_spent", 0))
+	advanced = bool(data.get("advanced", false))
+	_apply_class_visual()
 	ability_levels.clear()
 	var levels: Dictionary = data.get("ability_levels", {})
 	for ability_id in levels:
@@ -442,7 +495,7 @@ func _tick_shield(delta: float) -> void:
 		_shield_hp = 0.0
 
 func _tick_summons(delta: float) -> void:
-	for summon: Object in _summons.duplicate():
+	for summon in _summons.duplicate():
 		if not is_instance_valid(summon):
 			_summons.erase(summon)
 
@@ -486,13 +539,16 @@ func _finish_cast() -> void:
 	var targets: Array = _resolve_targets(ability)
 	var targets_hit := 0
 	var damage := ability.damage_at(ability_level(ability)) + equipment_power()
+	var jump_index := 0
 	for target: Object in targets:
-		var result := DamageSystem.apply(DamageEvent.create(target, damage, self))
+		var multiplier := pow(ability.chain_falloff, float(jump_index)) if ability.chain_jumps > 0 else 1.0
+		var result := DamageSystem.apply(DamageEvent.create(target, damage * multiplier, self))
 		if result.valid:
 			targets_hit += 1
 			if ability.slow_duration > 0.0 and ability.slow_factor > 0.0 and target is Mob:
 				(target as Mob).apply_slow(ability.slow_duration, ability.slow_factor)
 			_spawn_impact_burst(ability, target)
+		jump_index += 1
 	if ability.is_summon():
 		_spawn_summons(ability)
 	DebugManager.register_combat_event("cast", {
@@ -529,6 +585,8 @@ func _spawn_summons(ability: AbilityDefinition) -> void:
 	EventBus.summon_spawned.emit(ability.id, to_spawn)
 
 func _resolve_targets(ability: AbilityDefinition) -> Array:
+	if ability.chain_jumps > 0:
+		return TargetQuery.enemies_in_chain(self, facing, ability.range, ability.width, ability.chain_jumps, ability.chain_radius, self)
 	match ability.area_mode:
 		AbilityDefinition.AreaMode.CENTERED:
 			return TargetQuery.enemies_in_blast(self, ability.range, ability.width, ability.max_targets, self)

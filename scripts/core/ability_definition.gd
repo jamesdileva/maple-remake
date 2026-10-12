@@ -30,6 +30,9 @@ enum Element { NONE, FIRE, ICE, LIGHTNING }
 @export var summon_damage := 0.0
 @export var summon_interval := 1.0
 @export var summon_scene: PackedScene
+@export var chain_jumps := 0
+@export var chain_radius := 140.0
+@export var chain_falloff := 0.8
 
 func damage_at(ability_level: int) -> float:
 	return damage + damage_per_level * float(maxi(1, ability_level) - 1)

@@ -105,6 +105,15 @@ func _on_console_submitted(command: String) -> void:
 				return
 			player.add_skill_points(int(float(tokens[1])))
 			_show_result("skill points: %d" % player.get("skill_points"))
+		"advance":
+			var advancing: Node = DebugManager.find_player()
+			if advancing == null or not advancing.has_method("advance"):
+				_show_result("advance: no player found")
+				return
+			if advancing.advance():
+				_show_result("advanced at lv %d" % advancing.get("level"))
+			else:
+				_show_result("cannot advance yet (needs lv %d)" % advancing.class_definition.advancement_level)
 		"gear", "equip_gear":
 			var test_player: Node = DebugManager.find_player()
 			if test_player == null or not test_player.has_method("equip"):
@@ -150,7 +159,7 @@ func _on_console_submitted(command: String) -> void:
 			else:
 				_show_result("teleport: no player found")
 		"help":
-			_show_result("commands: god, mana, crit, hitbox, killall, xp n, points n, gear, save, load, reset_save, reload, export, fps, tp x y")
+			_show_result("commands: god, mana, crit, hitbox, killall, xp n, points n, gear, advance, save, load, reset_save, reload, export, fps, tp x y")
 		_:
 			_show_result("unknown command: %s (try 'help')" % tokens[0])
 
