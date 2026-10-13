@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ClassDefinition" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="ClassDefinition" load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scripts/core/class_definition.gd" id="1"]
 [ext_resource type="Resource" path="res://data/abilities/warrior_heavy_slash.tres" id="2"]
@@ -6,13 +6,19 @@
 [ext_resource type="Resource" path="res://data/abilities/warrior_whirlwind.tres" id="4"]
 [ext_resource type="Resource" path="res://data/abilities/warrior_quake.tres" id="5"]
 [ext_resource type="Resource" path="res://data/abilities/warrior_summon.tres" id="6"]
+[ext_resource type="Resource" path="res://data/abilities/warrior_cleave.tres" id="7"]
+[ext_resource type="Resource" path="res://data/abilities/warrior_stone_skin.tres" id="8"]
+[ext_resource type="Resource" path="res://data/abilities/warrior_blitz.tres" id="9"]
+[ext_resource type="Resource" path="res://data/abilities/warrior_earthquake.tres" id="10"]
+[ext_resource type="Resource" path="res://data/abilities/warrior_warhost.tres" id="11"]
+[ext_resource type="Resource" path="res://data/abilities/warrior_colossus.tres" id="12"]
 
 [resource]
 script = ExtResource("1")
 id = &"warrior"
 display_name = "Warrior"
 ability_slots = Array[Resource]([ExtResource("2"), ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6"), null])
-advanced_ability_slots = Array[Resource]([])
+advanced_ability_slots = Array[Resource]([ExtResource("7"), ExtResource("8"), ExtResource("9"), ExtResource("10"), ExtResource("11"), ExtResource("12")])
 advancement_level = 20
 party_buff_interval = 0.0
 party_buff_duration = 0.0
@@ -22,3 +28,6 @@ defense = 8.0
 crit_chance = 0.05
 crit_multiplier = 2.0
 mana_regen_per_second = 6.0
+advanced_defense_bonus = 6.0
+advanced_crit_bonus = 0.05
+advanced_speed_bonus = 0.15

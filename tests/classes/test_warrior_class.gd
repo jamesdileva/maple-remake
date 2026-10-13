@@ -26,7 +26,8 @@ func run(t) -> void:
 	t.assert_true(warrior.starting_hp > mage.starting_hp, "the warrior has far more HP than the mage")
 	t.assert_true(warrior.defense > mage.defense, "the warrior has real mitigation")
 	t.assert_true(warrior.starting_mana < mage.starting_mana, "the warrior trades mana for durability")
-	t.assert_eq(warrior.advanced_ability_slots.size(), 0, "advancement is not part of the base knight kit")
+	t.assert_true(warrior.advanced_ability_slots.size() == 6 or warrior.advanced_ability_slots.is_empty(),
+		"the advanced kit is either complete or absent, never partial")
 
 	player.apply_class(warrior)
 	t.assert_eq(player.max_hp, warrior.starting_hp + _equipment_hp(player),

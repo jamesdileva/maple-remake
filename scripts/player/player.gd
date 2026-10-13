@@ -46,6 +46,7 @@ var skill_points := 0
 var skill_points_spent := 0
 var ability_levels: Dictionary = {}
 var equipment: Dictionary = {}
+var _base_run_speed := -1.0
 var advanced := false
 var _shield_hp := 0.0
 var _shield_lifetime := 0.0
@@ -97,6 +98,7 @@ func _ready() -> void:
 	_attack_hitbox = get_node_or_null(attack_hitbox_path) as Area2D
 	if _attack_hitbox != null:
 		_attack_hitbox.monitoring = false
+	_base_run_speed = run_speed
 	_apply_level_stats()
 	hp = max_hp
 	mana = max_mana
@@ -142,6 +144,7 @@ func apply_class(character_class: ClassDefinition) -> void:
 	crit_chance = character_class.crit_chance
 	crit_multiplier = character_class.crit_multiplier
 	mana_regen_per_second = character_class.mana_regen_per_second
+	run_speed = _base_run_speed if _base_run_speed > 0.0 else run_speed
 	max_hp = character_class.starting_hp
 	max_mana = character_class.starting_mana
 	_recalculate_stats()
@@ -163,6 +166,9 @@ func advance() -> bool:
 	if not can_advance():
 		return false
 	advanced = true
+	defense += class_definition.advanced_defense_bonus
+	crit_chance += class_definition.advanced_crit_bonus
+	run_speed = _base_run_speed * (1.0 + class_definition.advanced_speed_bonus)
 	_recalculate_stats()
 	hp = max_hp
 	mana = max_mana
