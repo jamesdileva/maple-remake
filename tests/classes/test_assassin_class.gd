@@ -30,7 +30,7 @@ func run(t) -> void:
 	t.assert_true(assassin.defense < warrior.defense, "the assassin relies on mobility, not armor")
 	t.assert_true(assassin.crit_chance > archer.crit_chance, "the executioner crits most often")
 	t.assert_true(assassin.base_speed_bonus > 0.0, "the assassin carries a base speed bonus")
-	t.assert_true(assassin.advanced_ability_slots.is_empty(), "the advanced kit is absent until its sprint")
+	t.assert_true(assassin.advanced_ability_slots.size() == 6, "the advanced kit is complete")
 
 	player.apply_class(assassin)
 	t.assert_eq(player.max_hp, assassin.starting_hp + _equipment_hp(player), "the assassin kit HP applies")
