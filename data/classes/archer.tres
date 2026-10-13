@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ClassDefinition" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/class_definition.gd" id="1"]
+[ext_resource type="Resource" path="res://data/abilities/archer_quick_shot.tres" id="2"]
+[ext_resource type="Resource" path="res://data/abilities/archer_scatter.tres" id="3"]
+[ext_resource type="Resource" path="res://data/abilities/archer_rain.tres" id="4"]
+[ext_resource type="Resource" path="res://data/abilities/archer_bomb.tres" id="5"]
+[ext_resource type="Resource" path="res://data/abilities/archer_summon.tres" id="6"]
+
+[resource]
+script = ExtResource("1")
+id = &"archer"
+display_name = "Archer"
+ability_slots = Array[Resource]([ExtResource("2"), ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6"), null])
+advanced_ability_slots = Array[Resource]([])
+advancement_level = 20
+party_buff_interval = 0.0
+party_buff_duration = 0.0
+starting_hp = 160.0
+starting_mana = 80.0
+defense = 3.0
+crit_chance = 0.08
+crit_multiplier = 2.0
+mana_regen_per_second = 7.0
