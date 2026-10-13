@@ -30,8 +30,8 @@ func run(t) -> void:
 		"the advanced kit is either complete or absent, never partial")
 
 	player.apply_class(warrior)
-	t.assert_eq(player.max_hp, warrior.starting_hp + _equipment_hp(player),
-		"the warrior kit HP applies")
+	t.assert_eq(player.max_hp, warrior.starting_hp + _equipment_hp(player) + warrior.party_hp_bonus,
+		"the warrior kit HP applies, aura included")
 	t.assert_eq(player.get_defense(), warrior.defense + _equipment_defense(player),
 		"the warrior mitigation is active")
 

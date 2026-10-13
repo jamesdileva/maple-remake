@@ -31,3 +31,5 @@ mana_regen_per_second = 6.0
 advanced_defense_bonus = 6.0
 advanced_crit_bonus = 0.05
 advanced_speed_bonus = 0.15
+party_hp_bonus = 40.0
+party_mp_bonus = 15.0

@@ -17,3 +17,5 @@ extends Resource
 @export var advanced_defense_bonus := 0.0
 @export var advanced_crit_bonus := 0.0
 @export var advanced_speed_bonus := 0.0
+@export var party_hp_bonus := 0.0
+@export var party_mp_bonus := 0.0

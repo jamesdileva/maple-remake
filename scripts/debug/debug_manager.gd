@@ -294,6 +294,9 @@ func _player_position() -> Dictionary:
 			"cooldown": player.lethal_protection_cooldown(),
 			"triggers": player.lethal_trigger_count(),
 		}
+	if player.has_method("effective_party_bonus"):
+		var aura: Vector2 = player.effective_party_bonus()
+		data["party_aura"] = {"hp": aura.x, "mp": aura.y}
 	if player.has_method("is_casting"):
 		data["casting"] = player.current_ability().id if player.current_ability() != null else ""
 		data["cast_progress"] = player.cast_progress()

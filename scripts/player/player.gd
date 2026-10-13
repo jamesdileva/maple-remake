@@ -48,6 +48,9 @@ var ability_levels: Dictionary = {}
 var equipment: Dictionary = {}
 var _base_run_speed := -1.0
 var advanced := false
+var party: Array = []
+var _last_aura_hp := 0.0
+var _last_aura_mp := 0.0
 var _shield_hp := 0.0
 var _shield_lifetime := 0.0
 var _absorbed_total := 0.0
@@ -69,6 +72,7 @@ signal shield_applied(amount: float)
 signal summon_spawned(summon: Summon)
 signal class_advanced
 signal lethal_protection_triggered
+signal party_aura_changed(hp_bonus: float, mp_bonus: float)
 
 const ABILITY_SLOT_COUNT := 6
 
@@ -492,10 +496,40 @@ func _apply_level_stats() -> void:
 func _recalculate_stats() -> void:
 	var base_hp := _class_starting_hp()
 	var base_mana := _class_starting_mana()
-	max_hp = base_hp + hp_per_level * float(level - 1) + _equipment_bonus(&"max_hp_bonus")
-	max_mana = base_mana + mana_per_level * float(level - 1) + _equipment_bonus(&"max_mana_bonus")
+	var aura := effective_party_bonus()
+	max_hp = base_hp + hp_per_level * float(level - 1) + _equipment_bonus(&"max_hp_bonus") + aura.x
+	max_mana = base_mana + mana_per_level * float(level - 1) + _equipment_bonus(&"max_mana_bonus") + aura.y
 	hp = minf(hp, max_hp)
 	mana = minf(mana, max_mana)
+	if aura.x != _last_aura_hp or aura.y != _last_aura_mp:
+		_last_aura_hp = aura.x
+		_last_aura_mp = aura.y
+		party_aura_changed.emit(aura.x, aura.y)
+		DebugManager.register_combat_event("party_aura", {"hp": aura.x, "mp": aura.y})
+
+func effective_party_bonus() -> Vector2:
+	var roster := party if not party.is_empty() else [self]
+	var best := Vector2.ZERO
+	for member in roster:
+		if not is_instance_valid(member):
+			continue
+		var member_class: ClassDefinition = member.get("class_definition")
+		if member_class == null:
+			continue
+		best.x = maxf(best.x, member_class.party_hp_bonus)
+		best.y = maxf(best.y, member_class.party_mp_bonus)
+	return best
+
+func set_party(members: Array) -> void:
+	party = members.duplicate()
+	_recalculate_stats()
+
+func leave_party() -> void:
+	party.clear()
+	_recalculate_stats()
+
+func refresh_stats() -> void:
+	_recalculate_stats()
 
 func _class_starting_hp() -> float:
 	return class_definition.starting_hp if class_definition != null else 100.0
