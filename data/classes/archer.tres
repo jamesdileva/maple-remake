@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ClassDefinition" load_steps=12 format=3]
+[gd_resource type="Resource" script_class="ClassDefinition" load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://scripts/core/class_definition.gd" id="1"]
 [ext_resource type="Resource" path="res://data/abilities/archer_quick_shot.tres" id="2"]
@@ -11,6 +11,12 @@
 [ext_resource type="Resource" path="res://data/abilities/xbow_siege.tres" id="9"]
 [ext_resource type="Resource" path="res://data/abilities/xbow_snipe.tres" id="10"]
 [ext_resource type="Resource" path="res://data/abilities/xbow_ballista.tres" id="11"]
+[ext_resource type="Resource" path="res://data/abilities/archer_rapid_fire.tres" id="12"]
+[ext_resource type="Resource" path="res://data/abilities/archer_storm_volley.tres" id="13"]
+[ext_resource type="Resource" path="res://data/abilities/archer_skyfall.tres" id="14"]
+[ext_resource type="Resource" path="res://data/abilities/archer_demolition.tres" id="15"]
+[ext_resource type="Resource" path="res://data/abilities/archer_siege_engine.tres" id="16"]
+[ext_resource type="Resource" path="res://data/abilities/archer_longshot.tres" id="17"]
 
 [resource]
 script = ExtResource("1")
@@ -18,13 +24,18 @@ id = &"archer"
 display_name = "Archer"
 ability_slots = Array[Resource]([ExtResource("2"), ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6"), null])
 alternate_ability_slots = Array[Resource]([ExtResource("7"), ExtResource("8"), ExtResource("9"), ExtResource("10"), ExtResource("11"), null])
-advanced_ability_slots = Array[Resource]([])
+advanced_ability_slots = Array[Resource]([ExtResource("12"), ExtResource("13"), ExtResource("14"), ExtResource("15"), ExtResource("16"), ExtResource("17")])
 advancement_level = 20
 party_buff_interval = 0.0
 party_buff_duration = 0.0
+party_crit_bonus = 0.05
+party_range_bonus = 0.15
 starting_hp = 160.0
 starting_mana = 80.0
 defense = 3.0
 crit_chance = 0.08
 crit_multiplier = 2.0
 mana_regen_per_second = 7.0
+advanced_defense_bonus = 0.0
+advanced_crit_bonus = 0.05
+advanced_speed_bonus = 0.1

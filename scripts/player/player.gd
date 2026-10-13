@@ -51,6 +51,8 @@ var advanced := false
 var party: Array = []
 var _last_aura_hp := 0.0
 var _last_aura_mp := 0.0
+var _last_tactics_crit := 0.0
+var _last_tactics_range := 0.0
 var _shield_hp := 0.0
 var _shield_lifetime := 0.0
 var _absorbed_total := 0.0
@@ -73,6 +75,7 @@ signal summon_spawned(summon: Summon)
 signal class_advanced
 signal lethal_protection_triggered
 signal party_aura_changed(hp_bonus: float, mp_bonus: float)
+signal party_tactics_changed(crit_bonus: float, range_bonus: float)
 signal weapon_swapped(alternate: bool)
 
 const ABILITY_SLOT_COUNT := 6
@@ -434,7 +437,31 @@ func _equipment_bonus(field: StringName) -> float:
 	return total
 
 func get_crit_chance() -> float:
-	return crit_chance
+	return crit_chance + effective_tactics_bonus().x
+
+func effective_tactics_bonus() -> Vector2:
+	var roster := party if not party.is_empty() else [self]
+	var best := Vector2.ZERO
+	for member in roster:
+		if not is_instance_valid(member):
+			continue
+		var member_class: ClassDefinition = member.get("class_definition")
+		if member_class == null:
+			continue
+		best.x = maxf(best.x, member_class.party_crit_bonus)
+		best.y = maxf(best.y, member_class.party_range_bonus)
+	return best
+
+func range_multiplier() -> float:
+	return 1.0 + effective_tactics_bonus().y
+
+func _check_tactics() -> void:
+	var tactics := effective_tactics_bonus()
+	if tactics.x != _last_tactics_crit or tactics.y != _last_tactics_range:
+		_last_tactics_crit = tactics.x
+		_last_tactics_range = tactics.y
+		party_tactics_changed.emit(tactics.x, tactics.y)
+		DebugManager.register_combat_event("party_tactics", {"crit": tactics.x, "range": tactics.y})
 
 func get_crit_multiplier() -> float:
 	return crit_multiplier
@@ -553,6 +580,7 @@ func _recalculate_stats() -> void:
 		_last_aura_mp = aura.y
 		party_aura_changed.emit(aura.x, aura.y)
 		DebugManager.register_combat_event("party_aura", {"hp": aura.x, "mp": aura.y})
+	_check_tactics()
 
 func effective_party_bonus() -> Vector2:
 	var roster := party if not party.is_empty() else [self]
@@ -747,13 +775,17 @@ func _spawn_summons(ability: AbilityDefinition) -> void:
 	EventBus.summon_spawned.emit(ability.id, to_spawn)
 
 func _resolve_targets(ability: AbilityDefinition) -> Array:
+	var reach := range_multiplier()
 	if ability.chain_jumps > 0:
-		return TargetQuery.enemies_in_chain(self, facing, ability.range, ability.width, ability.chain_jumps, ability.chain_radius, self)
+		return TargetQuery.enemies_in_chain(self, facing, ability.range * reach, ability.width * reach,
+			ability.chain_jumps, ability.chain_radius * reach, self)
 	match ability.area_mode:
 		AbilityDefinition.AreaMode.CENTERED:
-			return TargetQuery.enemies_in_blast(self, ability.range, ability.width, ability.max_targets, self)
+			return TargetQuery.enemies_in_blast(self, ability.range * reach, ability.width * reach,
+				ability.max_targets, self)
 		_:
-			return TargetQuery.enemies_in_area(self, facing, ability.range, ability.width, ability.max_targets, self)
+			return TargetQuery.enemies_in_area(self, facing, ability.range * reach, ability.width * reach,
+				ability.max_targets, self)
 
 func _spawn_cast_telegraph(ability: AbilityDefinition) -> void:
 	if ability.cast_effect == null:
