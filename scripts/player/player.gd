@@ -484,10 +484,18 @@ func _apply_level_stats() -> void:
 		add_skill_points(1)
 
 func _recalculate_stats() -> void:
-	max_hp = 100.0 + hp_per_level * float(level - 1) + _equipment_bonus(&"max_hp_bonus")
-	max_mana = 100.0 + mana_per_level * float(level - 1) + _equipment_bonus(&"max_mana_bonus")
+	var base_hp := _class_starting_hp()
+	var base_mana := _class_starting_mana()
+	max_hp = base_hp + hp_per_level * float(level - 1) + _equipment_bonus(&"max_hp_bonus")
+	max_mana = base_mana + mana_per_level * float(level - 1) + _equipment_bonus(&"max_mana_bonus")
 	hp = minf(hp, max_hp)
 	mana = minf(mana, max_mana)
+
+func _class_starting_hp() -> float:
+	return class_definition.starting_hp if class_definition != null else 100.0
+
+func _class_starting_mana() -> float:
+	return class_definition.starting_mana if class_definition != null else 100.0
 
 func receive_loot(item: ItemDefinition, count: int) -> int:
 	if item == null or count <= 0:
