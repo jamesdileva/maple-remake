@@ -645,6 +645,10 @@ func _finish_cast() -> void:
 	var jump_index := 0
 	for target: Object in targets:
 		var multiplier := pow(ability.chain_falloff, float(jump_index)) if ability.chain_jumps > 0 else 1.0
+		if ability.boss_multiplier != 1.0 and target is Mob:
+			var target_definition: MobDefinition = (target as Mob).definition
+			if target_definition != null and target_definition.is_boss:
+				multiplier *= ability.boss_multiplier
 		var result := DamageSystem.apply(DamageEvent.create(target, damage * multiplier, self))
 		if result.valid:
 			targets_hit += 1

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ClassDefinition" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="ClassDefinition" load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/core/class_definition.gd" id="1"]
 [ext_resource type="Resource" path="res://data/abilities/archer_quick_shot.tres" id="2"]
@@ -6,12 +6,18 @@
 [ext_resource type="Resource" path="res://data/abilities/archer_rain.tres" id="4"]
 [ext_resource type="Resource" path="res://data/abilities/archer_bomb.tres" id="5"]
 [ext_resource type="Resource" path="res://data/abilities/archer_summon.tres" id="6"]
+[ext_resource type="Resource" path="res://data/abilities/xbow_bolt.tres" id="7"]
+[ext_resource type="Resource" path="res://data/abilities/xbow_pierce.tres" id="8"]
+[ext_resource type="Resource" path="res://data/abilities/xbow_siege.tres" id="9"]
+[ext_resource type="Resource" path="res://data/abilities/xbow_snipe.tres" id="10"]
+[ext_resource type="Resource" path="res://data/abilities/xbow_ballista.tres" id="11"]
 
 [resource]
 script = ExtResource("1")
 id = &"archer"
 display_name = "Archer"
 ability_slots = Array[Resource]([ExtResource("2"), ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6"), null])
+alternate_ability_slots = Array[Resource]([ExtResource("7"), ExtResource("8"), ExtResource("9"), ExtResource("10"), ExtResource("11"), null])
 advanced_ability_slots = Array[Resource]([])
 advancement_level = 20
 party_buff_interval = 0.0

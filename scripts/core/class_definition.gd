@@ -5,6 +5,7 @@ extends Resource
 @export var display_name := "Mage"
 @export var ability_slots: Array[AbilityDefinition] = []
 @export var advanced_ability_slots: Array[AbilityDefinition] = []
+@export var alternate_ability_slots: Array[AbilityDefinition] = []
 @export var advancement_level := 20
 @export var party_buff_interval := 12.0
 @export var party_buff_duration := 2.0
