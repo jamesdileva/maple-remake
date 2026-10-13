@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="AbilityDefinition" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/ability_definition.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/effects/cast_telegraph.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/effects/impact_burst.tscn" id="3"]
+
+[resource]
+script = ExtResource("1")
+id = &"assassin_dash"
+display_name = "Shadow Dash"
+ability_class = &"assassin"
+mana_cost = 12.0
+cast_time = 0.35
+damage = 22.0
+range = 280.0
+width = 90.0
+max_targets = 3
+area_mode = 0
+cast_effect = ExtResource("2")
+impact_effect = ExtResource("3")
+max_level = 5
+unlock_level = 1
+damage_per_level = 6.0

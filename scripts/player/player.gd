@@ -196,6 +196,7 @@ func apply_class(character_class: ClassDefinition) -> void:
 	crit_multiplier = character_class.crit_multiplier
 	mana_regen_per_second = character_class.mana_regen_per_second
 	run_speed = _base_run_speed if _base_run_speed > 0.0 else run_speed
+	run_speed *= 1.0 + character_class.base_speed_bonus
 	max_hp = character_class.starting_hp
 	max_mana = character_class.starting_mana
 	_recalculate_stats()
@@ -219,7 +220,7 @@ func advance() -> bool:
 	advanced = true
 	defense += class_definition.advanced_defense_bonus
 	crit_chance += class_definition.advanced_crit_bonus
-	run_speed = _base_run_speed * (1.0 + class_definition.advanced_speed_bonus)
+	run_speed = _base_run_speed * (1.0 + class_definition.base_speed_bonus + class_definition.advanced_speed_bonus)
 	_recalculate_stats()
 	hp = max_hp
 	mana = max_mana

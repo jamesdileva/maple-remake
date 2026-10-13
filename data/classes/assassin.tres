@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ClassDefinition" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/class_definition.gd" id="1"]
+[ext_resource type="Resource" path="res://data/abilities/assassin_strike.tres" id="2"]
+[ext_resource type="Resource" path="res://data/abilities/assassin_dash.tres" id="3"]
+[ext_resource type="Resource" path="res://data/abilities/assassin_shroud.tres" id="4"]
+[ext_resource type="Resource" path="res://data/abilities/assassin_eclipse.tres" id="5"]
+[ext_resource type="Resource" path="res://data/abilities/assassin_summon.tres" id="6"]
+
+[resource]
+script = ExtResource("1")
+id = &"assassin"
+display_name = "Assassin"
+ability_slots = Array[Resource]([ExtResource("2"), ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6"), null])
+advancement_level = 20
+starting_hp = 130.0
+starting_mana = 85.0
+defense = 2.0
+crit_chance = 0.1
+crit_multiplier = 2.0
+mana_regen_per_second = 7.5
+base_speed_bonus = 0.15

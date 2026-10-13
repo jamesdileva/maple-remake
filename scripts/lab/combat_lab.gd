@@ -19,6 +19,7 @@ const CLASS_PATHS := [
 	"res://data/classes/mage.tres",
 	"res://data/classes/warrior.tres",
 	"res://data/classes/archer.tres",
+	"res://data/classes/assassin.tres",
 ]
 
 @onready var _class_option: OptionButton = %ClassOption

@@ -24,6 +24,7 @@ const TEST_SUITES := [
 	"res://tests/classes/test_crossbow.gd",
 	"res://tests/classes/test_weapon_swap.gd",
 	"res://tests/classes/test_archer_advancement_buff.gd",
+	"res://tests/classes/test_assassin_class.gd",
 	"res://tests/lab/test_combat_lab.gd",
 	"res://tests/lab/test_damage_meter.gd",
 	"res://tests/lab/test_stress.gd",
