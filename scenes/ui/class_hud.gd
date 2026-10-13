@@ -22,12 +22,15 @@ func bind(player: Player) -> void:
 			_player.shield_broken.disconnect(_on_summon_changed)
 		if _player.summon_spawned.is_connected(_on_summon_changed):
 			_player.summon_spawned.disconnect(_on_summon_changed)
+		if _player.weapon_swapped.is_connected(_on_summon_changed):
+			_player.weapon_swapped.disconnect(_on_summon_changed)
 	_player = player
 	if _player == null:
 		return
 	_player.shield_applied.connect(_on_shield_changed)
 	_player.shield_broken.connect(_on_summon_changed)
 	_player.summon_spawned.connect(_on_summon_changed)
+	_player.weapon_swapped.connect(_on_summon_changed)
 	_refresh()
 
 func _on_shield_changed(_amount: float) -> void:
@@ -56,5 +59,7 @@ func _refresh() -> void:
 	_ability_label.text = "\n".join(lines)
 	if _player.advanced:
 		_class_label.text = "%s (Advanced)" % _class_label.text
+	if _player.wield_alternate:
+		_class_label.text = "%s [Crossbow]" % _class_label.text
 	_shield_label.text = "shield %d" % int(_player.shield_hp()) if _player.is_shielded() else ""
 	_summon_label.text = "summons %d" % _player.active_summons() if _player.active_summons() > 0 else ""

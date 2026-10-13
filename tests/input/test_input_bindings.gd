@@ -8,6 +8,7 @@ func run(t) -> void:
 		"move_left", "move_right", "move_up", "move_down",
 		"jump", "attack", "interact",
 		"skill_1", "skill_2", "skill_3", "skill_4",
+		"swap_weapon",
 	]
 	for action_name: String in gameplay_actions:
 		t.assert_true(InputMap.has_action(action_name), "action exists: %s" % action_name)
@@ -39,6 +40,8 @@ func run(t) -> void:
 	_assert_action_has_key(t, "skill_3", KEY_3)
 	_assert_action_has_key(t, "skill_3", JOY_BUTTON_RIGHT_SHOULDER)
 	_assert_action_has_key(t, "skill_4", KEY_4)
+	_assert_action_has_key(t, "swap_weapon", KEY_Q)
+	_assert_action_has_key(t, "swap_weapon", JOY_BUTTON_DPAD_RIGHT)
 	_assert_action_has_key(t, "debug_god", KEY_F1)
 	_assert_action_has_key(t, "debug_export", KEY_F8)
 

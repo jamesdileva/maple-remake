@@ -48,6 +48,13 @@ offset_right = 16.0
 offset_bottom = 4.0
 color = Color(1, 0.949019610881805, 0.4, 1)
 
+[node name="WeaponMarker" type="ColorRect" parent="Visual"]
+offset_left = -4.0
+offset_top = -14.0
+offset_right = 18.0
+offset_bottom = -10.0
+color = Color(0.55, 0.38, 0.2, 1)
+
 [node name="Camera" type="Camera2D" parent="."]
 
 [node name="AttackHitbox" type="Area2D" parent="."]

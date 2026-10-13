@@ -73,8 +73,13 @@ signal summon_spawned(summon: Summon)
 signal class_advanced
 signal lethal_protection_triggered
 signal party_aura_changed(hp_bonus: float, mp_bonus: float)
+signal weapon_swapped(alternate: bool)
 
 const ABILITY_SLOT_COUNT := 6
+const SWAP_FLASH_TIME := 0.25
+
+var wield_alternate := false
+var _swap_flash := 0.0
 
 var state: State = State.IDLE:
 	set(value):
@@ -132,18 +137,57 @@ func ability_at(slot: int) -> AbilityDefinition:
 	return slots[slot]
 
 func _effective_slots() -> Array:
+	var base: Array = []
 	if class_definition != null:
 		if advanced and class_definition.advanced_ability_slots.size() > 0:
-			return class_definition.advanced_ability_slots
-		if class_definition.ability_slots.size() > 0:
-			return class_definition.ability_slots
-	return ability_slots
+			base = class_definition.advanced_ability_slots
+		elif class_definition.ability_slots.size() > 0:
+			base = class_definition.ability_slots
+	else:
+		base = ability_slots
+	if wield_alternate and class_definition != null and class_definition.alternate_ability_slots.size() > 0:
+		return class_definition.alternate_ability_slots
+	return base
+
+func can_swap_weapon() -> bool:
+	return class_definition != null and class_definition.alternate_ability_slots.size() > 0
+
+func swap_weapon() -> bool:
+	if not can_swap_weapon():
+		return false
+	wield_alternate = not wield_alternate
+	_cancel_cast()
+	_apply_weapon_visual()
+	weapon_swapped.emit(wield_alternate)
+	DebugManager.register_combat_event("weapon_swap", {"alternate": wield_alternate})
+	return true
+
+func _cancel_cast() -> void:
+	_cast_ability = null
+	_cast_timer = 0.0
+	_free_cast_telegraph()
+
+func _apply_weapon_visual() -> void:
+	var marker := get_node_or_null("Visual/WeaponMarker") as ColorRect
+	if marker == null:
+		return
+	if wield_alternate:
+		marker.color = Color(0.75, 0.78, 0.85)
+		marker.offset_left = -6.0
+		marker.offset_right = 22.0
+	else:
+		marker.color = Color(0.55, 0.38, 0.2)
+		marker.offset_left = -4.0
+		marker.offset_right = 18.0
+	_swap_flash = SWAP_FLASH_TIME
 
 func apply_class(character_class: ClassDefinition) -> void:
 	if character_class == null:
 		return
 	class_definition = character_class
 	advanced = false
+	wield_alternate = false
+	_apply_weapon_visual()
 	defense = character_class.defense
 	crit_chance = character_class.crit_chance
 	crit_multiplier = character_class.crit_multiplier
@@ -339,6 +383,7 @@ func capture_state() -> Dictionary:
 		"inventory_items": items,
 		"currency": inventory.currency,
 		"advanced": advanced,
+		"wield_alternate": wield_alternate,
 		"class_path": class_definition.resource_path if class_definition != null else "",
 	}
 
@@ -355,7 +400,9 @@ func restore_state(data: Dictionary) -> void:
 	skill_points = int(data.get("skill_points", 0))
 	skill_points_spent = int(data.get("skill_points_spent", 0))
 	advanced = bool(data.get("advanced", false))
+	wield_alternate = bool(data.get("wield_alternate", false))
 	_apply_class_visual()
+	_apply_weapon_visual()
 	ability_levels.clear()
 	var levels: Dictionary = data.get("ability_levels", {})
 	for ability_id in levels:
@@ -551,6 +598,7 @@ func _physics_process(delta: float) -> void:
 	_regenerate_mana(delta)
 	move_direction = Input.get_axis("move_left", "move_right")
 	_update_facing()
+	_tick_swap_flash(delta)
 	_apply_horizontal(delta)
 	_apply_gravity(delta)
 	_apply_jump()
@@ -572,9 +620,16 @@ func _tick_cast(delta: float) -> void:
 		_cast_timer = maxf(0.0, _cast_timer - delta)
 		if _cast_timer == 0.0:
 			_finish_cast()
+		else:
+			if Input.is_action_just_pressed("swap_weapon"):
+				_cancel_cast()
+				swap_weapon()
 		return
 	_tick_shield(delta)
 	_tick_summons(delta)
+	if Input.is_action_just_pressed("swap_weapon"):
+		swap_weapon()
+		return
 	for slot in ABILITY_SLOT_COUNT:
 		if Input.is_action_just_pressed("skill_%d" % (slot + 1)):
 			_try_cast_ability(slot)
@@ -790,6 +845,17 @@ func _update_facing() -> void:
 	facing = signi(move_direction)
 	if _visual != null:
 		_visual.scale.x = float(facing)
+
+func _tick_swap_flash(delta: float) -> void:
+	if _swap_flash <= 0.0:
+		return
+	_swap_flash = maxf(0.0, _swap_flash - delta)
+	var marker := get_node_or_null("Visual/WeaponMarker") as ColorRect
+	if marker != null:
+		var pulse := 1.0 + (_swap_flash / SWAP_FLASH_TIME) * 0.6
+		marker.scale = Vector2(pulse, pulse)
+		if _swap_flash <= 0.0:
+			marker.scale = Vector2.ONE
 
 func _apply_horizontal(delta: float) -> void:
 	var target := move_direction * run_speed
