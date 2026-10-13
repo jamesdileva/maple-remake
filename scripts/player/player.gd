@@ -47,12 +47,14 @@ var skill_points_spent := 0
 var ability_levels: Dictionary = {}
 var equipment: Dictionary = {}
 var _base_run_speed := -1.0
+var _base_jump_velocity := -1.0
 var advanced := false
 var party: Array = []
 var _last_aura_hp := 0.0
 var _last_aura_mp := 0.0
 var _last_tactics_crit := 0.0
 var _last_tactics_range := 0.0
+var _last_alacrity := Vector3.ZERO
 var _shield_hp := 0.0
 var _shield_lifetime := 0.0
 var _absorbed_total := 0.0
@@ -76,6 +78,7 @@ signal class_advanced
 signal lethal_protection_triggered
 signal party_aura_changed(hp_bonus: float, mp_bonus: float)
 signal party_tactics_changed(crit_bonus: float, range_bonus: float)
+signal party_alacrity_changed(attack_bonus: float, move_bonus: float, jump_bonus: float)
 signal weapon_swapped(alternate: bool)
 
 const ABILITY_SLOT_COUNT := 6
@@ -102,6 +105,7 @@ var _attack_hit_targets: Array = []
 var _visual: Node2D
 var _attack_hitbox: Area2D
 var _cast_timer := 0.0
+var _cast_total := 0.0
 var _cast_ability: AbilityDefinition
 var _cast_telegraph: Node2D
 
@@ -111,6 +115,7 @@ func _ready() -> void:
 	if _attack_hitbox != null:
 		_attack_hitbox.monitoring = false
 	_base_run_speed = run_speed
+	_base_jump_velocity = jump_velocity
 	_apply_level_stats()
 	hp = max_hp
 	mana = max_mana
@@ -126,9 +131,9 @@ func is_casting() -> bool:
 	return _cast_timer > 0.0
 
 func cast_progress() -> float:
-	if _cast_ability == null or _cast_ability.cast_time <= 0.0:
+	if _cast_ability == null or _cast_total <= 0.0:
 		return 0.0
-	return 1.0 - (_cast_timer / _cast_ability.cast_time)
+	return 1.0 - (_cast_timer / _cast_total)
 
 func current_ability() -> AbilityDefinition:
 	return _cast_ability
@@ -168,6 +173,7 @@ func swap_weapon() -> bool:
 func _cancel_cast() -> void:
 	_cast_ability = null
 	_cast_timer = 0.0
+	_cast_total = 0.0
 	_free_cast_telegraph()
 
 func _apply_weapon_visual() -> void:
@@ -195,8 +201,10 @@ func apply_class(character_class: ClassDefinition) -> void:
 	crit_chance = character_class.crit_chance
 	crit_multiplier = character_class.crit_multiplier
 	mana_regen_per_second = character_class.mana_regen_per_second
-	run_speed = _base_run_speed if _base_run_speed > 0.0 else run_speed
-	run_speed *= 1.0 + character_class.base_speed_bonus
+	if _base_run_speed <= 0.0:
+		_base_run_speed = run_speed
+	if _base_jump_velocity <= 0.0:
+		_base_jump_velocity = jump_velocity
 	max_hp = character_class.starting_hp
 	max_mana = character_class.starting_mana
 	_recalculate_stats()
@@ -220,7 +228,6 @@ func advance() -> bool:
 	advanced = true
 	defense += class_definition.advanced_defense_bonus
 	crit_chance += class_definition.advanced_crit_bonus
-	run_speed = _base_run_speed * (1.0 + class_definition.base_speed_bonus + class_definition.advanced_speed_bonus)
 	_recalculate_stats()
 	hp = max_hp
 	mana = max_mana
@@ -464,6 +471,52 @@ func _check_tactics() -> void:
 		party_tactics_changed.emit(tactics.x, tactics.y)
 		DebugManager.register_combat_event("party_tactics", {"crit": tactics.x, "range": tactics.y})
 
+func effective_alacrity_bonus() -> Vector3:
+	var roster := party if not party.is_empty() else [self]
+	var best := Vector3.ZERO
+	for member in roster:
+		if not is_instance_valid(member):
+			continue
+		var member_class: ClassDefinition = member.get("class_definition")
+		if member_class == null:
+			continue
+		best.x = maxf(best.x, member_class.party_attack_speed_bonus)
+		best.y = maxf(best.y, member_class.party_move_speed_bonus)
+		best.z = maxf(best.z, member_class.party_jump_bonus)
+	return best
+
+func attack_speed_multiplier() -> float:
+	return 1.0 + effective_alacrity_bonus().x
+
+func effective_cast_time(ability: AbilityDefinition) -> float:
+	if ability == null:
+		return 0.0
+	return ability.cast_time / attack_speed_multiplier()
+
+func effective_attack_cooldown() -> float:
+	return basic_attack_cooldown / attack_speed_multiplier()
+
+func _check_alacrity() -> void:
+	var alacrity := effective_alacrity_bonus()
+	if alacrity != _last_alacrity:
+		_last_alacrity = alacrity
+		party_alacrity_changed.emit(alacrity.x, alacrity.y, alacrity.z)
+		DebugManager.register_combat_event("party_alacrity", {"attack": alacrity.x, "move": alacrity.y, "jump": alacrity.z})
+
+func _apply_party_mobility() -> void:
+	if _base_run_speed <= 0.0:
+		_base_run_speed = run_speed
+	if _base_jump_velocity <= 0.0:
+		_base_jump_velocity = jump_velocity
+	var factor := 1.0
+	if class_definition != null:
+		factor += class_definition.base_speed_bonus
+		if advanced:
+			factor += class_definition.advanced_speed_bonus
+	factor += effective_alacrity_bonus().y
+	run_speed = _base_run_speed * factor
+	jump_velocity = _base_jump_velocity * (1.0 + effective_alacrity_bonus().z)
+
 func get_crit_multiplier() -> float:
 	return crit_multiplier
 
@@ -582,6 +635,8 @@ func _recalculate_stats() -> void:
 		party_aura_changed.emit(aura.x, aura.y)
 		DebugManager.register_combat_event("party_aura", {"hp": aura.x, "mp": aura.y})
 	_check_tactics()
+	_apply_party_mobility()
+	_check_alacrity()
 
 func effective_party_bonus() -> Vector2:
 	var roster := party if not party.is_empty() else [self]
@@ -699,10 +754,12 @@ func _try_cast_ability(slot: int) -> void:
 
 func _start_cast(ability: AbilityDefinition) -> void:
 	_cast_ability = ability
-	if ability.cast_time <= 0.0:
+	_cast_total = effective_cast_time(ability)
+	if _cast_total <= 0.0:
+		_cast_timer = 0.0
 		_finish_cast()
 		return
-	_cast_timer = ability.cast_time
+	_cast_timer = _cast_total
 	_spawn_cast_telegraph(ability)
 	DebugManager.register_combat_event("cast", {
 		"ability": ability.id,
@@ -717,6 +774,7 @@ func _finish_cast() -> void:
 	var ability := _cast_ability
 	_cast_ability = null
 	_cast_timer = 0.0
+	_cast_total = 0.0
 	_free_cast_telegraph()
 	if ability == null:
 		return
@@ -828,7 +886,7 @@ func _tick_attack(delta: float) -> void:
 		_start_basic_attack()
 
 func _start_basic_attack() -> void:
-	_attack_timer = basic_attack_cooldown
+	_attack_timer = effective_attack_cooldown()
 	_attack_active = basic_attack_duration
 	_attack_hit_targets.clear()
 	if _attack_hitbox == null:

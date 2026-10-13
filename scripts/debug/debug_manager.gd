@@ -300,6 +300,9 @@ func _player_position() -> Dictionary:
 	if player.has_method("effective_tactics_bonus"):
 		var tactics: Vector2 = player.effective_tactics_bonus()
 		data["party_tactics"] = {"crit": tactics.x, "range": tactics.y}
+	if player.has_method("effective_alacrity_bonus"):
+		var alacrity: Vector3 = player.effective_alacrity_bonus()
+		data["party_alacrity"] = {"attack": alacrity.x, "move": alacrity.y, "jump": alacrity.z}
 	if player.has_method("is_casting"):
 		data["casting"] = player.current_ability().id if player.current_ability() != null else ""
 		data["cast_progress"] = player.cast_progress()

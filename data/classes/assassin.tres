@@ -30,3 +30,6 @@ base_speed_bonus = 0.15
 advanced_defense_bonus = 2.0
 advanced_crit_bonus = 0.05
 advanced_speed_bonus = 0.1
+party_attack_speed_bonus = 0.15
+party_move_speed_bonus = 0.1
+party_jump_bonus = 0.1
