@@ -306,20 +306,33 @@ func lethal_protection_cooldown() -> float:
 func lethal_trigger_count() -> int:
 	return _lethal_triggers
 
+func _lethal_buff() -> ClassDefinition:
+	var roster := party if not party.is_empty() else [self]
+	for member in roster:
+		if not is_instance_valid(member):
+			continue
+		var member_class: ClassDefinition = member.get("class_definition")
+		if member_class == null:
+			continue
+		if member_class.party_buff_interval > 0.0:
+			return member_class
+	return null
+
 func _consume_lethal_protection() -> bool:
-	if class_definition == null:
+	var provider := _lethal_buff()
+	if provider == null:
 		return false
 	if _lethal_cooldown > 0.0:
 		return false
-	_lethal_cooldown = class_definition.party_buff_interval
-	_lethal_window = class_definition.party_buff_duration
+	_lethal_cooldown = provider.party_buff_interval
+	_lethal_window = provider.party_buff_duration
 	_lethal_triggers += 1
 	hp = 1.0
 	lethal_protection_triggered.emit()
-	EventBus.lethal_protection.emit(1.0, class_definition.id)
+	EventBus.lethal_protection.emit(1.0, provider.id)
 	DebugManager.register_combat_event("lethal_protection", {
-		"duration": class_definition.party_buff_duration,
-		"interval": class_definition.party_buff_interval,
+		"duration": provider.party_buff_duration,
+		"interval": provider.party_buff_interval,
 	})
 	return true
 
@@ -532,11 +545,11 @@ func get_inventory() -> Inventory:
 func grant_xp(amount: float) -> float:
 	if xp_table == null or amount <= 0.0:
 		return 0.0
-	var granted := amount
+	var granted := amount * party_xp_multiplier()
 	if xp_table.is_max_level(level):
 		return 0.0
-	xp += amount
-	xp_gained.emit(amount)
+	xp += granted
+	xp_gained.emit(granted)
 	while not xp_table.is_max_level(level) and xp >= xp_table.xp_for_level(level + 1):
 		level += 1
 		_apply_level_stats()
@@ -654,6 +667,21 @@ func effective_party_bonus() -> Vector2:
 func set_party(members: Array) -> void:
 	party = members.duplicate()
 	_recalculate_stats()
+
+func unique_class_count() -> int:
+	var roster := party if not party.is_empty() else [self]
+	var seen := {}
+	for member in roster:
+		if not is_instance_valid(member):
+			continue
+		var member_class: ClassDefinition = member.get("class_definition")
+		if member_class == null:
+			continue
+		seen[member_class.id] = true
+	return maxi(1, seen.size())
+
+func party_xp_multiplier() -> float:
+	return float(unique_class_count())
 
 func leave_party() -> void:
 	party.clear()
