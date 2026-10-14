@@ -5,7 +5,7 @@ signal map_changed(map_id: StringName)
 const MAPS_DIR := "res://data/maps/"
 const TRAVEL_GRACE := 0.5
 
-var starting_map_id := &"test_a"
+var starting_map_id := &"brightwood_outskirts"
 var current_map_id := &""
 
 var _registry := {}

@@ -17,9 +17,11 @@ func run(t) -> void:
 
 	var player: Player = game.get_node("Player")
 	var world: Node2D = game.get_node("World")
-	t.assert_eq(WorldManager.current_map_id, &"test_a", "the game boots into the starting map")
-	t.assert_eq(world.get_child_count(), 1, "exactly one map is hosted")
-	t.assert_almost_eq(player.global_position.x, -700.0, 0.5, "boot lands on the default spawn")
+	t.assert_true(WorldManager.is_registered(&"test_a"), "the framework fixture map is registered")
+	t.assert_true(WorldManager.travel_to(&"test_a", &"default"), "explicit travel reaches the fixture map")
+	await t.physics_frame
+	await t.physics_frame
+	t.assert_eq(WorldManager.current_map_id, &"test_a", "the current map tracks travel")
 
 	DebugManager.god_mode = true
 	DebugManager.disable_ai = true
