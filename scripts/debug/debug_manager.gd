@@ -306,6 +306,9 @@ func _player_position() -> Dictionary:
 	if player.has_method("unique_class_count"):
 		data["unique_classes"] = player.unique_class_count()
 		data["party_xp_multiplier"] = player.party_xp_multiplier()
+	var world: Node = get_tree().root.get_node_or_null("WorldManager")
+	if world != null and world.get("current_map_id") != null:
+		data["current_map"] = String(world.get("current_map_id"))
 	if player.has_method("is_casting"):
 		data["casting"] = player.current_ability().id if player.current_ability() != null else ""
 		data["cast_progress"] = player.cast_progress()

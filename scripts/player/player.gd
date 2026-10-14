@@ -270,6 +270,12 @@ func release_summon(summon: Summon) -> void:
 		summon.queue_free()
 	_summons.erase(summon)
 
+func release_all_summons() -> void:
+	for summon in _summons.duplicate():
+		if is_instance_valid(summon):
+			summon.queue_free()
+	_summons.clear()
+
 func take_damage(amount: float, source: Node = null) -> float:
 	if DebugManager.is_invulnerable():
 		return 0.0

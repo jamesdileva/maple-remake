@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/world/portal.gd" id="2"]
+
+[sub_resource type="RectangleShape2D" id="Floor_1"]
+size = Vector2(1600, 40)
+
+[sub_resource type="RectangleShape2D" id="Portal_1"]
+size = Vector2(64, 120)
+
+[node name="TestA" type="Node2D"]
+
+[node name="Floor" type="StaticBody2D" parent="."]
+
+[node name="Collision" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("Floor_1")
+
+[node name="Visual" type="ColorRect" parent="Floor"]
+offset_left = -800.0
+offset_top = -20.0
+offset_right = 800.0
+offset_bottom = 20.0
+color = Color(0.2, 0.22, 0.26, 1)
+
+[node name="SpawnDefault" type="Marker2D" parent="."]
+script = ExtResource("1")
+position = Vector2(-700, -60)
+spawn_tag = &"default"
+
+[node name="PortalToB" type="Area2D" parent="."]
+script = ExtResource("2")
+position = Vector2(700, -60)
+target_map_id = &"test_b"
+target_spawn_tag = &"default"
+
+[node name="Collision" type="CollisionShape2D" parent="PortalToB"]
+shape = SubResource("Portal_1")

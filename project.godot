@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Maple Remake"
 config/description="A fast, high-density 2D action RPG."
-run/main_scene="res://scenes/maps/test_room.tscn"
+run/main_scene="res://scenes/game/game.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 
 [display]
@@ -153,6 +153,7 @@ EventBus="*res://scripts/core/event_bus.gd"
 SpawnManager="*res://scripts/systems/spawn_manager.gd"
 LootManager="*res://scripts/systems/loot_manager.gd"
 SaveSystem="*res://scripts/systems/save_system.gd"
+WorldManager="*res://scripts/world/world_manager.gd"
 
 [game]
 
