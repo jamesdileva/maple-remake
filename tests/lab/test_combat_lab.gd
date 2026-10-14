@@ -23,8 +23,32 @@ func run(t) -> void:
 		t.assert_true(control != null and control.focus_mode == Control.FOCUS_ALL,
 			"%s is joypad-focusable" % control_name)
 	var boss_option: OptionButton = lab.get_node("LabUI/Panel/VBox/BossOption")
-	t.assert_true(boss_option.disabled, "boss selector is inert until bosses exist")
-	t.assert_true(boss_option.item_count >= 1, "boss selector documents its placeholder")
+	t.assert_false(boss_option.disabled, "boss selector is live now a benchmark exists")
+	t.assert_true(boss_option.item_count == 2, "boss selector lists none plus the benchmark")
+	t.assert_eq(boss_option.get_item_text(1), "Benchmark Construct", "the benchmark construct is selectable")
+	t.assert_true(lab.lab_mob_count() == 0, "no boss is alive yet")
+	boss_option.select(1)
+	DebugManager.god_mode = true
+	var bossed: int = lab.spawn()
+	t.assert_eq(bossed, 1, "spawn with a boss selected places the construct")
+	t.assert_true(lab.lab_mob_count() == 1, "the construct is tracked")
+	var benchmark: Mob = null
+	for mob: Object in t.get_nodes_in_group("enemies"):
+		if is_instance_valid(mob) and mob.mob_id() == &"benchmark_construct":
+			benchmark = mob
+	t.assert_true(benchmark != null, "the tracked construct is a real enemy")
+	t.assert_true(benchmark.definition.is_boss, "the construct is boss-flagged")
+	await t.physics_frame
+	await t.physics_frame
+	t.assert_true(lab.meter.is_boss_running(), "boss timing starts while the construct lives")
+	var killed_boss: int = lab.kill()
+	t.assert_true(killed_boss >= 1, "kill removes the construct (%d)" % killed_boss)
+	lab.reset_encounter()
+	t.assert_eq(lab.lab_mob_count(), 0, "reset clears the construct")
+	await t.physics_frame
+	await t.physics_frame
+	t.assert_false(lab.meter.is_boss_running(), "boss timing stops once the construct is gone")
+	boss_option.select(0)
 
 	var player_before: Player = player
 	t.assert_true(lab.set_level(10), "lab sets the level")

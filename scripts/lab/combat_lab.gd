@@ -22,6 +22,10 @@ const CLASS_PATHS := [
 	"res://data/classes/assassin.tres",
 ]
 
+const BOSS_PATHS := [
+	"res://data/mobs/benchmark_construct.tres",
+]
+
 @onready var _class_option: OptionButton = %ClassOption
 @onready var _level_option: OptionButton = %LevelOption
 @onready var _gear_option: OptionButton = %GearOption
@@ -31,6 +35,7 @@ const CLASS_PATHS := [
 @onready var _readout: Label = %Readout
 
 var _lab_mobs: Array = []
+var _boss_tracked_alive := false
 var _refresh_accum := 0.0
 var meter := DamageMeter.new()
 
@@ -55,6 +60,23 @@ func _process(delta: float) -> void:
 	if _refresh_accum >= 0.25:
 		_refresh_accum = 0.0
 		_refresh()
+
+func _physics_process(_delta: float) -> void:
+	_tick_boss_timing()
+
+func _tick_boss_timing() -> void:
+	var boss_alive := false
+	for mob in _lab_mobs:
+		if not is_instance_valid(mob) or mob.is_queued_for_deletion() or mob.is_dead():
+			continue
+		var definition: MobDefinition = mob.get("definition")
+		if definition != null and definition.is_boss:
+			boss_alive = true
+	if boss_alive and not _boss_tracked_alive:
+		meter.start_boss()
+	elif not boss_alive and _boss_tracked_alive:
+		meter.stop_boss()
+	_boss_tracked_alive = boss_alive
 
 func set_class(character_class: ClassDefinition) -> bool:
 	var player := _player()
@@ -100,6 +122,8 @@ func spawn_count() -> int:
 	return COUNTS[_count_option.selected]
 
 func spawn() -> int:
+	if _boss_option.selected > 0:
+		return _spawn_boss()
 	var mob_path: String = MOB_PATHS[_mob_option.selected]
 	var definition: MobDefinition = load(mob_path)
 	if definition == null or definition.mob_scene == null:
@@ -128,6 +152,24 @@ func kill() -> int:
 	var killed := DebugManager.kill_all_enemies()
 	_refresh()
 	return killed
+
+func _spawn_boss() -> int:
+	var boss_path: String = BOSS_PATHS[_boss_option.selected - 1]
+	var definition: MobDefinition = load(boss_path)
+	if definition == null or definition.mob_scene == null:
+		return 0
+	var player := _player()
+	var origin := Vector2.ZERO
+	if player != null:
+		origin = player.global_position
+	var boss: Mob = definition.mob_scene.instantiate()
+	boss.definition = definition
+	get_parent().add_child(boss)
+	boss.global_position = origin + Vector2(0.0, 16.0)
+	_lab_mobs.append(boss)
+	DebugManager.register_combat_event("lab_spawn_boss", {"boss": definition.id, "max_hp": definition.max_hp})
+	_refresh()
+	return 1
 
 func reset_encounter() -> void:
 	for mob in _lab_mobs:
@@ -173,8 +215,11 @@ func _populate_options() -> void:
 	for count in COUNTS:
 		_count_option.add_item(str(count))
 	_boss_option.clear()
-	_boss_option.add_item("No boss yet")
-	_boss_option.disabled = true
+	_boss_option.add_item("No boss")
+	for path in BOSS_PATHS:
+		var boss: MobDefinition = load(path)
+		_boss_option.add_item(boss.display_name if boss != null else path)
+	_boss_option.tooltip_text = "Selecting a boss makes Spawn place it once"
 
 func _mob_index(mob_path: String) -> int:
 	var index := MOB_PATHS.find(mob_path)
@@ -218,7 +263,10 @@ func _refresh() -> void:
 			class_text, player.level, gear_text, player.hp, player.mana,
 		]
 	var definition: MobDefinition = load(MOB_PATHS[_mob_option.selected])
-	_readout.text = "%s | %s x %d | alive %d | dmg %.0f dps %.0f crit %d kills %d | mana %s | god %s" % [
+	var boss_text := ""
+	if meter.boss_time_sec() > 0.0:
+		boss_text = " | boss %.1fs" % meter.boss_time_sec()
+	_readout.text = "%s | %s x %d | alive %d | dmg %.0f dps %.0f crit %d kills %d | mana %s | god %s%s" % [
 		player_text,
 		definition.display_name if definition != null else "?",
 		COUNTS[_count_option.selected],
@@ -229,6 +277,7 @@ func _refresh() -> void:
 		meter.kills,
 		"ON" if DebugManager.infinite_mana else "off",
 		"ON" if DebugManager.god_mode else "off",
+		boss_text,
 	]
 	(%ManaButton as Button).text = "Mana: %s" % ("ON" if DebugManager.infinite_mana else "off")
 	(%GodButton as Button).text = "God: %s" % ("ON" if DebugManager.god_mode else "off")

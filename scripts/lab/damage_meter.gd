@@ -61,6 +61,9 @@ func boss_time_sec() -> float:
 		return float(Time.get_ticks_msec() - _boss_start_msec) / 1000.0
 	return float(_boss_elapsed_msec) / 1000.0
 
+func is_boss_running() -> bool:
+	return _boss_running
+
 func dps() -> float:
 	var elapsed := elapsed_sec()
 	if elapsed <= 0.0:
