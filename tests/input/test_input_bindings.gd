@@ -59,12 +59,14 @@ func run(t) -> void:
 	space_press.pressed = true
 	Input.parse_input_event(space_press)
 	await t.process_frame
+	await t.physics_frame
 	t.assert_true(Input.is_action_pressed("jump"), "space key press triggers jump action")
 	var space_release := InputEventKey.new()
 	space_release.physical_keycode = KEY_SPACE
 	space_release.pressed = false
 	Input.parse_input_event(space_release)
 	await t.process_frame
+	await t.physics_frame
 	t.assert_false(Input.is_action_pressed("jump"), "space release clears jump action")
 
 	var a_press := InputEventJoypadButton.new()
@@ -72,12 +74,14 @@ func run(t) -> void:
 	a_press.pressed = true
 	Input.parse_input_event(a_press)
 	await t.process_frame
+	await t.physics_frame
 	t.assert_true(Input.is_action_pressed("jump"), "gamepad A press triggers jump action")
 
 	var a_release := InputEventJoypadButton.new()
 	a_release.button_index = JOY_BUTTON_A
 	Input.parse_input_event(a_release)
 	await t.process_frame
+	await t.physics_frame
 	t.assert_false(Input.is_action_pressed("jump"), "gamepad A release clears jump action")
 
 	t.complete_suite(get_suite_name())

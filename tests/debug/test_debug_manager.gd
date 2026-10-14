@@ -53,6 +53,28 @@ func run(t) -> void:
 	t.assert_true(snapshot_text.contains("counters"), "snapshot contains counters")
 	t.assert_true(snapshot_text.contains("damage_dealt"), "snapshot contains damage_dealt")
 
+	# the party surface is inspectable: an advanced player reports every aura field
+	var room: PackedScene = load("res://scenes/maps/test_room.tscn")
+	var world: Node2D = room.instantiate()
+	t.root.add_child(world)
+	t.register_world(world)
+	await t.physics_frame
+	await t.physics_frame
+	var probe: Player = world.get_node("Player")
+	probe.set_level(25)
+	probe.advance()
+	probe.apply_class(load("res://data/classes/assassin.tres") as ClassDefinition)
+	var party_path: String = manager.export_debug_data()
+	var party_text := FileAccess.get_file_as_string(party_path)
+	t.assert_true(party_text.contains("party_alacrity"), "snapshot exposes the alacrity aura")
+	t.assert_true(party_text.contains("unique_classes"), "snapshot exposes the unique class count")
+	t.assert_true(party_text.contains("party_xp_multiplier"), "snapshot exposes the party xp multiplier")
+	t.assert_true(party_text.contains("party_tactics"), "snapshot exposes the tactics aura")
+	world.queue_free()
+	await t.process_frame
+	await t.physics_frame
+	t.assert_true(not is_instance_valid(world), "the probe world is torn down before the suite ends")
+
 	var log_path: String = manager._log.file_path()
 	t.assert_true(log_path != "", "debug log file path set")
 	t.assert_true(FileAccess.file_exists(log_path), "jsonl debug log written")
