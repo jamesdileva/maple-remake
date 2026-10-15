@@ -886,7 +886,11 @@ func _spawn_cast_telegraph(ability: AbilityDefinition) -> void:
 	var telegraph: Node2D = ability.cast_effect.instantiate()
 	telegraph.add_to_group("effects")
 	add_child(telegraph)
-	telegraph.scale = Vector2(ability.range / CastTelegraph.BASE_SIZE.x, ability.width / CastTelegraph.BASE_SIZE.y)
+	var telegraph_scale := Vector2(ability.range / CastTelegraph.BASE_SIZE.x, ability.width / CastTelegraph.BASE_SIZE.y)
+	telegraph.scale = telegraph_scale
+	var cast_telegraph := telegraph as CastTelegraph
+	if cast_telegraph != null:
+		cast_telegraph.base_scale = telegraph_scale
 	if ability.area_mode == AbilityDefinition.AreaMode.CENTERED:
 		telegraph.position = Vector2.ZERO
 	else:

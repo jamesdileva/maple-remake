@@ -108,21 +108,21 @@ func run(t) -> void:
 		var plain: MobDefinition = boss_definition.duplicate()
 		plain.id = &"benchmark_mob"
 		plain.is_boss = false
-		var plain_target: Mob = _spawn(world, plain, Vector2(300.0 + ability.range * 0.5, -30.0))
 		await t.physics_frame
 		await t.physics_frame
 		var boss_hp: float = boss_target.hp
+		player.mana = player.max_mana
+		await _cast_once(t, player, spec.action)
+		var boss_lost := boss_hp - boss_target.hp
+		if is_instance_valid(boss_target):
+			boss_target.queue_free()
+		await t.physics_frame
+		var plain_target: Mob = _spawn(world, plain, Vector2(300.0 + ability.range * 0.5, -30.0))
+		await t.physics_frame
+		await t.physics_frame
 		var plain_hp: float = plain_target.hp
 		player.mana = player.max_mana
-		Input.action_press(spec.action)
-		for _i in range(2):
-			await t.physics_frame
-		Input.action_release(spec.action)
-		for _i in range(60):
-			if not player.is_casting():
-				break
-			await t.physics_frame
-		var boss_lost := boss_hp - boss_target.hp
+		await _cast_once(t, player, spec.action)
 		var plain_lost := plain_hp - plain_target.hp
 		t.assert_true(boss_lost > plain_lost,
 			"the %s bonus hurts the boss more (%.1f vs %.1f)" % [String(id), boss_lost, plain_lost])
@@ -141,6 +141,16 @@ func run(t) -> void:
 	world.queue_free()
 	await t.physics_frame
 	t.complete_suite(get_suite_name())
+
+func _cast_once(t, player: Player, action: String) -> void:
+	Input.action_press(action)
+	for _i in range(3):
+		await t.physics_frame
+	Input.action_release(action)
+	for _i in range(120):
+		if not player.is_casting():
+			break
+		await t.physics_frame
 
 func _spawn(world: Node2D, definition: MobDefinition, position: Vector2) -> Mob:
 	var mob_scene: PackedScene = load("res://scenes/mobs/mob.tscn")

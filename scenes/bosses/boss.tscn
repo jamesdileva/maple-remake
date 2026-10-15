@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/bosses/boss.gd" id="1"]
+
+[sub_resource type="CapsuleShape2D" id="Boss_1"]
+radius = 16.0
+height = 56.0
+
+[node name="Boss" type="CharacterBody2D"]
+script = ExtResource("1")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+shape = SubResource("Boss_1")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Body" type="ColorRect" parent="Visual"]
+offset_left = -16.0
+offset_top = -28.0
+offset_right = 16.0
+offset_bottom = 28.0
+color = Color(0.65, 0.25, 0.45, 1)
+
+[node name="Crown" type="ColorRect" parent="Visual"]
+offset_left = -10.0
+offset_top = -36.0
+offset_right = 10.0
+offset_bottom = -28.0
+color = Color(0.9, 0.75, 0.25, 1)
+
+[node name="Eyes" type="ColorRect" parent="Visual"]
+offset_left = -8.0
+offset_top = -10.0
+offset_right = 8.0
+offset_bottom = -2.0
+color = Color(1.0, 0.9, 0.2, 1)
