@@ -24,6 +24,10 @@ func _ready() -> void:
 	super._ready()
 	_spawn_position = global_position
 	_boss_definition = definition as BossDefinition
+	if _boss_definition != null:
+		scale = Vector2.ONE * maxf(0.1, _boss_definition.display_scale)
+		if _visual != null:
+			_visual.modulate = _boss_definition.tint
 	EventBus.player_died.connect(_on_player_died)
 
 func _exit_tree() -> void:
@@ -188,15 +192,16 @@ func _spawn_telegraph(attack: BossAttackDefinition) -> void:
 	var telegraph := packed.instantiate() as CastTelegraph
 	if telegraph == null:
 		return
-	add_child(telegraph)
+	var world := get_parent()
+	if world == null:
+		telegraph.queue_free()
+		return
+	world.add_child(telegraph)
 	var telegraph_scale := Vector2(attack.range / CastTelegraph.BASE_SIZE.x, attack.width / CastTelegraph.BASE_SIZE.y)
 	telegraph.scale = telegraph_scale
 	telegraph.base_scale = telegraph_scale
 	telegraph.modulate = attack.telegraph_color
-	if attack.area_mode == BossAttackDefinition.Area.CENTERED:
-		telegraph.position = Vector2.ZERO
-	else:
-		telegraph.position = Vector2(float(_facing) * attack.range * 0.5, 0.0)
+	telegraph.global_position = _attack_center(attack)
 	_telegraph = telegraph
 	telegraph.add_to_group("effects")
 

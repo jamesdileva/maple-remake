@@ -1,0 +1,160 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/world/portal.gd" id="2"]
+
+[sub_resource type="RectangleShape2D" id="Floor_1"]
+size = Vector2(1200, 40)
+
+[sub_resource type="RectangleShape2D" id="Wall_1"]
+size = Vector2(40, 400)
+
+[sub_resource type="RectangleShape2D" id="Portal_1"]
+size = Vector2(64, 120)
+
+[node name="ThornhollowRing" type="Node2D"]
+
+[node name="SkyTop" type="ColorRect" parent="."]
+offset_left = -700.0
+offset_top = -1100.0
+offset_right = 700.0
+offset_bottom = -420.0
+color = Color(0.28, 0.24, 0.36, 1)
+
+[node name="SkyLow" type="ColorRect" parent="."]
+offset_left = -700.0
+offset_top = -420.0
+offset_right = 700.0
+offset_bottom = 20.0
+color = Color(0.5, 0.34, 0.38, 1)
+
+[node name="Moon" type="Polygon2D" parent="."]
+position = Vector2(-380, -560)
+polygon = PackedVector2Array(-40, -16, -16, -40, 16, -40, 40, -16, 40, 16, 16, 40, -16, 40, -40, 16)
+color = Color(0.92, 0.88, 0.78, 1)
+
+[node name="ThornWallA" type="ColorRect" parent="."]
+offset_left = -660.0
+offset_top = -260.0
+offset_right = -600.0
+offset_bottom = -20.0
+color = Color(0.32, 0.16, 0.18, 1)
+
+[node name="ThornWallB" type="ColorRect" parent="."]
+offset_left = 600.0
+offset_top = -260.0
+offset_right = 660.0
+offset_bottom = -20.0
+color = Color(0.32, 0.16, 0.18, 1)
+
+[node name="SpikeA" type="ColorRect" parent="."]
+offset_left = -648.0
+offset_top = -330.0
+offset_right = -632.0
+offset_bottom = -250.0
+rotation = 0.25
+color = Color(0.45, 0.22, 0.24, 1)
+
+[node name="SpikeB" type="ColorRect" parent="."]
+offset_left = 632.0
+offset_top = -330.0
+offset_right = 648.0
+offset_bottom = -250.0
+rotation = -0.25
+color = Color(0.45, 0.22, 0.24, 1)
+
+[node name="SpikeC" type="ColorRect" parent="."]
+offset_left = -308.0
+offset_top = -140.0
+offset_right = -292.0
+offset_bottom = -60.0
+rotation = 0.2
+color = Color(0.45, 0.22, 0.24, 1)
+
+[node name="SpikeD" type="ColorRect" parent="."]
+offset_left = 292.0
+offset_top = -140.0
+offset_right = 308.0
+offset_bottom = -60.0
+rotation = -0.2
+color = Color(0.45, 0.22, 0.24, 1)
+
+[node name="DeadTrunkA" type="ColorRect" parent="."]
+offset_left = -556.0
+offset_top = -110.0
+offset_right = -544.0
+offset_bottom = -20.0
+color = Color(0.4, 0.39, 0.4, 1)
+
+[node name="DeadTrunkB" type="ColorRect" parent="."]
+offset_left = 544.0
+offset_top = -110.0
+offset_right = 556.0
+offset_bottom = -20.0
+color = Color(0.4, 0.39, 0.4, 1)
+
+[node name="EmberA" type="ColorRect" parent="."]
+offset_left = -203.0
+offset_top = -29.0
+offset_right = -197.0
+offset_bottom = -23.0
+color = Color(0.95, 0.45, 0.2, 1)
+
+[node name="EmberB" type="ColorRect" parent="."]
+offset_left = 97.0
+offset_top = -29.0
+offset_right = 103.0
+offset_bottom = -23.0
+color = Color(0.95, 0.45, 0.2, 1)
+
+[node name="EmberC" type="ColorRect" parent="."]
+offset_left = 397.0
+offset_top = -29.0
+offset_right = 403.0
+offset_bottom = -23.0
+color = Color(0.95, 0.45, 0.2, 1)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+
+[node name="Collision" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("Floor_1")
+
+[node name="Visual" type="ColorRect" parent="Floor"]
+offset_left = -600.0
+offset_top = -20.0
+offset_right = 600.0
+offset_bottom = 20.0
+color = Color(0.36, 0.26, 0.22, 1)
+
+[node name="MossFloor" type="ColorRect" parent="."]
+offset_left = -600.0
+offset_top = -26.0
+offset_right = 600.0
+offset_bottom = -18.0
+color = Color(0.3, 0.42, 0.28, 1)
+
+[node name="WallWest" type="StaticBody2D" parent="."]
+position = Vector2(-620, -180)
+
+[node name="Collision" type="CollisionShape2D" parent="WallWest"]
+shape = SubResource("Wall_1")
+
+[node name="WallEast" type="StaticBody2D" parent="."]
+position = Vector2(620, -180)
+
+[node name="Collision" type="CollisionShape2D" parent="WallEast"]
+shape = SubResource("Wall_1")
+
+[node name="SpawnDefault" type="Marker2D" parent="."]
+script = ExtResource("1")
+position = Vector2(-500, -60)
+spawn_tag = &"default"
+
+[node name="ExitMeadow" type="Area2D" parent="."]
+script = ExtResource("2")
+position = Vector2(520, -60)
+target_map_id = &"brightwood_outskirts"
+target_spawn_tag = &"gate"
+
+[node name="Collision" type="CollisionShape2D" parent="ExitMeadow"]
+shape = SubResource("Portal_1")

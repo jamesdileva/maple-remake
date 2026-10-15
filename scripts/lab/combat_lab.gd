@@ -24,6 +24,7 @@ const CLASS_PATHS := [
 
 const BOSS_PATHS := [
 	"res://data/mobs/benchmark_construct.tres",
+	"res://data/bosses/briarback_boar.tres",
 ]
 
 @onready var _class_option: OptionButton = %ClassOption

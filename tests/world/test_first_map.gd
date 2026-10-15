@@ -98,8 +98,12 @@ func run(t) -> void:
 	var exits: Array = []
 	for portal: Portal in map_root.find_children("*", "Portal", true, false):
 		exits.append(portal)
-	t.assert_eq(exits.size(), 1, "one east gate leaves the meadow")
-	t.assert_eq((exits[0] as Portal).target_map_id, &"test_b", "the gate points at the next region")
+	t.assert_eq(exits.size(), 2, "the east gate and the thorn gate leave the meadow")
+	var east_gate: Portal = null
+	for portal: Portal in exits:
+		if portal.target_map_id == &"test_b":
+			east_gate = portal
+	t.assert_true(east_gate != null, "the east gate still points at the next region")
 	player.global_position = Vector2(1100.0, -60.0)
 	for _i in range(120):
 		await t.physics_frame

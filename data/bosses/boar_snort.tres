@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BossAttackDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/bosses/boss_attack.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"boar_snort"
+display_name = "Thornhorn Snort"
+windup_time = 0.5
+active_time = 0.15
+recover_time = 0.5
+cooldown = 0.6
+damage = 12.0
+range = 150.0
+width = 110.0
+area_mode = 0
+telegraph_color = Color(1, 0.55, 0.2, 1)

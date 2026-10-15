@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BossAttackDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/bosses/boss_attack.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"boar_mire"
+display_name = "Mire Stomp"
+windup_time = 0.9
+active_time = 0.15
+recover_time = 0.7
+cooldown = 1.0
+damage = 26.0
+range = 300.0
+width = 240.0
+area_mode = 1
+telegraph_color = Color(0.95, 0.2, 0.2, 1)

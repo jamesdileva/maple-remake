@@ -363,6 +363,11 @@ script = ExtResource("1")
 position = Vector2(-1050, -60)
 spawn_tag = &"default"
 
+[node name="SpawnGate" type="Marker2D" parent="."]
+script = ExtResource("1")
+position = Vector2(740, -60)
+spawn_tag = &"gate"
+
 [node name="Maren" type="Node2D" parent="."]
 script = ExtResource("3")
 position = Vector2(-880, -40)
@@ -417,6 +422,22 @@ target_spawn_tag = &"default"
 
 [node name="Collision" type="CollisionShape2D" parent="ExitEast"]
 shape = SubResource("Portal_1")
+
+[node name="ThornhollowGate" type="Area2D" parent="."]
+script = ExtResource("2")
+position = Vector2(860, -60)
+target_map_id = &"thornhollow_ring"
+target_spawn_tag = &"default"
+
+[node name="Collision" type="CollisionShape2D" parent="ThornhollowGate"]
+shape = SubResource("Portal_1")
+
+[node name="GateVines" type="ColorRect" parent="."]
+offset_left = 832.0
+offset_top = -120.0
+offset_right = 888.0
+offset_bottom = 0.0
+color = Color(0.35, 0.18, 0.2, 1)
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 script = ExtResource("4")
