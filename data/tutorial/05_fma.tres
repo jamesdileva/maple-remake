@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="LessonDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/tutorial/lesson_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"5_fma"
+title = "Full-Map Attack"
+detail = "Your storm hits everything on screen. No cooldown - mana is the only limit."
+bind = 4
+depends_on = Array[StringName]([&"4_cast"])

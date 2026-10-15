@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="LessonDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/tutorial/lesson_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"10_advance"
+title = "Class Advancement"
+detail = "Around level 20 your class transforms: new arts, new summons, new look."
+bind = 5
+depends_on = Array[StringName]([&"9_loot"])

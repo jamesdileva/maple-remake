@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LessonDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/tutorial/lesson_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"2_jump"
+title = "Jump And Climb"
+detail = "Space or A to jump. Time it to reach the low platforms above the meadow."
+bind = 0
+key_action = &"jump"
+threshold = 1.0
+depends_on = Array[StringName]([&"1_move"])

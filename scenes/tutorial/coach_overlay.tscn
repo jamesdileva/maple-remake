@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/tutorial/coach_overlay.gd" id="1"]
+
+[node name="CoachOverlay" type="CanvasLayer"]
+script = ExtResource("1")
+
+[node name="TipPanel" type="PanelContainer" parent="."]
+modulate = Color(1, 1, 1, 0)
+offset_left = 140.0
+offset_top = 820.0
+offset_right = 940.0
+offset_bottom = 980.0
+visible = false
+
+[node name="VBox" type="VBoxContainer" parent="TipPanel"]
+
+[node name="Title" type="Label" parent="TipPanel/VBox"]
+unique_name_in_owner = true
+text = "Tip"
+
+[node name="Detail" type="Label" parent="TipPanel/VBox"]
+unique_name_in_owner = true
+autowrap_mode = 3

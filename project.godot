@@ -154,6 +154,7 @@ SpawnManager="*res://scripts/systems/spawn_manager.gd"
 LootManager="*res://scripts/systems/loot_manager.gd"
 SaveSystem="*res://scripts/systems/save_system.gd"
 WorldManager="*res://scripts/world/world_manager.gd"
+TutorialSystem="*res://scripts/tutorial/tutorial_system.gd"
 
 [game]
 

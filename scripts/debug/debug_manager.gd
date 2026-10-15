@@ -259,6 +259,17 @@ func _loot_stats() -> Dictionary:
 		return data
 	return {}
 
+func _tutorial_stats() -> Dictionary:
+	var coach: Node = get_tree().root.get_node_or_null("TutorialSystem")
+	if coach == null:
+		return {"playing": false, "seen": 0, "total": 0}
+	return {
+		"playing": bool(coach.get("is_playing")),
+		"seen": int(coach.call("seen_count")),
+		"total": int(coach.call("lesson_count")),
+		"active": String((coach.call("active_lesson") as LessonDefinition).id) if coach.call("active_lesson") != null else "",
+	}
+
 func _player_position() -> Dictionary:
 	var player := find_player()
 	if player == null:
@@ -309,6 +320,7 @@ func _player_position() -> Dictionary:
 	var world: Node = get_tree().root.get_node_or_null("WorldManager")
 	if world != null and world.get("current_map_id") != null:
 		data["current_map"] = String(world.get("current_map_id"))
+	data["tutorial"] = _tutorial_stats()
 	if player.has_method("is_casting"):
 		data["casting"] = player.current_ability().id if player.current_ability() != null else ""
 		data["cast_progress"] = player.cast_progress()

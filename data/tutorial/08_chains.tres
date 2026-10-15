@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="LessonDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/tutorial/lesson_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"8_chains"
+title = "Chain Reactions"
+detail = "Bomb slimes burst into smaller ones. One kill can clear the whole hill."
+bind = 4
+depends_on = Array[StringName]([&"5_fma"])
