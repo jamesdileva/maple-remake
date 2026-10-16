@@ -28,7 +28,7 @@ func bind(player: Player) -> void:
 func _on_xp_gained(_amount: float) -> void:
 	_refresh()
 
-func _refresh() -> void:
+func _refresh(_new_level: int = 0) -> void:
 	if _player == null:
 		return
 	_level_label.text = "Lv %d" % _player.level

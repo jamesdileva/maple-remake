@@ -98,6 +98,15 @@ func run(t) -> void:
 	await t.physics_frame
 	t.assert_true(loot_events.size() >= 1, "mob death reports xp")
 
+	player.set("level", 7)
+	var hud := player.get_node_or_null("LevelHud") as LevelHud
+	t.assert_true(hud != null, "the player carries a level hud")
+	var level_label := hud.get_node_or_null("%LevelLabel") as Label
+	t.assert_true(level_label != null, "the level hud exposes its label")
+	level_label.text = "stale"
+	player.leveled_up.emit(7)
+	t.assert_eq(level_label.text, "Lv 7", "the level hud reacts to the level-up signal")
+
 	world.queue_free()
 	await t.physics_frame
 	t.complete_suite(get_suite_name())

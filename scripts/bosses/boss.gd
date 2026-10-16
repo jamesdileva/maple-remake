@@ -51,11 +51,11 @@ func current_attack() -> BossAttackDefinition:
 		return null
 	return attacks[_attack_index % attacks.size()]
 
-func take_damage(amount: float, source: Node = null) -> float:
-	var dealt := super.take_damage(amount, source)
+func apply_damage(amount: float) -> float:
+	var remaining := super.apply_damage(amount)
 	if not dead:
 		_update_phase()
-	return dealt
+	return remaining
 
 func reset() -> void:
 	if dead:

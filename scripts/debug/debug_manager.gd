@@ -191,6 +191,7 @@ func export_debug_data() -> String:
 			"objects": Performance.get_monitor(Performance.OBJECT_COUNT),
 		},
 		"entity_counts": entity_counts(),
+		"bosses": _boss_stats(),
 		"spawner": _spawner_stats(),
 		"loot": _loot_stats(),
 		"player_position": _player_position(),
@@ -247,6 +248,27 @@ func _spawner_stats() -> Dictionary:
 	if spawner != null and spawner.has_method("stats"):
 		return spawner.stats()
 	return {}
+
+func _boss_stats() -> Array:
+	if get_tree() == null:
+		return []
+	var bosses: Array = []
+	for mob: Object in get_tree().get_nodes_in_group("enemies"):
+		if not is_instance_valid(mob):
+			continue
+		var definition: MobDefinition = mob.get("definition")
+		if definition == null or not definition.is_boss:
+			continue
+		var info := {
+			"id": String(definition.id),
+			"hp": float(mob.get("hp")),
+			"max_hp": definition.max_hp,
+			"recommended_level": definition.recommended_level,
+		}
+		if mob.get("phase_index") != null:
+			info["phase"] = int(mob.get("phase_index"))
+		bosses.append(info)
+	return bosses
 
 func _loot_stats() -> Dictionary:
 	var loot: Node = get_tree().root.get_node_or_null("LootManager")

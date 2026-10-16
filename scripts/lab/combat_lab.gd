@@ -168,7 +168,7 @@ func _spawn_boss() -> int:
 	get_parent().add_child(boss)
 	boss.global_position = origin + Vector2(0.0, 16.0)
 	_lab_mobs.append(boss)
-	DebugManager.register_combat_event("lab_spawn_boss", {"boss": definition.id, "max_hp": definition.max_hp})
+	DebugManager.register_combat_event("lab_spawn_boss", {"boss": definition.id, "max_hp": definition.max_hp, "recommended_level": definition.recommended_level})
 	_refresh()
 	return 1
 
@@ -267,6 +267,10 @@ func _refresh() -> void:
 	var boss_text := ""
 	if meter.boss_time_sec() > 0.0:
 		boss_text = " | boss %.1fs" % meter.boss_time_sec()
+	if _boss_option.selected > 0:
+		var boss_definition: MobDefinition = load(BOSS_PATHS[_boss_option.selected - 1])
+		if boss_definition != null:
+			boss_text += " | boss lv %d rec" % boss_definition.recommended_level
 	_readout.text = "%s | %s x %d | alive %d | dmg %.0f dps %.0f crit %d kills %d | mana %s | god %s%s" % [
 		player_text,
 		definition.display_name if definition != null else "?",

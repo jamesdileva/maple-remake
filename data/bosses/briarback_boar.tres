@@ -18,6 +18,7 @@ xp = 250.0
 gravity = 900.0
 defense = 0.0
 mob_scene = ExtResource("2")
+recommended_level = 12
 max_chain_depth = 0
 chain = null
 loot_table = ExtResource("5")
