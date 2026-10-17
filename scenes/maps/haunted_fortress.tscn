@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/world/portal.gd" id="1_oqchb"]
 [ext_resource type="Script" path="res://scripts/systems/spawn_zone.gd" id="2_w5hht"]
-[ext_resource type="Resource" path="res://data/mobs/bomb_slime.tres" id="3_4i4n6"]
-[ext_resource type="Resource" path="res://data/mobs/test_slime.tres" id="4_ljmq0"]
+[ext_resource type="Resource" path="res://data/mobs/corrupted_slime.tres" id="3_4i4n6"]
+[ext_resource type="Resource" path="res://data/mobs/night_stalker.tres" id="4_ljmq0"]
 [ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="5_edclm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t5fye"]

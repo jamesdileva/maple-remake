@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://scripts/world/portal.gd" id="1_nhech"]
 [ext_resource type="Script" path="res://scripts/systems/spawn_zone.gd" id="2_npxkk"]
-[ext_resource type="Resource" path="res://data/mobs/test_slime.tres" id="3_kqgxy"]
-[ext_resource type="Resource" path="res://data/mobs/lesser_slime.tres" id="4_ngsa2"]
-[ext_resource type="Resource" path="res://data/mobs/bomb_slime.tres" id="5_ikeha"]
+[ext_resource type="Resource" path="res://data/mobs/shade_moth.tres" id="3_kqgxy"]
+[ext_resource type="Resource" path="res://data/mobs/thorn_crawler.tres" id="4_ngsa2"]
+[ext_resource type="Resource" path="res://data/mobs/bloom_bud.tres" id="5_ikeha"]
 [ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="6_5775x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dvit0"]

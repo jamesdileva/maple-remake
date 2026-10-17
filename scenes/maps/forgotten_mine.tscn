@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/world/portal.gd" id="1_ic5ci"]
 [ext_resource type="Script" path="res://scripts/systems/spawn_zone.gd" id="2_oroby"]
-[ext_resource type="Resource" path="res://data/mobs/bomb_slime.tres" id="3_yshss"]
+[ext_resource type="Resource" path="res://data/mobs/vein_bat.tres" id="3_yshss"]
+[ext_resource type="Resource" path="res://data/mobs/miner_golem.tres" id="5_mgmob"]
 [ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="4_l6pcy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_divgg"]
@@ -241,7 +242,7 @@ respawn_delay = 1.3
 [node name="Zone3" type="Node2D" parent="." unique_id=268878415]
 script = ExtResource("2_oroby")
 zone_rect = Rect2(-700, -500, 700, 60)
-definition = ExtResource("3_yshss")
+definition = ExtResource("5_mgmob")
 capacity = 4
 respawn_delay = 1.6
 

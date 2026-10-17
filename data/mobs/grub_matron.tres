@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="MobDefinition" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/mob_definition.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/mobs/mob.tscn" id="2"]
+[ext_resource type="Resource" path="res://data/loot/elite_loot.tres" id="3"]
+[ext_resource type="Resource" path="res://data/mobs/matron_chain.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = &"grub_matron"
+display_name = "Grub Matron"
+max_hp = 140.0
+move_speed = 40.0
+contact_damage = 10.0
+contact_interval = 1.0
+xp = 35.0
+gravity = 900.0
+defense = 5.0
+mob_scene = ExtResource("2")
+recommended_level = 14
+body_tint = Color(0.8, 0.3, 0.55, 1)
+visual_scale = 1.4
+max_chain_depth = 1
+chain = ExtResource("4")
+loot_table = ExtResource("3")

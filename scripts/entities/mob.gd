@@ -38,6 +38,7 @@ func _ready() -> void:
 		_contact_interval = definition.contact_interval
 		_xp = definition.xp
 	_visual = get_node_or_null("Visual") as Node2D
+	_apply_visual()
 	add_to_group("enemies")
 
 func _physics_process(delta: float) -> void:
@@ -170,12 +171,23 @@ func exit_pool(mob_definition: MobDefinition, spawn_position: Vector2) -> void:
 	_contact_damage = mob_definition.contact_damage
 	_contact_interval = mob_definition.contact_interval
 	_xp = mob_definition.xp
+	_apply_visual()
 	collision_layer = CollisionLayers.MOBS
 	collision_mask = CollisionLayers.WORLD
 	process_mode = Node.PROCESS_MODE_INHERIT
 	visible = true
 	add_to_group("enemies")
 	_pool_tracked = true
+
+func _apply_visual() -> void:
+	if _visual == null:
+		_visual = get_node_or_null("Visual") as Node2D
+	if _visual == null:
+		return
+	_visual.scale = Vector2.ONE * maxf(0.1, definition.visual_scale if definition != null else 1.0)
+	var body := _visual.get_node_or_null("Body") as ColorRect
+	if body != null and definition != null and not definition.is_boss:
+		body.color = definition.body_tint
 
 func apply_debug_kill() -> void:
 	take_damage(999999.0, null)

@@ -192,6 +192,7 @@ func export_debug_data() -> String:
 		},
 		"entity_counts": entity_counts(),
 		"bosses": _boss_stats(),
+		"roster": _roster_stats(),
 		"spawner": _spawner_stats(),
 		"loot": _loot_stats(),
 		"player_position": _player_position(),
@@ -248,6 +249,20 @@ func _spawner_stats() -> Dictionary:
 	if spawner != null and spawner.has_method("stats"):
 		return spawner.stats()
 	return {}
+
+func _roster_stats() -> Dictionary:
+	if get_tree() == null:
+		return {}
+	var counts := {}
+	for mob: Object in get_tree().get_nodes_in_group("enemies"):
+		if not is_instance_valid(mob):
+			continue
+		var definition: MobDefinition = mob.get("definition")
+		if definition == null:
+			continue
+		var id := String(definition.id)
+		counts[id] = int(counts.get(id, 0)) + 1
+	return counts
 
 func _boss_stats() -> Array:
 	if get_tree() == null:

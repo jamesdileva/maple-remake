@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="MobDefinition" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/mob_definition.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/mobs/mob.tscn" id="2"]
+[ext_resource type="Resource" path="res://data/loot/forest_loot.tres" id="3"]
+[ext_resource type="Resource" path="res://data/mobs/rabbit_burst.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = &"shadow_rabbit"
+display_name = "Shadow Rabbit"
+max_hp = 12.0
+move_speed = 120.0
+contact_damage = 4.0
+contact_interval = 0.6
+xp = 2.0
+gravity = 900.0
+defense = 0.0
+mob_scene = ExtResource("2")
+recommended_level = 12
+body_tint = Color(0.12, 0.1, 0.16, 1)
+visual_scale = 0.7
+max_chain_depth = 0
+chain = ExtResource("4")
+loot_table = ExtResource("3")

@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/world/portal.gd" id="1_mbf11"]
 [ext_resource type="Script" path="res://scripts/systems/spawn_zone.gd" id="2_c3yhc"]
-[ext_resource type="Resource" path="res://data/mobs/bomb_slime.tres" id="3_njctx"]
-[ext_resource type="Resource" path="res://data/mobs/test_slime.tres" id="4_q22t8"]
+[ext_resource type="Resource" path="res://data/mobs/hollow_rat.tres" id="3_njctx"]
+[ext_resource type="Resource" path="res://data/mobs/ruin_sentinel.tres" id="4_q22t8"]
 [ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="5_3ag66"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_45tw5"]

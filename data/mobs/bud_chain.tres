@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ChainPayload" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/chain_payload.gd" id="1"]
+[ext_resource type="Resource" path="res://data/mobs/bloom_seed.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+child_definition = ExtResource("2")
+child_count = 3
+spawn_radius = 30.0

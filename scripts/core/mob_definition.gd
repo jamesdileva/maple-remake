@@ -12,6 +12,8 @@ extends Resource
 @export var defense := 0.0
 @export var mob_scene: PackedScene
 @export var recommended_level := 1
+@export var body_tint := Color(1, 1, 1, 1)
+@export var visual_scale := 1.0
 @export var max_chain_depth := 0
 @export var chain: ChainPayload
 @export var loot_table: LootTable

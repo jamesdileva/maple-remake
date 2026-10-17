@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/world/portal.gd" id="1_2l1j5"]
 [ext_resource type="Script" path="res://scripts/systems/spawn_zone.gd" id="2_ld6v2"]
-[ext_resource type="Resource" path="res://data/mobs/lesser_slime.tres" id="3_c2t77"]
-[ext_resource type="Resource" path="res://data/mobs/test_slime.tres" id="4_sqm44"]
+[ext_resource type="Resource" path="res://data/mobs/meadow_slime.tres" id="3_c2t77"]
+[ext_resource type="Resource" path="res://data/mobs/bloom_bud.tres" id="4_sqm44"]
 [ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="5_kr4r3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gfvvr"]

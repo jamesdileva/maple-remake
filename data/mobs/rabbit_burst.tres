@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="ChainPayload" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/chain_payload.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+child_count = 0
+spawn_radius = 24.0

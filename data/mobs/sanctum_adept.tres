@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MobDefinition" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/mob_definition.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/mobs/mob.tscn" id="2"]
+[ext_resource type="Resource" path="res://data/loot/deep_loot.tres" id="3"]
+
+[resource]
+script = ExtResource("1")
+id = &"sanctum_adept"
+display_name = "Sanctum Adept"
+max_hp = 64.0
+move_speed = 80.0
+contact_damage = 8.0
+contact_interval = 0.85
+xp = 14.0
+gravity = 900.0
+defense = 4.0
+mob_scene = ExtResource("2")
+recommended_level = 24
+body_tint = Color(0.5, 0.15, 0.22, 1)
+visual_scale = 1.0
+max_chain_depth = 0
+chain = null
+loot_table = ExtResource("3")

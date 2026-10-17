@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="MobDefinition" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/mob_definition.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/mobs/mob.tscn" id="2"]
+[ext_resource type="Resource" path="res://data/loot/slime_loot.tres" id="3"]
+[ext_resource type="Resource" path="res://data/mobs/seed_burst.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = &"bloom_seed"
+display_name = "Bloom Seed"
+max_hp = 8.0
+move_speed = 95.0
+contact_damage = 3.0
+contact_interval = 0.7
+xp = 1.0
+gravity = 900.0
+defense = 0.0
+mob_scene = ExtResource("2")
+recommended_level = 4
+body_tint = Color(0.98, 0.75, 0.85, 1)
+visual_scale = 0.55
+max_chain_depth = 0
+chain = ExtResource("4")
+loot_table = ExtResource("3")

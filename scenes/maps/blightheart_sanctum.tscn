@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/world/portal.gd" id="1_ryrys"]
 [ext_resource type="Script" path="res://scripts/systems/spawn_zone.gd" id="2_4k63j"]
-[ext_resource type="Resource" path="res://data/mobs/bomb_slime.tres" id="3_4f2q6"]
+[ext_resource type="Resource" path="res://data/mobs/sanctum_adept.tres" id="3_4f2q6"]
 [ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="4_q7p1g"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tf2rt"]
