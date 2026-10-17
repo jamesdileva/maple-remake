@@ -40,11 +40,11 @@ func _read_save(path: String) -> Dictionary:
 		return {}
 	var text: String = file.get_as_text()
 	file.close()
-	var parsed = JSON.parse_string(text)
-	if not (parsed is Dictionary):
+	var json := JSON.new()
+	if json.parse(text) != OK or not (json.data is Dictionary):
 		last_error = &"corrupt_save"
 		return {}
-	var data: Dictionary = parsed
+	var data: Dictionary = json.data
 	var version: int = data.get("save_version", 0)
 	if version != _save_version:
 		last_error = &"unsupported_version"

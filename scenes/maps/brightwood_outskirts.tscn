@@ -368,6 +368,11 @@ script = ExtResource("1")
 position = Vector2(740, -60)
 spawn_tag = &"gate"
 
+[node name="SpawnEast" type="Marker2D" parent="."]
+script = ExtResource("1")
+position = Vector2(1000, -60)
+spawn_tag = &"east"
+
 [node name="Maren" type="Node2D" parent="."]
 script = ExtResource("3")
 position = Vector2(-880, -40)
@@ -417,8 +422,8 @@ respawn_delay = 1.5
 [node name="ExitEast" type="Area2D" parent="."]
 script = ExtResource("2")
 position = Vector2(1100, -60)
-target_map_id = &"test_b"
-target_spawn_tag = &"default"
+target_map_id = &"sunlit_meadow"
+target_spawn_tag = &"west"
 
 [node name="Collision" type="CollisionShape2D" parent="ExitEast"]
 shape = SubResource("Portal_1")

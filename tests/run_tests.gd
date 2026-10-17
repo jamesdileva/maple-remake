@@ -38,6 +38,7 @@ const TEST_SUITES := [
 	"res://tests/balance/test_boss_balance.gd",
 	"res://tests/world/test_map_framework.gd",
 	"res://tests/world/test_first_map.gd",
+	"res://tests/world/test_continent.gd",
 	"res://tests/tutorial/test_tutorial.gd",
 	"res://tests/entities/test_mob.gd",
 ]

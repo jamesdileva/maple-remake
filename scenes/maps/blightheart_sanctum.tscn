@@ -1,0 +1,176 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/portal.gd" id="1_ryrys"]
+[ext_resource type="Script" path="res://scripts/systems/spawn_zone.gd" id="2_4k63j"]
+[ext_resource type="Resource" path="res://data/mobs/bomb_slime.tres" id="3_4f2q6"]
+[ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="4_q7p1g"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tf2rt"]
+size = Vector2(2000, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jm2mo"]
+size = Vector2(240, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7umrt"]
+size = Vector2(240, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8stse"]
+size = Vector2(300, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hv12j"]
+size = Vector2(64, 120)
+
+[node name="BlightheartSanctum" type="Node2D" unique_id=1313288868]
+
+[node name="Sky1" type="ColorRect" parent="." unique_id=1972669835]
+offset_left = -1400.0
+offset_top = -1200.0
+offset_right = 1400.0
+offset_bottom = -460.0
+mouse_filter = 2
+color = Color(0.1, 0.07, 0.11, 1)
+
+[node name="Sky2" type="ColorRect" parent="." unique_id=1780269328]
+offset_left = -1400.0
+offset_top = -460.0
+offset_right = 1400.0
+offset_bottom = -240.0
+mouse_filter = 2
+color = Color(0.18, 0.08, 0.13, 1)
+
+[node name="Sky3" type="ColorRect" parent="." unique_id=59528455]
+offset_left = -1400.0
+offset_top = -240.0
+offset_right = 1400.0
+offset_bottom = 40.0
+mouse_filter = 2
+color = Color(0.34, 0.1, 0.16, 1)
+
+[node name="Hills" type="Polygon2D" parent="." unique_id=1022542321]
+color = Color(0.34, 0.1, 0.16, 1)
+polygon = PackedVector2Array(-1400, 0, -1000, -220, -560, -120, -120, -260, 360, -140, 820, -240, 1400, 0)
+
+[node name="Floor" type="StaticBody2D" parent="." unique_id=1921910017]
+
+[node name="Collision" type="CollisionShape2D" parent="Floor" unique_id=1955746044]
+shape = SubResource("RectangleShape2D_tf2rt")
+
+[node name="Visual" type="ColorRect" parent="Floor" unique_id=565439287]
+offset_left = -1000.0
+offset_top = -20.0
+offset_right = 1000.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.32, 0.14, 0.16, 1)
+
+[node name="GrassTop" type="ColorRect" parent="." unique_id=2113700477]
+offset_left = -1000.0
+offset_top = -26.0
+offset_right = 1000.0
+offset_bottom = -18.0
+mouse_filter = 2
+color = Color(0.36, 0.16, 0.18, 1)
+
+[node name="Platform1" type="StaticBody2D" parent="." unique_id=2004823065]
+position = Vector2(-520, -200)
+
+[node name="Collision" type="CollisionShape2D" parent="Platform1" unique_id=1874184567]
+shape = SubResource("RectangleShape2D_jm2mo")
+
+[node name="Visual" type="ColorRect" parent="Platform1" unique_id=986305527]
+offset_left = -120.0
+offset_top = -12.0
+offset_right = 120.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.42, 0.18, 0.2, 1)
+
+[node name="Platform2" type="StaticBody2D" parent="." unique_id=969166122]
+position = Vector2(520, -200)
+
+[node name="Collision" type="CollisionShape2D" parent="Platform2" unique_id=10596880]
+shape = SubResource("RectangleShape2D_7umrt")
+
+[node name="Visual" type="ColorRect" parent="Platform2" unique_id=907247808]
+offset_left = -120.0
+offset_top = -12.0
+offset_right = 120.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.42, 0.18, 0.2, 1)
+
+[node name="Platform3" type="StaticBody2D" parent="." unique_id=370735002]
+position = Vector2(0, -360)
+
+[node name="Collision" type="CollisionShape2D" parent="Platform3" unique_id=1718720900]
+shape = SubResource("RectangleShape2D_8stse")
+
+[node name="Visual" type="ColorRect" parent="Platform3" unique_id=1365734951]
+offset_left = -150.0
+offset_top = -12.0
+offset_right = 150.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.42, 0.18, 0.2, 1)
+
+[node name="Decor1" type="ColorRect" parent="." unique_id=822994386]
+offset_left = -820.0
+offset_top = -260.0
+offset_right = -720.0
+offset_bottom = -20.0
+mouse_filter = 2
+color = Color(0.4, 0.16, 0.2, 1)
+
+[node name="Decor2" type="ColorRect" parent="." unique_id=1725759485]
+offset_left = 720.0
+offset_top = -260.0
+offset_right = 820.0
+offset_bottom = -20.0
+mouse_filter = 2
+color = Color(0.4, 0.16, 0.2, 1)
+
+[node name="Decor3" type="ColorRect" parent="." unique_id=120760976]
+offset_left = -40.0
+offset_top = -28.0
+offset_right = 40.0
+offset_bottom = -12.0
+mouse_filter = 2
+color = Color(0.6, 0.2, 0.24, 1)
+
+[node name="Portal1" type="Area2D" parent="." unique_id=874913615]
+position = Vector2(-980, -60)
+script = ExtResource("1_ryrys")
+target_map_id = &"haunted_fortress"
+target_spawn_tag = &"east"
+
+[node name="Collision" type="CollisionShape2D" parent="Portal1" unique_id=708276674]
+shape = SubResource("RectangleShape2D_hv12j")
+
+[node name="Visual" type="ColorRect" parent="Portal1" unique_id=717278836]
+offset_left = -28.0
+offset_top = -60.0
+offset_right = 28.0
+offset_bottom = 60.0
+mouse_filter = 2
+color = Color(0.2, 0.24, 0.3, 0.55)
+
+[node name="Zone1" type="Node2D" parent="." unique_id=740474173]
+script = ExtResource("2_4k63j")
+zone_rect = Rect2(-700, -70, 600, 70)
+definition = ExtResource("3_4f2q6")
+capacity = 8
+respawn_delay = 1.4
+
+[node name="Spawn1" type="Marker2D" parent="." unique_id=1050868581]
+position = Vector2(-760, -60)
+script = ExtResource("4_q7p1g")
+
+[node name="Spawn2" type="Marker2D" parent="." unique_id=1129347658]
+position = Vector2(-760, -60)
+script = ExtResource("4_q7p1g")
+spawn_tag = &"west"
+
+[node name="Spawn3" type="Marker2D" parent="." unique_id=490268964]
+position = Vector2(200, -60)
+script = ExtResource("4_q7p1g")
+spawn_tag = &"boss"

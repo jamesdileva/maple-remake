@@ -1,0 +1,265 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/portal.gd" id="1_nhech"]
+[ext_resource type="Script" path="res://scripts/systems/spawn_zone.gd" id="2_npxkk"]
+[ext_resource type="Resource" path="res://data/mobs/test_slime.tres" id="3_kqgxy"]
+[ext_resource type="Resource" path="res://data/mobs/lesser_slime.tres" id="4_ngsa2"]
+[ext_resource type="Resource" path="res://data/mobs/bomb_slime.tres" id="5_ikeha"]
+[ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="6_5775x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dvit0"]
+size = Vector2(2600, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1qceu"]
+size = Vector2(260, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1ptbw"]
+size = Vector2(260, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_76g43"]
+size = Vector2(260, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_udb3n"]
+size = Vector2(240, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hoghs"]
+size = Vector2(220, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5ehmw"]
+size = Vector2(64, 120)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2yjrf"]
+size = Vector2(64, 120)
+
+[node name="WhisperingForest" type="Node2D" unique_id=1593338208]
+
+[node name="Sky1" type="ColorRect" parent="." unique_id=2028661658]
+offset_left = -1400.0
+offset_top = -1200.0
+offset_right = 1400.0
+offset_bottom = -460.0
+mouse_filter = 2
+color = Color(0.34, 0.5, 0.55, 1)
+
+[node name="Sky2" type="ColorRect" parent="." unique_id=742642660]
+offset_left = -1400.0
+offset_top = -460.0
+offset_right = 1400.0
+offset_bottom = -240.0
+mouse_filter = 2
+color = Color(0.42, 0.58, 0.5, 1)
+
+[node name="Sky3" type="ColorRect" parent="." unique_id=927627163]
+offset_left = -1400.0
+offset_top = -240.0
+offset_right = 1400.0
+offset_bottom = 40.0
+mouse_filter = 2
+color = Color(0.6, 0.68, 0.52, 1)
+
+[node name="Hills" type="Polygon2D" parent="." unique_id=723048542]
+color = Color(0.6, 0.68, 0.52, 1)
+polygon = PackedVector2Array(-1400, 0, -1000, -220, -560, -120, -120, -260, 360, -140, 820, -240, 1400, 0)
+
+[node name="Floor" type="StaticBody2D" parent="." unique_id=1318462912]
+
+[node name="Collision" type="CollisionShape2D" parent="Floor" unique_id=726215425]
+shape = SubResource("RectangleShape2D_dvit0")
+
+[node name="Visual" type="ColorRect" parent="Floor" unique_id=1193366731]
+offset_left = -1300.0
+offset_top = -20.0
+offset_right = 1300.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.26, 0.4, 0.3, 1)
+
+[node name="GrassTop" type="ColorRect" parent="." unique_id=1794515401]
+offset_left = -1300.0
+offset_top = -26.0
+offset_right = 1300.0
+offset_bottom = -18.0
+mouse_filter = 2
+color = Color(0.32, 0.5, 0.34, 1)
+
+[node name="Platform1" type="StaticBody2D" parent="." unique_id=2046083353]
+position = Vector2(-520, -180)
+
+[node name="Collision" type="CollisionShape2D" parent="Platform1" unique_id=1265178009]
+shape = SubResource("RectangleShape2D_1qceu")
+
+[node name="Visual" type="ColorRect" parent="Platform1" unique_id=1421850256]
+offset_left = -130.0
+offset_top = -12.0
+offset_right = 130.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.32, 0.46, 0.32, 1)
+
+[node name="Platform2" type="StaticBody2D" parent="." unique_id=578455225]
+position = Vector2(-160, -320)
+
+[node name="Collision" type="CollisionShape2D" parent="Platform2" unique_id=236040070]
+shape = SubResource("RectangleShape2D_1ptbw")
+
+[node name="Visual" type="ColorRect" parent="Platform2" unique_id=315329280]
+offset_left = -130.0
+offset_top = -12.0
+offset_right = 130.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.32, 0.46, 0.32, 1)
+
+[node name="Platform3" type="StaticBody2D" parent="." unique_id=1698342315]
+position = Vector2(220, -460)
+
+[node name="Collision" type="CollisionShape2D" parent="Platform3" unique_id=134756953]
+shape = SubResource("RectangleShape2D_76g43")
+
+[node name="Visual" type="ColorRect" parent="Platform3" unique_id=273842824]
+offset_left = -130.0
+offset_top = -12.0
+offset_right = 130.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.32, 0.46, 0.32, 1)
+
+[node name="Platform4" type="StaticBody2D" parent="." unique_id=803800251]
+position = Vector2(560, -300)
+
+[node name="Collision" type="CollisionShape2D" parent="Platform4" unique_id=1463708183]
+shape = SubResource("RectangleShape2D_udb3n")
+
+[node name="Visual" type="ColorRect" parent="Platform4" unique_id=126885241]
+offset_left = -120.0
+offset_top = -12.0
+offset_right = 120.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.32, 0.46, 0.32, 1)
+
+[node name="Platform5" type="StaticBody2D" parent="." unique_id=1143660909]
+position = Vector2(200, -160)
+
+[node name="Collision" type="CollisionShape2D" parent="Platform5" unique_id=1405292607]
+shape = SubResource("RectangleShape2D_hoghs")
+
+[node name="Visual" type="ColorRect" parent="Platform5" unique_id=444522976]
+offset_left = -110.0
+offset_top = -12.0
+offset_right = 110.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.32, 0.46, 0.32, 1)
+
+[node name="Decor1" type="ColorRect" parent="." unique_id=2136369248]
+offset_left = -1120.0
+offset_top = -150.0
+offset_right = -1060.0
+offset_bottom = -20.0
+mouse_filter = 2
+color = Color(0.36, 0.24, 0.16, 1)
+
+[node name="Decor2" type="ColorRect" parent="." unique_id=1698023918]
+offset_left = -1155.0
+offset_top = -215.0
+offset_right = -1025.0
+offset_bottom = -145.0
+mouse_filter = 2
+color = Color(0.22, 0.4, 0.26, 1)
+
+[node name="Decor3" type="ColorRect" parent="." unique_id=1373685390]
+offset_left = 1050.0
+offset_top = -150.0
+offset_right = 1110.0
+offset_bottom = -20.0
+mouse_filter = 2
+color = Color(0.36, 0.24, 0.16, 1)
+
+[node name="Decor4" type="ColorRect" parent="." unique_id=974096840]
+offset_left = 1015.0
+offset_top = -215.0
+offset_right = 1145.0
+offset_bottom = -145.0
+mouse_filter = 2
+color = Color(0.22, 0.4, 0.26, 1)
+
+[node name="Decor5" type="ColorRect" parent="." unique_id=1802162651]
+offset_top = -270.0
+offset_right = 40.0
+offset_bottom = -230.0
+mouse_filter = 2
+color = Color(0.3, 0.34, 0.3, 1)
+
+[node name="Portal1" type="Area2D" parent="." unique_id=710371370]
+position = Vector2(-1200, -60)
+script = ExtResource("1_nhech")
+target_map_id = &"sunlit_meadow"
+target_spawn_tag = &"east"
+
+[node name="Collision" type="CollisionShape2D" parent="Portal1" unique_id=1754148240]
+shape = SubResource("RectangleShape2D_5ehmw")
+
+[node name="Visual" type="ColorRect" parent="Portal1" unique_id=1989754121]
+offset_left = -28.0
+offset_top = -60.0
+offset_right = 28.0
+offset_bottom = 60.0
+mouse_filter = 2
+color = Color(0.2, 0.24, 0.3, 0.55)
+
+[node name="Portal2" type="Area2D" parent="." unique_id=2016609846]
+position = Vector2(1200, -60)
+script = ExtResource("1_nhech")
+target_map_id = &"hollow_forest"
+target_spawn_tag = &"west"
+
+[node name="Collision" type="CollisionShape2D" parent="Portal2" unique_id=161670029]
+shape = SubResource("RectangleShape2D_2yjrf")
+
+[node name="Visual" type="ColorRect" parent="Portal2" unique_id=2141357961]
+offset_left = -28.0
+offset_top = -60.0
+offset_right = 28.0
+offset_bottom = 60.0
+mouse_filter = 2
+color = Color(0.2, 0.24, 0.3, 0.55)
+
+[node name="Zone1" type="Node2D" parent="." unique_id=1544721044]
+script = ExtResource("2_npxkk")
+zone_rect = Rect2(-1100, -70, 700, 70)
+definition = ExtResource("3_kqgxy")
+respawn_delay = 1.0
+
+[node name="Zone2" type="Node2D" parent="." unique_id=999364283]
+script = ExtResource("2_npxkk")
+zone_rect = Rect2(400, -70, 700, 70)
+definition = ExtResource("4_ngsa2")
+respawn_delay = 1.0
+
+[node name="Zone3" type="Node2D" parent="." unique_id=936743010]
+script = ExtResource("2_npxkk")
+zone_rect = Rect2(-600, -360, 900, 60)
+definition = ExtResource("5_ikeha")
+capacity = 4
+
+[node name="Zone4" type="Node2D" parent="." unique_id=1609604450]
+script = ExtResource("2_npxkk")
+zone_rect = Rect2(300, -500, 600, 60)
+definition = ExtResource("3_kqgxy")
+capacity = 6
+respawn_delay = 1.2
+
+[node name="Spawn1" type="Marker2D" parent="." unique_id=213338200]
+position = Vector2(-1000, -60)
+script = ExtResource("6_5775x")
+
+[node name="Spawn2" type="Marker2D" parent="." unique_id=1550615525]
+position = Vector2(-1000, -60)
+script = ExtResource("6_5775x")
+spawn_tag = &"west"
+
+[node name="Spawn3" type="Marker2D" parent="." unique_id=69455381]
+position = Vector2(1000, -60)
+script = ExtResource("6_5775x")
+spawn_tag = &"east"

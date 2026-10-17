@@ -101,18 +101,19 @@ func run(t) -> void:
 	t.assert_eq(exits.size(), 2, "the east gate and the thorn gate leave the meadow")
 	var east_gate: Portal = null
 	for portal: Portal in exits:
-		if portal.target_map_id == &"test_b":
+		if portal.target_map_id == &"sunlit_meadow":
 			east_gate = portal
 	t.assert_true(east_gate != null, "the east gate still points at the next region")
+	t.assert_eq(east_gate.target_spawn_tag, &"west", "the east gate lands on the meadow's west entry")
 	player.global_position = Vector2(1100.0, -60.0)
 	for _i in range(120):
 		await t.physics_frame
-		if WorldManager.current_map_id == &"test_b":
+		if WorldManager.current_map_id == &"sunlit_meadow":
 			break
-	t.assert_eq(WorldManager.current_map_id, &"test_b", "walking out finishes the map")
+	t.assert_eq(WorldManager.current_map_id, &"sunlit_meadow", "walking out finishes the map")
 
 	var path: String = DebugManager.export_debug_data()
-	t.assert_true(FileAccess.get_file_as_string(path).contains("test_b"), "the snapshot follows the player out")
+	t.assert_true(FileAccess.get_file_as_string(path).contains("sunlit_meadow"), "the snapshot follows the player out")
 
 	SpawnManager.enabled = false
 	LootManager.enabled = false
