@@ -5,6 +5,11 @@
 [ext_resource type="Resource" path="res://data/mobs/hollow_rat.tres" id="3_32x58"]
 [ext_resource type="Resource" path="res://data/mobs/hollow_rabbit.tres" id="4_a3t44"]
 [ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="5_4456p"]
+[ext_resource type="Script" path="res://scripts/world/boss_encounter.gd" id="9_enc"]
+[ext_resource type="Resource" path="res://data/bosses/mawroot.tres" id="10_boss"]
+
+[sub_resource type="RectangleShape2D" id="BossTrigger_1"]
+size = Vector2(420, 180)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6f1pd"]
 size = Vector2(2600, 40)
@@ -242,3 +247,11 @@ spawn_tag = &"west"
 position = Vector2(1000, -60)
 script = ExtResource("5_4456p")
 spawn_tag = &"east"
+
+[node name="BossEncounter" type="Area2D" parent="."]
+position = Vector2(850, -40)
+script = ExtResource("9_enc")
+definition = ExtResource("10_boss")
+
+[node name="Collision" type="CollisionShape2D" parent="BossEncounter"]
+shape = SubResource("BossTrigger_1")

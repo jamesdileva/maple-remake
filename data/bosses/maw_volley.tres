@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BossAttackDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/bosses/boss_attack.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"maw_volley"
+display_name = "Root Volley"
+windup_time = 0.7
+active_time = 0.12
+recover_time = 0.6
+cooldown = 0.9
+damage = 9.0
+range = 280.0
+width = 150.0
+area_mode = 0
+telegraph_color = Color(0.55, 0.9, 0.35, 1)
+repeat_count = 3
+repeat_interval = 0.35

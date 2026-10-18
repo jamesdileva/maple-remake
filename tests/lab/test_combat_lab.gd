@@ -24,9 +24,12 @@ func run(t) -> void:
 			"%s is joypad-focusable" % control_name)
 	var boss_option: OptionButton = lab.get_node("LabUI/Panel/VBox/BossOption")
 	t.assert_false(boss_option.disabled, "boss selector is live now a benchmark exists")
-	t.assert_true(boss_option.item_count == 3, "boss selector lists none plus both bosses")
+	t.assert_true(boss_option.item_count == 6, "boss selector lists none plus every boss")
 	t.assert_eq(boss_option.get_item_text(1), "Benchmark Construct", "the benchmark construct is selectable")
 	t.assert_eq(boss_option.get_item_text(2), "Briarback Boar", "the first boss is selectable")
+	t.assert_eq(boss_option.get_item_text(3), "Mawroot the Hollow", "the forest boss is selectable")
+	t.assert_eq(boss_option.get_item_text(4), "Forge Warden", "the mine boss is selectable")
+	t.assert_eq(boss_option.get_item_text(5), "Blightheart", "the continent boss is selectable")
 	t.assert_true(lab.lab_mob_count() == 0, "no boss is alive yet")
 	boss_option.select(1)
 	DebugManager.god_mode = true

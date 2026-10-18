@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="BossDefinition" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/bosses/boss_definition.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/bosses/boss.tscn" id="2"]
+[ext_resource type="Resource" path="res://data/bosses/blight_phase1.tres" id="3"]
+[ext_resource type="Resource" path="res://data/bosses/blight_phase2.tres" id="4"]
+[ext_resource type="Resource" path="res://data/bosses/blight_phase3.tres" id="5"]
+[ext_resource type="Resource" path="res://data/loot/boss_hoard_blight.tres" id="6"]
+
+[resource]
+script = ExtResource("1")
+id = &"blightheart"
+display_name = "Blightheart"
+max_hp = 7000.0
+move_speed = 0.0
+contact_damage = 0.0
+contact_interval = 1.0
+xp = 1200.0
+gravity = 900.0
+defense = 8.0
+mob_scene = ExtResource("2")
+recommended_level = 28
+max_chain_depth = 0
+chain = null
+loot_table = ExtResource("6")
+is_boss = true
+phases = Array[Resource]([ExtResource("3"), ExtResource("4"), ExtResource("5")])
+display_scale = 1.7
+tint = Color(0.8, 0.25, 0.35, 1)

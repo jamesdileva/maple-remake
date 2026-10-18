@@ -19,6 +19,10 @@ var _facing := 1
 var _telegraph: Node2D
 var _spawn_position := Vector2.ZERO
 var _boss_definition: BossDefinition
+var _barrage_remaining := 0
+var _barrage_timer := 0.0
+var _barrage_hits := 0
+var _barrage_active := false
 
 func _ready() -> void:
 	super._ready()
@@ -72,6 +76,10 @@ func reset() -> void:
 	_facing = 1
 	velocity = Vector2.ZERO
 	global_position = _spawn_position
+	_barrage_remaining = 0
+	_barrage_timer = 0.0
+	_barrage_hits = 0
+	_barrage_active = false
 	DebugManager.register_combat_event("boss_reset", {"hp": hp})
 
 func _physics_process(delta: float) -> void:
@@ -96,9 +104,18 @@ func _physics_process(delta: float) -> void:
 			if _state_timer <= 0.0:
 				_execute_attack()
 		State.ACTIVE:
-			velocity.x = 0.0
+			var active_attack := current_attack()
+			velocity.x = float(_facing) * (active_attack.lunge_speed if active_attack != null else 0.0)
 			_state_timer = maxf(0.0, _state_timer - delta)
-			if _state_timer <= 0.0:
+			if _barrage_remaining > 0:
+				_barrage_timer = maxf(0.0, _barrage_timer - delta)
+				if _barrage_timer <= 0.0:
+					_barrage_hits += _strike(active_attack)
+					_barrage_remaining -= 1
+					_barrage_timer = active_attack.repeat_interval
+			if _state_timer <= 0.0 and _barrage_remaining <= 0:
+				if _barrage_active:
+					attack_resolved.emit(active_attack.id, _barrage_hits)
 				_begin_recover()
 		State.RECOVER:
 			velocity.x = 0.0
@@ -167,10 +184,16 @@ func _execute_attack() -> void:
 		_begin_recover()
 		return
 	state = State.ACTIVE
-	_state_timer = attack.active_time
-	var hits := _strike(attack)
+	_barrage_active = attack.repeat_count > 1
+	_barrage_hits = _strike(attack)
+	_barrage_remaining = maxi(0, attack.repeat_count - 1)
+	_barrage_timer = attack.repeat_interval
+	_state_timer = attack.active_time + float(_barrage_remaining) * attack.repeat_interval
+	var hits := _barrage_hits
 	_spawn_impact(attack)
-	attack_resolved.emit(attack.id, hits)
+	if not _barrage_active:
+		attack_resolved.emit(attack.id, hits)
+	_summon_adds(attack)
 	DebugManager.register_combat_event("boss_attack", {"attack": attack.id, "hits": hits})
 
 func _begin_recover() -> void:
@@ -240,3 +263,19 @@ func _spawn_impact(attack: BossAttackDefinition) -> void:
 
 func _on_player_died() -> void:
 	reset()
+
+func _summon_adds(attack: BossAttackDefinition) -> void:
+	if attack.summon == null or attack.summon_count <= 0:
+		return
+	var spawner: Node = get_tree().root.get_node_or_null("SpawnManager")
+	var host := get_parent()
+	if spawner == null or host == null or not spawner.has_method("acquire_chain_child"):
+		return
+	for index in range(attack.summon_count):
+		var offset := Vector2((float(index) - float(attack.summon_count - 1) * 0.5) * 90.0, -30.0)
+		spawner.acquire_chain_child(attack.summon, global_position + offset, host)
+	DebugManager.register_combat_event("boss_summon", {
+		"boss": mob_id(),
+		"mob": attack.summon.id,
+		"count": attack.summon_count,
+	})

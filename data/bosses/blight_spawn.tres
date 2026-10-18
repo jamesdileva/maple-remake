@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="BossAttackDefinition" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/bosses/boss_attack.gd" id="1"]
+[ext_resource type="Resource" path="res://data/mobs/corrupted_slime.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"blight_spawn"
+display_name = "Blight Spawn"
+windup_time = 1.0
+active_time = 0.2
+recover_time = 0.8
+cooldown = 3.0
+damage = 6.0
+range = 150.0
+width = 150.0
+area_mode = 1
+telegraph_color = Color(0.6, 0.2, 0.75, 1)
+summon = ExtResource("2")
+summon_count = 3

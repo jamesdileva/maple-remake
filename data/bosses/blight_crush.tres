@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BossAttackDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/bosses/boss_attack.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"blight_crush"
+display_name = "Blight Crush"
+windup_time = 0.7
+active_time = 0.15
+recover_time = 0.6
+cooldown = 0.8
+damage = 22.0
+range = 180.0
+width = 130.0
+area_mode = 0
+telegraph_color = Color(0.95, 0.2, 0.3, 1)

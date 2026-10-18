@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BossPhaseDefinition" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/bosses/boss_phase.gd" id="1"]
+[ext_resource type="Resource" path="res://data/bosses/blight_crush.tres" id="2"]
+[ext_resource type="Resource" path="res://data/bosses/blight_spawn.tres" id="3"]
+[ext_resource type="Resource" path="res://data/bosses/blight_ring.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+threshold = 0.66
+attacks = Array[Resource]([ExtResource("2"), ExtResource("3"), ExtResource("4")])

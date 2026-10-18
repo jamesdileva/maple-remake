@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BossAttackDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/bosses/boss_attack.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"blight_ring"
+display_name = "Blight Ring"
+windup_time = 0.9
+active_time = 0.2
+recover_time = 0.7
+cooldown = 1.1
+damage = 28.0
+range = 340.0
+width = 280.0
+area_mode = 1
+telegraph_color = Color(0.7, 0.1, 0.4, 1)

@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="BossDefinition" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/bosses/boss_definition.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/bosses/boss.tscn" id="2"]
+[ext_resource type="Resource" path="res://data/bosses/maw_phase1.tres" id="3"]
+[ext_resource type="Resource" path="res://data/bosses/maw_phase2.tres" id="4"]
+[ext_resource type="Resource" path="res://data/loot/boss_hoard_forest.tres" id="5"]
+
+[resource]
+script = ExtResource("1")
+id = &"mawroot"
+display_name = "Mawroot the Hollow"
+max_hp = 2600.0
+move_speed = 0.0
+contact_damage = 0.0
+contact_interval = 1.0
+xp = 400.0
+gravity = 900.0
+defense = 4.0
+mob_scene = ExtResource("2")
+recommended_level = 14
+max_chain_depth = 0
+chain = null
+loot_table = ExtResource("5")
+is_boss = true
+phases = Array[Resource]([ExtResource("3"), ExtResource("4")])
+display_scale = 1.4
+tint = Color(0.4, 0.7, 0.35, 1)

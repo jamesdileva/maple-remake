@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="BossAttackDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/bosses/boss_attack.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"warden_charge"
+display_name = "Steam Charge"
+windup_time = 0.7
+active_time = 0.5
+recover_time = 0.7
+cooldown = 1.2
+damage = 22.0
+range = 260.0
+width = 130.0
+area_mode = 0
+telegraph_color = Color(1, 0.35, 0.15, 1)
+lunge_speed = 420.0

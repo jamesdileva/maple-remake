@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BossAttackDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/bosses/boss_attack.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"warden_quench"
+display_name = "Quench Spray"
+windup_time = 0.6
+active_time = 0.2
+recover_time = 0.5
+cooldown = 0.8
+damage = 15.0
+range = 160.0
+width = 120.0
+area_mode = 0
+telegraph_color = Color(0.35, 0.55, 0.95, 1)

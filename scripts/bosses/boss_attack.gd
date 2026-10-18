@@ -14,3 +14,8 @@ enum Area { FRONTAL, CENTERED }
 @export var width := 80.0
 @export var area_mode: Area = Area.FRONTAL
 @export var telegraph_color := Color(1.0, 0.25, 0.2, 1.0)
+@export var repeat_count := 1
+@export var repeat_interval := 0.25
+@export var lunge_speed := 0.0
+@export var summon: MobDefinition
+@export var summon_count := 0

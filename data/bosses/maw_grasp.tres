@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BossAttackDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/bosses/boss_attack.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"maw_grasp"
+display_name = "Hollow Grasp"
+windup_time = 0.9
+active_time = 0.2
+recover_time = 0.7
+cooldown = 1.1
+damage = 24.0
+range = 320.0
+width = 260.0
+area_mode = 1
+telegraph_color = Color(0.35, 0.85, 0.4, 1)

@@ -5,6 +5,11 @@
 [ext_resource type="Resource" path="res://data/mobs/vein_bat.tres" id="3_yshss"]
 [ext_resource type="Resource" path="res://data/mobs/miner_golem.tres" id="5_mgmob"]
 [ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="4_l6pcy"]
+[ext_resource type="Script" path="res://scripts/world/boss_encounter.gd" id="9_enc"]
+[ext_resource type="Resource" path="res://data/bosses/forge_warden.tres" id="10_boss"]
+
+[sub_resource type="RectangleShape2D" id="BossTrigger_1"]
+size = Vector2(520, 220)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_divgg"]
 size = Vector2(2600, 40)
@@ -259,3 +264,11 @@ spawn_tag = &"west"
 position = Vector2(1000, -60)
 script = ExtResource("4_l6pcy")
 spawn_tag = &"east"
+
+[node name="BossEncounter" type="Area2D" parent="."]
+position = Vector2(0, -40)
+script = ExtResource("9_enc")
+definition = ExtResource("10_boss")
+
+[node name="Collision" type="CollisionShape2D" parent="BossEncounter"]
+shape = SubResource("BossTrigger_1")

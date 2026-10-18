@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BossAttackDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/bosses/boss_attack.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"maw_sweep"
+display_name = "Thorn Sweep"
+windup_time = 0.8
+active_time = 0.15
+recover_time = 0.55
+cooldown = 0.8
+damage = 18.0
+range = 240.0
+width = 200.0
+area_mode = 1
+telegraph_color = Color(1, 0.4, 0.2, 1)

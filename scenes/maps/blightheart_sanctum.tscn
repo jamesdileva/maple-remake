@@ -4,6 +4,11 @@
 [ext_resource type="Script" path="res://scripts/systems/spawn_zone.gd" id="2_4k63j"]
 [ext_resource type="Resource" path="res://data/mobs/sanctum_adept.tres" id="3_4f2q6"]
 [ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="4_q7p1g"]
+[ext_resource type="Script" path="res://scripts/world/boss_encounter.gd" id="9_enc"]
+[ext_resource type="Resource" path="res://data/bosses/blightheart.tres" id="10_boss"]
+
+[sub_resource type="RectangleShape2D" id="BossTrigger_1"]
+size = Vector2(900, 240)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tf2rt"]
 size = Vector2(2000, 40)
@@ -174,3 +179,11 @@ spawn_tag = &"west"
 position = Vector2(200, -60)
 script = ExtResource("4_q7p1g")
 spawn_tag = &"boss"
+
+[node name="BossEncounter" type="Area2D" parent="."]
+position = Vector2(200, -40)
+script = ExtResource("9_enc")
+definition = ExtResource("10_boss")
+
+[node name="Collision" type="CollisionShape2D" parent="BossEncounter"]
+shape = SubResource("BossTrigger_1")
