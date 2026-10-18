@@ -9,6 +9,7 @@
 5. `combat-design.md` — classes, FMAs, mobs, bosses, and balance
 6. `debug-and-qa.md` — debug tools, test strategy, and performance QA
 7. `content-bible.md` — world, visual direction, mobs, abilities, and art pipeline
+8. `art-pipeline.md` — agent-assisted spec → concept → Blender → sprites workflow
 
 ## MVP Freeze
 

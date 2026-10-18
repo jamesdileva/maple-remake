@@ -14,6 +14,9 @@ extends Resource
 @export var recommended_level := 1
 @export var body_tint := Color(1, 1, 1, 1)
 @export var visual_scale := 1.0
+@export var sprite_frames: SpriteFrames
+@export var hit_effect: SpriteFrames
+@export var sprite_offset := Vector2.ZERO
 @export var max_chain_depth := 0
 @export var chain: ChainPayload
 @export var loot_table: LootTable

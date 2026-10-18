@@ -1,0 +1,34 @@
+{
+  "id": "meadow_slime",
+  "display_name": "Meadow Slime",
+  "concept": "A cheerful meadow slime. A squashed glossy green blob with two dot eyes and a soft highlight; reads instantly at ~40px. Silhouette is a rounded dome, slightly wider at the base, with a gentle squash-and-stretch rhythm.",
+  "cell": 64,
+  "sprite_height": 44,
+  "palette": {
+    "body": [0.55, 0.80, 0.35],
+    "highlight": [0.82, 0.97, 0.60],
+    "eye": [0.08, 0.10, 0.08],
+    "outline": [0.16, 0.24, 0.14],
+    "goo": [0.48, 0.74, 0.30]
+  },
+  "shape": {
+    "radius": 0.46,
+    "squash": 0.26,
+    "eye_spacing": 0.20,
+    "eye_size": 0.062,
+    "highlight_size": 0.07
+  },
+  "curves": {
+    "idle": [[0.0, 1.0, 1.0, 0.0, 0.0, 0.0], [0.25, 1.03, 0.97, 0.0, -0.01, 0.0], [0.5, 0.99, 1.05, 0.0, 0.02, 0.0], [0.75, 1.02, 0.98, 0.0, 0.0, 0.0], [1.0, 1.0, 1.0, 0.0, 0.0, 0.0]],
+    "hop": [[0.0, 1.06, 0.90, 0.0, -0.03, 0.0], [0.15, 0.86, 1.22, 0.0, 0.10, 0.0], [0.35, 0.90, 1.14, 0.0, 0.24, 0.0], [0.5, 0.95, 1.06, 0.0, 0.27, 0.0], [0.68, 0.92, 1.12, 0.0, 0.16, 0.0], [0.85, 1.16, 0.84, 0.0, -0.05, 0.0], [1.0, 1.0, 1.0, 0.0, 0.0, 0.0]],
+    "attack": [[0.0, 1.0, 1.0, 0.0, 0.0, 0.0], [0.25, 0.92, 1.14, 0.0, 0.06, 0.0], [0.45, 0.88, 1.20, 0.02, 0.10, 0.0], [0.62, 1.24, 0.74, 0.12, -0.02, 0.0], [0.8, 1.10, 0.90, 0.06, 0.0, 0.0], [1.0, 1.0, 1.0, 0.0, 0.0, 0.0]],
+    "hit": [[0.0, 0.90, 1.10, 0.0, 0.0, 0.12], [0.5, 1.12, 0.88, 0.0, 0.0, -0.10], [1.0, 1.0, 1.0, 0.0, 0.0, 0.0]]
+  },
+  "animations": [
+    {"name": "idle", "frames": 6, "fps": 6, "loop": true},
+    {"name": "hop", "frames": 8, "fps": 12, "loop": true},
+    {"name": "attack", "frames": 6, "fps": 14, "loop": false},
+    {"name": "hit", "frames": 3, "fps": 16, "loop": false}
+  ],
+  "effect": {"id": "slime_splash", "cell": 48, "frames": 6, "fps": 18}
+}

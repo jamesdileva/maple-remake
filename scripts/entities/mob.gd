@@ -26,6 +26,8 @@ var _xp := 5.0
 var _player: Node2D
 var _visual: Node2D
 var _bob_time := 0.0
+var _sprite: AnimatedSprite2D
+var _anim_lock := 0.0
 
 func _ready() -> void:
 	collision_layer = CollisionLayers.MOBS
@@ -72,7 +74,10 @@ func is_slowed() -> bool:
 	return _slow_remaining > 0.0
 
 func take_damage(amount: float, source: Node = null) -> float:
-	return DamageSystem.apply(DamageEvent.create(self, amount, source)).applied
+	var applied := DamageSystem.apply(DamageEvent.create(self, amount, source)).applied
+	if applied > 0.0 and not dead:
+		_play_once(&"hit", 0.18)
+	return applied
 
 func apply_damage(amount: float) -> float:
 	hp -= amount
@@ -186,8 +191,27 @@ func _apply_visual() -> void:
 		return
 	_visual.scale = Vector2.ONE * maxf(0.1, definition.visual_scale if definition != null else 1.0)
 	var body := _visual.get_node_or_null("Body") as ColorRect
-	if body != null and definition != null and not definition.is_boss:
-		body.color = definition.body_tint
+	var eyes := _visual.get_node_or_null("Eyes") as ColorRect
+	var frames: SpriteFrames = definition.sprite_frames if definition != null else null
+	if frames != null:
+		if _sprite == null or not is_instance_valid(_sprite):
+			_sprite = AnimatedSprite2D.new()
+			_sprite.name = "Sprite"
+			_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+			_visual.add_child(_sprite)
+		_sprite.sprite_frames = frames
+		_sprite.offset = definition.sprite_offset
+		_sprite.visible = true
+		_anim_lock = 0.0
+		_play_loop(&"idle")
+	elif _sprite != null and is_instance_valid(_sprite):
+		_sprite.visible = false
+	if body != null:
+		body.visible = frames == null
+		if definition != null and not definition.is_boss:
+			body.color = definition.body_tint
+	if eyes != null:
+		eyes.visible = frames == null
 
 func apply_debug_kill() -> void:
 	take_damage(999999.0, null)
@@ -205,9 +229,44 @@ func xp_reward() -> float:
 	return _xp
 
 func _animate_visual(delta: float) -> void:
+	if _anim_lock > 0.0:
+		_anim_lock = maxf(0.0, _anim_lock - delta)
+		return
+	if _sprite != null and _sprite.visible:
+		_play_loop(&"hop" if absf(velocity.x) > 5.0 else &"idle")
+		return
 	_bob_time += delta
 	if _visual != null:
 		_visual.position.y = sin(_bob_time * BOB_SPEED) * BOB_AMPLITUDE
+
+func _play_loop(animation: StringName) -> void:
+	if _sprite == null or _sprite.sprite_frames == null:
+		return
+	if not _sprite.sprite_frames.has_animation(animation):
+		return
+	if _sprite.animation == animation and _sprite.is_playing():
+		return
+	_sprite.play(animation)
+
+func _play_once(animation: StringName, duration: float) -> void:
+	if _sprite == null or _sprite.sprite_frames == null or not _sprite.sprite_frames.has_animation(animation):
+		return
+	_sprite.play(animation)
+	_anim_lock = duration
+
+func _spawn_hit_effect(target: Node2D) -> void:
+	if definition == null or definition.hit_effect == null:
+		return
+	var parent_node := get_parent()
+	if parent_node == null:
+		return
+	var effect: AnimatedSprite2D = load("res://scenes/effects/sprite_effect.tscn").instantiate()
+	if effect == null:
+		return
+	effect.set("frames", definition.hit_effect)
+	effect.add_to_group("effects")
+	parent_node.add_child(effect)
+	effect.global_position = (global_position + target.global_position) * 0.5
 
 func _try_contact_damage(player: Node2D) -> void:
 	if player == null or _contact_cooldown > 0.0:
@@ -215,6 +274,8 @@ func _try_contact_damage(player: Node2D) -> void:
 	if not _touching(player):
 		return
 	_contact_cooldown = _contact_interval
+	_play_once(&"attack", 0.35)
+	_spawn_hit_effect(player)
 	if player.has_method("take_damage"):
 		player.take_damage(_contact_damage, self)
 

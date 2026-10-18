@@ -235,6 +235,9 @@ Revision
 
 An MCP-connected agent can assist with Blender operations if the chosen toolchain supports it.
 
+This pipeline is implemented and runnable; see `docs/art-pipeline.md` for the
+single-command workflow, the human approval gate and how to add a new mob.
+
 ## 13. Asset Reuse
 
 Prioritize reusable:

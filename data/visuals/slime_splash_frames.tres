@@ -1,0 +1,53 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/effects/slime_splash.png" id="1_p2yyn"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1tby1"]
+atlas = ExtResource("1_p2yyn")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rgmsl"]
+atlas = ExtResource("1_p2yyn")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jt4r7"]
+atlas = ExtResource("1_p2yyn")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kmccf"]
+atlas = ExtResource("1_p2yyn")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4gl3o"]
+atlas = ExtResource("1_p2yyn")
+region = Rect2(192, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_csipp"]
+atlas = ExtResource("1_p2yyn")
+region = Rect2(240, 0, 48, 48)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1tby1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rgmsl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jt4r7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kmccf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4gl3o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_csipp")
+}],
+"loop": 0,
+"name": &"slime_splash",
+"speed": 18.0
+}]

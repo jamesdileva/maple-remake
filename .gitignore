@@ -14,3 +14,7 @@ Thumbs.db
 
 # Editor
 *.import
+
+# Art pipeline staging (renders, manifests, concept boards)
+/art_src/*
+!/art_src/.gdignore
