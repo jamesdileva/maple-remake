@@ -1,0 +1,82 @@
+[gd_resource type="Resource" script_class="EnvironmentKit" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/prop_sprite.gd" id="1_pbcif"]
+[ext_resource type="Texture2D" path="res://assets/art/env/forgotten_mine.png" id="2_yp78l"]
+[ext_resource type="Script" path="res://scripts/world/environment_kit.gd" id="3_h4ntq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vcjxq"]
+atlas = ExtResource("2_yp78l")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_lt0uk"]
+script = ExtResource("1_pbcif")
+texture = SubResource("AtlasTexture_vcjxq")
+pivot = Vector2(0, 32.374)
+default_scale = 0.9
+archetype = &"rock"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a4i43"]
+atlas = ExtResource("2_yp78l")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_reoue"]
+script = ExtResource("1_pbcif")
+texture = SubResource("AtlasTexture_a4i43")
+pivot = Vector2(0, 50.684)
+default_scale = 0.9
+archetype = &"ore"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fcmfq"]
+atlas = ExtResource("2_yp78l")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_qn3bu"]
+script = ExtResource("1_pbcif")
+texture = SubResource("AtlasTexture_fcmfq")
+pivot = Vector2(0, 53.333)
+archetype = &"crystal"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xd66n"]
+atlas = ExtResource("2_yp78l")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_ux8x6"]
+script = ExtResource("1_pbcif")
+texture = SubResource("AtlasTexture_xd66n")
+pivot = Vector2(0, 53.333)
+default_scale = 1.6
+archetype = &"beam"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h5wmm"]
+atlas = ExtResource("2_yp78l")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_ealig"]
+script = ExtResource("1_pbcif")
+texture = SubResource("AtlasTexture_h5wmm")
+pivot = Vector2(0, 53.333)
+default_scale = 1.1
+archetype = &"cart"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j18ne"]
+atlas = ExtResource("2_yp78l")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_0spbq"]
+script = ExtResource("1_pbcif")
+texture = SubResource("AtlasTexture_j18ne")
+pivot = Vector2(0, 50)
+default_scale = 0.9
+archetype = &"crate"
+
+[resource]
+script = ExtResource("3_h4ntq")
+id = &"forgotten_mine"
+props = {
+"beam": SubResource("Resource_ux8x6"),
+"cart": SubResource("Resource_ealig"),
+"crate": SubResource("Resource_0spbq"),
+"crystal": SubResource("Resource_qn3bu"),
+"ore": SubResource("Resource_reoue"),
+"rock": SubResource("Resource_lt0uk")
+}

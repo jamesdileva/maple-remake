@@ -5,6 +5,8 @@
 [ext_resource type="Resource" path="res://data/mobs/corrupted_slime.tres" id="3_4i4n6"]
 [ext_resource type="Resource" path="res://data/mobs/night_stalker.tres" id="4_ljmq0"]
 [ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="5_edclm"]
+[ext_resource type="PackedScene" path="res://scenes/world/prop_layer.tscn" id="prop_layer"]
+[ext_resource type="Resource" path="res://data/decor/haunted_fortress.tres" id="decor_plan"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t5fye"]
 size = Vector2(2600, 40)
@@ -151,46 +153,6 @@ offset_bottom = 12.0
 mouse_filter = 2
 color = Color(0.3, 0.28, 0.36, 1)
 
-[node name="Decor1" type="ColorRect" parent="." unique_id=284806877]
-offset_left = -1150.0
-offset_top = -240.0
-offset_right = -1060.0
-offset_bottom = -20.0
-mouse_filter = 2
-color = Color(0.3, 0.28, 0.36, 1)
-
-[node name="Decor2" type="ColorRect" parent="." unique_id=673595058]
-offset_left = -1080.0
-offset_top = -300.0
-offset_right = -1020.0
-offset_bottom = -220.0
-mouse_filter = 2
-color = Color(0.2, 0.2, 0.28, 1)
-
-[node name="Decor3" type="ColorRect" parent="." unique_id=1048304613]
-offset_left = 1060.0
-offset_top = -240.0
-offset_right = 1150.0
-offset_bottom = -20.0
-mouse_filter = 2
-color = Color(0.3, 0.28, 0.36, 1)
-
-[node name="Decor4" type="ColorRect" parent="." unique_id=1864286015]
-offset_left = -380.0
-offset_top = -300.0
-offset_right = -354.0
-offset_bottom = -274.0
-mouse_filter = 2
-color = Color(0.5, 0.4, 0.5, 1)
-
-[node name="Decor5" type="ColorRect" parent="." unique_id=1642705253]
-offset_left = 700.0
-offset_top = -300.0
-offset_right = 726.0
-offset_bottom = -274.0
-mouse_filter = 2
-color = Color(0.5, 0.4, 0.5, 1)
-
 [node name="Portal1" type="Area2D" parent="." unique_id=1599696668]
 position = Vector2(-1200, -60)
 script = ExtResource("1_oqchb")
@@ -259,3 +221,6 @@ spawn_tag = &"west"
 position = Vector2(1000, -60)
 script = ExtResource("5_edclm")
 spawn_tag = &"east"
+
+[node name="PropLayer" parent="." instance=ExtResource("prop_layer")]
+plan = ExtResource("decor_plan")

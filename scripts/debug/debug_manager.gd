@@ -193,6 +193,7 @@ func export_debug_data() -> String:
 		"entity_counts": entity_counts(),
 		"bosses": _boss_stats(),
 		"roster": _roster_stats(),
+		"environment": _environment_stats(),
 		"spawner": _spawner_stats(),
 		"loot": _loot_stats(),
 		"player_position": _player_position(),
@@ -263,6 +264,22 @@ func _roster_stats() -> Dictionary:
 		var id := String(definition.id)
 		counts[id] = int(counts.get(id, 0)) + 1
 	return counts
+
+func _environment_stats() -> Dictionary:
+	if get_tree() == null:
+		return {"layers": 0, "decor": 0, "kits": []}
+	var kits := {}
+	var layers := 0
+	var decor := 0
+	for layer: Object in get_tree().get_nodes_in_group("prop_layer"):
+		if not is_instance_valid(layer):
+			continue
+		layers += 1
+		decor += int(layer.get("placed_count"))
+		var plan: Variant = layer.get("plan")
+		if plan != null and plan.kit != null:
+			kits[String(plan.kit.id)] = int(kits.get(String(plan.kit.id), 0)) + 1
+	return {"layers": layers, "decor": decor, "kits": kits.keys()}
 
 func _boss_stats() -> Array:
 	if get_tree() == null:

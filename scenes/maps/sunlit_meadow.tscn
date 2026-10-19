@@ -5,6 +5,8 @@
 [ext_resource type="Resource" path="res://data/mobs/meadow_slime.tres" id="3_c2t77"]
 [ext_resource type="Resource" path="res://data/mobs/bloom_bud.tres" id="4_sqm44"]
 [ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="5_kr4r3"]
+[ext_resource type="PackedScene" path="res://scenes/world/prop_layer.tscn" id="prop_layer"]
+[ext_resource type="Resource" path="res://data/decor/sunlit_meadow.tres" id="decor_plan"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gfvvr"]
 size = Vector2(2400, 40)
@@ -151,54 +153,6 @@ offset_bottom = 12.0
 mouse_filter = 2
 color = Color(0.52, 0.68, 0.42, 1)
 
-[node name="Decor1" type="ColorRect" parent="." unique_id=1923468878]
-offset_left = -1040.0
-offset_top = -110.0
-offset_right = -970.0
-offset_bottom = -20.0
-mouse_filter = 2
-color = Color(0.45, 0.3, 0.18, 1)
-
-[node name="Decor2" type="ColorRect" parent="." unique_id=1907620052]
-offset_left = -1065.0
-offset_top = -160.0
-offset_right = -945.0
-offset_bottom = -106.0
-mouse_filter = 2
-color = Color(0.3, 0.55, 0.3, 1)
-
-[node name="Decor3" type="ColorRect" parent="." unique_id=1608326420]
-offset_left = 980.0
-offset_top = -110.0
-offset_right = 1050.0
-offset_bottom = -20.0
-mouse_filter = 2
-color = Color(0.45, 0.3, 0.18, 1)
-
-[node name="Decor4" type="ColorRect" parent="." unique_id=142575302]
-offset_left = 955.0
-offset_top = -160.0
-offset_right = 1075.0
-offset_bottom = -106.0
-mouse_filter = 2
-color = Color(0.3, 0.55, 0.3, 1)
-
-[node name="Decor5" type="ColorRect" parent="." unique_id=1997423240]
-offset_left = -160.0
-offset_top = -28.0
-offset_right = -140.0
-offset_bottom = -18.0
-mouse_filter = 2
-color = Color(0.95, 0.6, 0.7, 1)
-
-[node name="Decor6" type="ColorRect" parent="." unique_id=1233799291]
-offset_left = 160.0
-offset_top = -28.0
-offset_right = 180.0
-offset_bottom = -18.0
-mouse_filter = 2
-color = Color(0.95, 0.6, 0.7, 1)
-
 [node name="Portal1" type="Area2D" parent="." unique_id=1459671934]
 position = Vector2(-1100, -60)
 script = ExtResource("1_2l1j5")
@@ -267,3 +221,6 @@ spawn_tag = &"west"
 position = Vector2(900, -60)
 script = ExtResource("5_kr4r3")
 spawn_tag = &"east"
+
+[node name="PropLayer" parent="." instance=ExtResource("prop_layer")]
+plan = ExtResource("decor_plan")

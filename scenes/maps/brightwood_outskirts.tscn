@@ -9,6 +9,8 @@
 [ext_resource type="Resource" path="res://data/mobs/lesser_slime.tres" id="7"]
 [ext_resource type="Resource" path="res://data/mobs/bomb_slime.tres" id="8"]
 [ext_resource type="Audio" path="res://assets/audio/brightwood_pad.wav" id="9"]
+[ext_resource type="PackedScene" path="res://scenes/world/prop_layer.tscn" id="prop_layer"]
+[ext_resource type="Resource" path="res://data/decor/brightwood_outskirts.tres" id="decor_plan"]
 
 [sub_resource type="RectangleShape2D" id="Floor_1"]
 size = Vector2(2400, 40)
@@ -448,3 +450,6 @@ color = Color(0.35, 0.18, 0.2, 1)
 script = ExtResource("4")
 stream = ExtResource("9")
 volume_db = -8.0
+
+[node name="PropLayer" parent="." instance=ExtResource("prop_layer")]
+plan = ExtResource("decor_plan")

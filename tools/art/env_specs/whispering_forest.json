@@ -1,0 +1,28 @@
+{
+  "id": "whispering_forest",
+  "display_name": "Whispering Forest Kit",
+  "cell": 128,
+  "palette": {
+    "trunk": [0.36, 0.25, 0.16],
+    "leaf": [0.28, 0.50, 0.30],
+    "leaf_dark": [0.20, 0.38, 0.24],
+    "rock": [0.48, 0.48, 0.46],
+    "rock_dark": [0.36, 0.36, 0.35],
+    "wood": [0.45, 0.32, 0.20],
+    "stone": [0.55, 0.54, 0.50],
+    "cloth": [0.55, 0.40, 0.45],
+    "metal": [0.42, 0.42, 0.46],
+    "glow": [0.70, 0.95, 0.60],
+    "flower": [0.85, 0.80, 0.55],
+    "cap": [0.80, 0.45, 0.40],
+    "accent": [0.60, 0.55, 0.40]
+  },
+  "props": [
+    { "name": "tree", "archetype": "tree", "scale": 2.2 },
+    { "name": "bush", "archetype": "bush", "scale": 1.0 },
+    { "name": "fern", "archetype": "fern", "scale": 0.9 },
+    { "name": "mushroom", "archetype": "mushroom", "scale": 0.7 },
+    { "name": "rock", "archetype": "rock", "scale": 0.8 },
+    { "name": "dead_tree", "archetype": "dead_tree", "scale": 2.0 }
+  ]
+}

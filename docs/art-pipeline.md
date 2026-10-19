@@ -68,3 +68,44 @@ mobs need no script changes.
 
 Renders and manifests stay in `art_src/` (git-ignored, `.gdignore`'d). The
 committed artifacts are the atlas PNG/JSON and the `.tres` resources.
+
+## Environment kits
+
+Environment regions go through the same flow, sharing one prop builder:
+
+```powershell
+godot --headless --script tools/art/run_env_pipeline.gd -- --kit sunlit_meadow
+```
+
+| Stage | Tool | Output |
+| --- | --- | --- |
+| Spec | `tools/art/env_specs/<id>.json` | palette + prop list (name, archetype, scale) |
+| Concept | `tools/art/concept.py` | `art_src/concept/<id>_concept.png` |
+| Approval | `tools/art/env_specs/<id>.approved` (human) | gate for the next stages |
+| Render | `tools/art/blender/build_env.py` | `art_src/env/<id>/props/*.png` + `manifest.json` |
+| Pack | `tools/art/pack_env.py` | `assets/art/env/<id>.{png,json}` |
+| Integrate | `tools/art/build_env_kit.gd` | `data/env/<id>_kit.tres` |
+
+Every prop is one archetype from a single shared table (tree, bush, rock, grass,
+flower, mushroom, fern, crystal, ore, pillar, broken_pillar, crate, barrel,
+lantern, building, sign, beam, cart, torch, battlement, spike, banner, rubble,
+altar, tentacle, dead_tree). A region kit is therefore just a **palette plus a
+prop selection** — variation comes from colour and placement, never from a forked
+builder. Each Blender render is auto-framed, and the manifest records the prop's
+feet (bottom-centre) pivot in pixels so sprites anchor to the ground.
+
+Kits are the seven region kits (`brightwood_outskirts`, `sunlit_meadow`,
+`whispering_forest`, `hollow_forest`, `forgotten_mine`, `ruined_settlement`,
+`haunted_fortress`); `blightheart_sanctum` and `thornhollow_ring` reuse them.
+
+## Decor placement
+
+`data/decor/<map_id>.tres` is a `DecorPlan`: a kit reference plus parallel arrays
+of prop names, positions, scales and flips. Maps instance
+`scenes/world/prop_layer.tscn` with that plan; `PropLayer` builds the sprites at
+load and reports an `env_decor` debug event. Unknown prop names are skipped and
+recorded rather than crashing, so a plan can reference a kit prop that does not
+exist yet.
+
+To dress a new map: add a `data/decor/<map_id>.tres`, then add a `PropLayer` node
+with `plan` pointing at it. No code changes.

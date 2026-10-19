@@ -1,0 +1,29 @@
+{
+  "id": "haunted_fortress",
+  "display_name": "Haunted Fortress Kit",
+  "cell": 128,
+  "palette": {
+    "trunk": [0.30, 0.26, 0.24],
+    "leaf": [0.34, 0.40, 0.36],
+    "leaf_dark": [0.26, 0.30, 0.28],
+    "rock": [0.44, 0.45, 0.48],
+    "rock_dark": [0.32, 0.33, 0.36],
+    "wood": [0.40, 0.32, 0.24],
+    "stone": [0.48, 0.50, 0.54],
+    "cloth": [0.40, 0.35, 0.55],
+    "metal": [0.55, 0.57, 0.60],
+    "glow": [0.70, 0.85, 1.0],
+    "flower": [0.60, 0.65, 0.80],
+    "cap": [0.50, 0.50, 0.60],
+    "accent": [0.55, 0.60, 0.68]
+  },
+  "props": [
+    { "name": "battlement", "archetype": "battlement", "scale": 1.6 },
+    { "name": "spike", "archetype": "spike", "scale": 1.0 },
+    { "name": "torch", "archetype": "torch", "scale": 1.2 },
+    { "name": "banner", "archetype": "banner", "scale": 1.5 },
+    { "name": "broken_pillar", "archetype": "broken_pillar", "scale": 1.1 },
+    { "name": "rubble", "archetype": "rubble", "scale": 0.7 },
+    { "name": "rock", "archetype": "rock", "scale": 0.9 }
+  ]
+}

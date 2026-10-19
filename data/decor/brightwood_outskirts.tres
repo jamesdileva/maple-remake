@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DecorPlan" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/decor_plan.gd" id="1_decor"]
+[ext_resource type="Resource" path="res://data/env/brightwood_outskirts_kit.tres" id="2_kit"]
+
+[resource]
+script = ExtResource("1_decor")
+id = &"brightwood_outskirts"
+kit = ExtResource("2_kit")
+props = PackedStringArray("building", "tree", "bush", "rock", "flower", "grass", "crate", "barrel", "lantern", "sign")
+positions = PackedVector2Array(900, -20, 1020, -20, -500, -20, 150, -20, -350, -20, -1050, -20, -960, -20, -930, -20, -870, -20, -760, -20)
+scales = PackedFloat32Array(1, 1, 1.1, 1, 1, 1, 1, 1, 1, 1)
+flips = PackedByteArray(0, 0, 0, 1, 0, 0, 0, 0, 0, 0)
+z_index = -1

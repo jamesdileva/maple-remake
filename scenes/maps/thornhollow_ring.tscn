@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/world/portal.gd" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/world/prop_layer.tscn" id="prop_layer"]
+[ext_resource type="Resource" path="res://data/decor/thornhollow_ring.tres" id="decor_plan"]
 
 [sub_resource type="RectangleShape2D" id="Floor_1"]
 size = Vector2(1200, 40)
@@ -158,3 +160,6 @@ target_spawn_tag = &"gate"
 
 [node name="Collision" type="CollisionShape2D" parent="ExitMeadow"]
 shape = SubResource("Portal_1")
+
+[node name="PropLayer" parent="." instance=ExtResource("prop_layer")]
+plan = ExtResource("decor_plan")

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DecorPlan" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/decor_plan.gd" id="1_decor"]
+[ext_resource type="Resource" path="res://data/env/hollow_forest_kit.tres" id="2_kit"]
+
+[resource]
+script = ExtResource("1_decor")
+id = &"blightheart_sanctum"
+kit = ExtResource("2_kit")
+props = PackedStringArray("tentacle", "tentacle", "altar", "crystal", "crystal", "rock")
+positions = PackedVector2Array(-770, -20, 770, -20, 0, -20, -400, -20, 400, -20, 900, -20)
+scales = PackedFloat32Array(1, 1, 1.2, 1.1, 1.1, 1)
+flips = PackedByteArray(0, 1, 0, 0, 0, 0)
+z_index = -1

@@ -236,7 +236,9 @@ Revision
 An MCP-connected agent can assist with Blender operations if the chosen toolchain supports it.
 
 This pipeline is implemented and runnable; see `docs/art-pipeline.md` for the
-single-command workflow, the human approval gate and how to add a new mob.
+single-command workflow, the human approval gate and how to add a new mob. The
+same flow produces the environment kits (one shared prop archetype table, region
+variation by palette + placement); see the "Environment kits" section there.
 
 ## 13. Asset Reuse
 

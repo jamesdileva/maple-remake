@@ -1,0 +1,29 @@
+{
+  "id": "ruined_settlement",
+  "display_name": "Ruined Settlement Kit",
+  "cell": 128,
+  "palette": {
+    "trunk": [0.42, 0.34, 0.24],
+    "leaf": [0.42, 0.56, 0.36],
+    "leaf_dark": [0.32, 0.44, 0.30],
+    "rock": [0.58, 0.57, 0.54],
+    "rock_dark": [0.44, 0.43, 0.41],
+    "wood": [0.50, 0.38, 0.24],
+    "stone": [0.64, 0.62, 0.58],
+    "cloth": [0.60, 0.45, 0.40],
+    "metal": [0.46, 0.46, 0.48],
+    "glow": [0.95, 0.85, 0.60],
+    "flower": [0.85, 0.70, 0.60],
+    "cap": [0.70, 0.55, 0.45],
+    "accent": [0.55, 0.60, 0.50]
+  },
+  "props": [
+    { "name": "pillar", "archetype": "pillar", "scale": 1.6 },
+    { "name": "broken_pillar", "archetype": "broken_pillar", "scale": 1.1 },
+    { "name": "rubble", "archetype": "rubble", "scale": 0.7 },
+    { "name": "crate", "archetype": "crate", "scale": 0.9 },
+    { "name": "grass", "archetype": "grass", "scale": 0.6 },
+    { "name": "rock", "archetype": "rock", "scale": 0.8 },
+    { "name": "banner", "archetype": "banner", "scale": 1.5 }
+  ]
+}

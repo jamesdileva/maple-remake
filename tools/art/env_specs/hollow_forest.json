@@ -1,0 +1,30 @@
+{
+  "id": "hollow_forest",
+  "display_name": "Hollow Forest Kit",
+  "cell": 128,
+  "palette": {
+    "trunk": [0.28, 0.24, 0.30],
+    "leaf": [0.38, 0.28, 0.48],
+    "leaf_dark": [0.26, 0.20, 0.34],
+    "rock": [0.42, 0.40, 0.46],
+    "rock_dark": [0.30, 0.29, 0.34],
+    "wood": [0.34, 0.28, 0.32],
+    "stone": [0.44, 0.42, 0.48],
+    "cloth": [0.45, 0.30, 0.55],
+    "metal": [0.38, 0.36, 0.44],
+    "glow": [0.75, 0.50, 1.0],
+    "flower": [0.80, 0.50, 0.95],
+    "cap": [0.55, 0.35, 0.75],
+    "accent": [0.60, 0.45, 0.80]
+  },
+  "props": [
+    { "name": "dead_tree", "archetype": "dead_tree", "scale": 2.2 },
+    { "name": "bush", "archetype": "bush", "scale": 1.0 },
+    { "name": "mushroom", "archetype": "mushroom", "scale": 0.8 },
+    { "name": "fern", "archetype": "fern", "scale": 0.9 },
+    { "name": "rock", "archetype": "rock", "scale": 0.9 },
+    { "name": "crystal", "archetype": "crystal", "scale": 1.1 },
+    { "name": "tentacle", "archetype": "tentacle", "scale": 1.8 },
+    { "name": "altar", "archetype": "altar", "scale": 1.3 }
+  ]
+}

@@ -1,0 +1,95 @@
+[gd_resource type="Resource" script_class="EnvironmentKit" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/prop_sprite.gd" id="1_xruju"]
+[ext_resource type="Texture2D" path="res://assets/art/env/ruined_settlement.png" id="2_d38cl"]
+[ext_resource type="Script" path="res://scripts/world/environment_kit.gd" id="3_khsjd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kwc4d"]
+atlas = ExtResource("2_d38cl")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_p3i8w"]
+script = ExtResource("1_xruju")
+texture = SubResource("AtlasTexture_kwc4d")
+pivot = Vector2(0, 53.333)
+default_scale = 1.6
+archetype = &"pillar"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x1u0m"]
+atlas = ExtResource("2_d38cl")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_ba8jm"]
+script = ExtResource("1_xruju")
+texture = SubResource("AtlasTexture_x1u0m")
+pivot = Vector2(0, 53.333)
+default_scale = 1.1
+archetype = &"broken_pillar"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gchi4"]
+atlas = ExtResource("2_d38cl")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_e8a3h"]
+script = ExtResource("1_xruju")
+texture = SubResource("AtlasTexture_gchi4")
+pivot = Vector2(0, 20.168)
+default_scale = 0.7
+archetype = &"rubble"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2n8wn"]
+atlas = ExtResource("2_d38cl")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_ypu4q"]
+script = ExtResource("1_xruju")
+texture = SubResource("AtlasTexture_2n8wn")
+pivot = Vector2(0, 50)
+default_scale = 0.9
+archetype = &"crate"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ogkhq"]
+atlas = ExtResource("2_d38cl")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_cg0y1"]
+script = ExtResource("1_xruju")
+texture = SubResource("AtlasTexture_ogkhq")
+pivot = Vector2(0, 52.174)
+default_scale = 0.6
+archetype = &"grass"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ctxpx"]
+atlas = ExtResource("2_d38cl")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_im1mj"]
+script = ExtResource("1_xruju")
+texture = SubResource("AtlasTexture_ctxpx")
+pivot = Vector2(0, 32.374)
+default_scale = 0.8
+archetype = &"rock"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tr0jk"]
+atlas = ExtResource("2_d38cl")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_1rc8v"]
+script = ExtResource("1_xruju")
+texture = SubResource("AtlasTexture_tr0jk")
+pivot = Vector2(0, 53.333)
+default_scale = 1.5
+archetype = &"banner"
+
+[resource]
+script = ExtResource("3_khsjd")
+id = &"ruined_settlement"
+props = {
+"banner": SubResource("Resource_1rc8v"),
+"broken_pillar": SubResource("Resource_ba8jm"),
+"crate": SubResource("Resource_ypu4q"),
+"grass": SubResource("Resource_cg0y1"),
+"pillar": SubResource("Resource_p3i8w"),
+"rock": SubResource("Resource_im1mj"),
+"rubble": SubResource("Resource_e8a3h")
+}

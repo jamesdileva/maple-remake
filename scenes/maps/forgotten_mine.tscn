@@ -7,6 +7,8 @@
 [ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="4_l6pcy"]
 [ext_resource type="Script" path="res://scripts/world/boss_encounter.gd" id="9_enc"]
 [ext_resource type="Resource" path="res://data/bosses/forge_warden.tres" id="10_boss"]
+[ext_resource type="PackedScene" path="res://scenes/world/prop_layer.tscn" id="prop_layer"]
+[ext_resource type="Resource" path="res://data/decor/forgotten_mine.tres" id="decor_plan"]
 
 [sub_resource type="RectangleShape2D" id="BossTrigger_1"]
 size = Vector2(520, 220)
@@ -156,46 +158,6 @@ offset_bottom = 12.0
 mouse_filter = 2
 color = Color(0.36, 0.3, 0.26, 1)
 
-[node name="Decor1" type="ColorRect" parent="." unique_id=1926675123]
-offset_left = -1170.0
-offset_top = -140.0
-offset_right = -1090.0
-offset_bottom = -20.0
-mouse_filter = 2
-color = Color(0.42, 0.38, 0.34, 1)
-
-[node name="Decor2" type="ColorRect" parent="." unique_id=466444401]
-offset_left = 1090.0
-offset_top = -140.0
-offset_right = 1170.0
-offset_bottom = -20.0
-mouse_filter = 2
-color = Color(0.42, 0.38, 0.34, 1)
-
-[node name="Decor3" type="ColorRect" parent="." unique_id=836791489]
-offset_left = -120.0
-offset_top = -250.0
-offset_right = -70.0
-offset_bottom = -200.0
-mouse_filter = 2
-color = Color(0.5, 0.44, 0.3, 1)
-
-[node name="Decor4" type="ColorRect" parent="." unique_id=492433714]
-offset_left = 560.0
-offset_top = -250.0
-offset_right = 600.0
-offset_bottom = -210.0
-mouse_filter = 2
-color = Color(0.5, 0.44, 0.3, 1)
-
-[node name="Decor5" type="ColorRect" parent="." unique_id=1012149332]
-offset_left = -400.0
-offset_top = -380.0
-offset_right = -370.0
-offset_bottom = -350.0
-mouse_filter = 2
-color = Color(0.55, 0.4, 0.28, 1)
-
 [node name="Portal1" type="Area2D" parent="." unique_id=145626297]
 position = Vector2(-1200, -60)
 script = ExtResource("1_ic5ci")
@@ -272,3 +234,6 @@ definition = ExtResource("10_boss")
 
 [node name="Collision" type="CollisionShape2D" parent="BossEncounter"]
 shape = SubResource("BossTrigger_1")
+
+[node name="PropLayer" parent="." instance=ExtResource("prop_layer")]
+plan = ExtResource("decor_plan")

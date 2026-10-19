@@ -6,6 +6,8 @@
 [ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="4_q7p1g"]
 [ext_resource type="Script" path="res://scripts/world/boss_encounter.gd" id="9_enc"]
 [ext_resource type="Resource" path="res://data/bosses/blightheart.tres" id="10_boss"]
+[ext_resource type="PackedScene" path="res://scenes/world/prop_layer.tscn" id="prop_layer"]
+[ext_resource type="Resource" path="res://data/decor/blightheart_sanctum.tres" id="decor_plan"]
 
 [sub_resource type="RectangleShape2D" id="BossTrigger_1"]
 size = Vector2(900, 240)
@@ -118,30 +120,6 @@ offset_bottom = 12.0
 mouse_filter = 2
 color = Color(0.42, 0.18, 0.2, 1)
 
-[node name="Decor1" type="ColorRect" parent="." unique_id=822994386]
-offset_left = -820.0
-offset_top = -260.0
-offset_right = -720.0
-offset_bottom = -20.0
-mouse_filter = 2
-color = Color(0.4, 0.16, 0.2, 1)
-
-[node name="Decor2" type="ColorRect" parent="." unique_id=1725759485]
-offset_left = 720.0
-offset_top = -260.0
-offset_right = 820.0
-offset_bottom = -20.0
-mouse_filter = 2
-color = Color(0.4, 0.16, 0.2, 1)
-
-[node name="Decor3" type="ColorRect" parent="." unique_id=120760976]
-offset_left = -40.0
-offset_top = -28.0
-offset_right = 40.0
-offset_bottom = -12.0
-mouse_filter = 2
-color = Color(0.6, 0.2, 0.24, 1)
-
 [node name="Portal1" type="Area2D" parent="." unique_id=874913615]
 position = Vector2(-980, -60)
 script = ExtResource("1_ryrys")
@@ -187,3 +165,6 @@ definition = ExtResource("10_boss")
 
 [node name="Collision" type="CollisionShape2D" parent="BossEncounter"]
 shape = SubResource("BossTrigger_1")
+
+[node name="PropLayer" parent="." instance=ExtResource("prop_layer")]
+plan = ExtResource("decor_plan")

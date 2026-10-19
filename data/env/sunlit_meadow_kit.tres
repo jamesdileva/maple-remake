@@ -1,0 +1,82 @@
+[gd_resource type="Resource" script_class="EnvironmentKit" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/prop_sprite.gd" id="1_oeyyh"]
+[ext_resource type="Texture2D" path="res://assets/art/env/sunlit_meadow.png" id="2_q3ri3"]
+[ext_resource type="Script" path="res://scripts/world/environment_kit.gd" id="3_eyead"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qwuig"]
+atlas = ExtResource("2_q3ri3")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_yj5cf"]
+script = ExtResource("1_oeyyh")
+texture = SubResource("AtlasTexture_qwuig")
+pivot = Vector2(0, 53.333)
+default_scale = 2.0
+archetype = &"tree"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2r3yn"]
+atlas = ExtResource("2_q3ri3")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_bf2fy"]
+script = ExtResource("1_oeyyh")
+texture = SubResource("AtlasTexture_2r3yn")
+pivot = Vector2(0, 31.605)
+archetype = &"bush"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b5to2"]
+atlas = ExtResource("2_q3ri3")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_r88v0"]
+script = ExtResource("1_oeyyh")
+texture = SubResource("AtlasTexture_b5to2")
+pivot = Vector2(0, 32.374)
+default_scale = 0.8
+archetype = &"rock"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dllau"]
+atlas = ExtResource("2_q3ri3")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_ajn1d"]
+script = ExtResource("1_oeyyh")
+texture = SubResource("AtlasTexture_dllau")
+pivot = Vector2(0, 52.174)
+default_scale = 0.6
+archetype = &"grass"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_64t3h"]
+atlas = ExtResource("2_q3ri3")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_31pw7"]
+script = ExtResource("1_oeyyh")
+texture = SubResource("AtlasTexture_64t3h")
+pivot = Vector2(0, 53.333)
+default_scale = 0.7
+archetype = &"flower"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c70nf"]
+atlas = ExtResource("2_q3ri3")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_5a8o3"]
+script = ExtResource("1_oeyyh")
+texture = SubResource("AtlasTexture_c70nf")
+pivot = Vector2(0, 46.061)
+default_scale = 0.7
+archetype = &"mushroom"
+
+[resource]
+script = ExtResource("3_eyead")
+id = &"sunlit_meadow"
+props = {
+"bush": SubResource("Resource_bf2fy"),
+"flower": SubResource("Resource_31pw7"),
+"grass": SubResource("Resource_ajn1d"),
+"mushroom": SubResource("Resource_5a8o3"),
+"rock": SubResource("Resource_r88v0"),
+"tree": SubResource("Resource_yj5cf")
+}

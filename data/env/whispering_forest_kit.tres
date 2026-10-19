@@ -1,0 +1,82 @@
+[gd_resource type="Resource" script_class="EnvironmentKit" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/prop_sprite.gd" id="1_4dwvf"]
+[ext_resource type="Texture2D" path="res://assets/art/env/whispering_forest.png" id="2_uhrfo"]
+[ext_resource type="Script" path="res://scripts/world/environment_kit.gd" id="3_4h2j1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fe51v"]
+atlas = ExtResource("2_uhrfo")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_rmr2w"]
+script = ExtResource("1_4dwvf")
+texture = SubResource("AtlasTexture_fe51v")
+pivot = Vector2(0, 53.333)
+default_scale = 2.2
+archetype = &"tree"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ryms"]
+atlas = ExtResource("2_uhrfo")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_il1po"]
+script = ExtResource("1_4dwvf")
+texture = SubResource("AtlasTexture_0ryms")
+pivot = Vector2(0, 31.605)
+archetype = &"bush"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_45o4m"]
+atlas = ExtResource("2_uhrfo")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_jm3nd"]
+script = ExtResource("1_4dwvf")
+texture = SubResource("AtlasTexture_45o4m")
+pivot = Vector2(0, 53.333)
+default_scale = 0.9
+archetype = &"fern"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y0rl5"]
+atlas = ExtResource("2_uhrfo")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_787me"]
+script = ExtResource("1_4dwvf")
+texture = SubResource("AtlasTexture_y0rl5")
+pivot = Vector2(0, 46.061)
+default_scale = 0.7
+archetype = &"mushroom"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xdb6b"]
+atlas = ExtResource("2_uhrfo")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_5eoxe"]
+script = ExtResource("1_4dwvf")
+texture = SubResource("AtlasTexture_xdb6b")
+pivot = Vector2(0, 32.374)
+default_scale = 0.8
+archetype = &"rock"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jscg8"]
+atlas = ExtResource("2_uhrfo")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_elj0b"]
+script = ExtResource("1_4dwvf")
+texture = SubResource("AtlasTexture_jscg8")
+pivot = Vector2(0, 53.333)
+default_scale = 2.0
+archetype = &"dead_tree"
+
+[resource]
+script = ExtResource("3_4h2j1")
+id = &"whispering_forest"
+props = {
+"bush": SubResource("Resource_il1po"),
+"dead_tree": SubResource("Resource_elj0b"),
+"fern": SubResource("Resource_jm3nd"),
+"mushroom": SubResource("Resource_787me"),
+"rock": SubResource("Resource_5eoxe"),
+"tree": SubResource("Resource_rmr2w")
+}

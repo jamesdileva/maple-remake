@@ -1,0 +1,130 @@
+[gd_resource type="Resource" script_class="EnvironmentKit" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/prop_sprite.gd" id="1_rid66"]
+[ext_resource type="Texture2D" path="res://assets/art/env/brightwood_outskirts.png" id="2_lw0bc"]
+[ext_resource type="Script" path="res://scripts/world/environment_kit.gd" id="3_qjeoo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a6pvp"]
+atlas = ExtResource("2_lw0bc")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_cahk2"]
+script = ExtResource("1_rid66")
+texture = SubResource("AtlasTexture_a6pvp")
+pivot = Vector2(0, 53.333)
+default_scale = 2.0
+archetype = &"tree"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d8olg"]
+atlas = ExtResource("2_lw0bc")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_kxuvw"]
+script = ExtResource("1_rid66")
+texture = SubResource("AtlasTexture_d8olg")
+pivot = Vector2(0, 31.605)
+archetype = &"bush"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qc5oc"]
+atlas = ExtResource("2_lw0bc")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_l0r5r"]
+script = ExtResource("1_rid66")
+texture = SubResource("AtlasTexture_qc5oc")
+pivot = Vector2(0, 52.174)
+default_scale = 0.6
+archetype = &"grass"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b1ff1"]
+atlas = ExtResource("2_lw0bc")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_nd0x7"]
+script = ExtResource("1_rid66")
+texture = SubResource("AtlasTexture_b1ff1")
+pivot = Vector2(0, 53.333)
+default_scale = 0.7
+archetype = &"flower"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2mxw1"]
+atlas = ExtResource("2_lw0bc")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_t6x1t"]
+script = ExtResource("1_rid66")
+texture = SubResource("AtlasTexture_2mxw1")
+pivot = Vector2(0, 32.374)
+default_scale = 0.8
+archetype = &"rock"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v7i6s"]
+atlas = ExtResource("2_lw0bc")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_anctx"]
+script = ExtResource("1_rid66")
+texture = SubResource("AtlasTexture_v7i6s")
+pivot = Vector2(0, 53.333)
+default_scale = 1.3
+archetype = &"lantern"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_muvri"]
+atlas = ExtResource("2_lw0bc")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_sv24n"]
+script = ExtResource("1_rid66")
+texture = SubResource("AtlasTexture_muvri")
+pivot = Vector2(0, 50)
+default_scale = 0.9
+archetype = &"crate"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ys76"]
+atlas = ExtResource("2_lw0bc")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_ttwxt"]
+script = ExtResource("1_rid66")
+texture = SubResource("AtlasTexture_1ys76")
+pivot = Vector2(0, 53.333)
+default_scale = 0.9
+archetype = &"barrel"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ii27l"]
+atlas = ExtResource("2_lw0bc")
+region = Rect2(1024, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_i8lah"]
+script = ExtResource("1_rid66")
+texture = SubResource("AtlasTexture_ii27l")
+pivot = Vector2(0, 53.333)
+default_scale = 0.9
+archetype = &"sign"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pedmj"]
+atlas = ExtResource("2_lw0bc")
+region = Rect2(1152, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_23uos"]
+script = ExtResource("1_rid66")
+texture = SubResource("AtlasTexture_pedmj")
+pivot = Vector2(0, 40.889)
+default_scale = 2.2
+archetype = &"building"
+
+[resource]
+script = ExtResource("3_qjeoo")
+id = &"brightwood_outskirts"
+props = {
+"barrel": SubResource("Resource_ttwxt"),
+"building": SubResource("Resource_23uos"),
+"bush": SubResource("Resource_kxuvw"),
+"crate": SubResource("Resource_sv24n"),
+"flower": SubResource("Resource_nd0x7"),
+"grass": SubResource("Resource_l0r5r"),
+"lantern": SubResource("Resource_anctx"),
+"rock": SubResource("Resource_t6x1t"),
+"sign": SubResource("Resource_i8lah"),
+"tree": SubResource("Resource_cahk2")
+}

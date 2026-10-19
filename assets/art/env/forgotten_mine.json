@@ -1,0 +1,93 @@
+{
+  "image": "res://assets/art/env/forgotten_mine.png",
+  "cell": [
+    128,
+    128
+  ],
+  "props": {
+    "rock": {
+      "region": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "pivot": [
+        0.0,
+        32.374
+      ],
+      "default_scale": 0.9,
+      "archetype": "rock"
+    },
+    "ore": {
+      "region": [
+        128,
+        0,
+        128,
+        128
+      ],
+      "pivot": [
+        0.0,
+        50.684
+      ],
+      "default_scale": 0.9,
+      "archetype": "ore"
+    },
+    "crystal": {
+      "region": [
+        256,
+        0,
+        128,
+        128
+      ],
+      "pivot": [
+        0.0,
+        53.333
+      ],
+      "default_scale": 1.0,
+      "archetype": "crystal"
+    },
+    "beam": {
+      "region": [
+        384,
+        0,
+        128,
+        128
+      ],
+      "pivot": [
+        0.0,
+        53.333
+      ],
+      "default_scale": 1.6,
+      "archetype": "beam"
+    },
+    "cart": {
+      "region": [
+        512,
+        0,
+        128,
+        128
+      ],
+      "pivot": [
+        0.0,
+        53.333
+      ],
+      "default_scale": 1.1,
+      "archetype": "cart"
+    },
+    "crate": {
+      "region": [
+        640,
+        0,
+        128,
+        128
+      ],
+      "pivot": [
+        0.0,
+        50.0
+      ],
+      "default_scale": 0.9,
+      "archetype": "crate"
+    }
+  }
+}

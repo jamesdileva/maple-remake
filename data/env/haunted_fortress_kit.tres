@@ -1,0 +1,94 @@
+[gd_resource type="Resource" script_class="EnvironmentKit" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/prop_sprite.gd" id="1_qboiq"]
+[ext_resource type="Texture2D" path="res://assets/art/env/haunted_fortress.png" id="2_jv5hn"]
+[ext_resource type="Script" path="res://scripts/world/environment_kit.gd" id="3_q4fc5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lim2d"]
+atlas = ExtResource("2_jv5hn")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_n773c"]
+script = ExtResource("1_qboiq")
+texture = SubResource("AtlasTexture_lim2d")
+pivot = Vector2(0, 49.892)
+default_scale = 1.6
+archetype = &"battlement"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qyd0p"]
+atlas = ExtResource("2_jv5hn")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_q3gme"]
+script = ExtResource("1_qboiq")
+texture = SubResource("AtlasTexture_qyd0p")
+pivot = Vector2(0, 53.333)
+archetype = &"spike"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4fwr2"]
+atlas = ExtResource("2_jv5hn")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_2kf05"]
+script = ExtResource("1_qboiq")
+texture = SubResource("AtlasTexture_4fwr2")
+pivot = Vector2(0, 53.333)
+default_scale = 1.2
+archetype = &"torch"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n47wx"]
+atlas = ExtResource("2_jv5hn")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_67hpl"]
+script = ExtResource("1_qboiq")
+texture = SubResource("AtlasTexture_n47wx")
+pivot = Vector2(0, 53.333)
+default_scale = 1.5
+archetype = &"banner"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_td58i"]
+atlas = ExtResource("2_jv5hn")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_g6n5q"]
+script = ExtResource("1_qboiq")
+texture = SubResource("AtlasTexture_td58i")
+pivot = Vector2(0, 53.333)
+default_scale = 1.1
+archetype = &"broken_pillar"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o3kuv"]
+atlas = ExtResource("2_jv5hn")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_2mnm7"]
+script = ExtResource("1_qboiq")
+texture = SubResource("AtlasTexture_o3kuv")
+pivot = Vector2(0, 20.168)
+default_scale = 0.7
+archetype = &"rubble"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o5ptp"]
+atlas = ExtResource("2_jv5hn")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="Resource" id="Resource_0nlhf"]
+script = ExtResource("1_qboiq")
+texture = SubResource("AtlasTexture_o5ptp")
+pivot = Vector2(0, 32.374)
+default_scale = 0.9
+archetype = &"rock"
+
+[resource]
+script = ExtResource("3_q4fc5")
+id = &"haunted_fortress"
+props = {
+"banner": SubResource("Resource_67hpl"),
+"battlement": SubResource("Resource_n773c"),
+"broken_pillar": SubResource("Resource_g6n5q"),
+"rock": SubResource("Resource_0nlhf"),
+"rubble": SubResource("Resource_2mnm7"),
+"spike": SubResource("Resource_q3gme"),
+"torch": SubResource("Resource_2kf05")
+}

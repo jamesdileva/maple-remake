@@ -1,0 +1,32 @@
+{
+  "id": "brightwood_outskirts",
+  "display_name": "Brightwood Town Kit",
+  "cell": 128,
+  "palette": {
+    "trunk": [0.42, 0.30, 0.19],
+    "leaf": [0.40, 0.62, 0.32],
+    "leaf_dark": [0.30, 0.50, 0.26],
+    "rock": [0.55, 0.55, 0.52],
+    "rock_dark": [0.42, 0.42, 0.40],
+    "wood": [0.55, 0.38, 0.22],
+    "stone": [0.62, 0.60, 0.55],
+    "cloth": [0.72, 0.33, 0.28],
+    "metal": [0.45, 0.45, 0.50],
+    "glow": [1.0, 0.85, 0.45],
+    "flower": [0.95, 0.62, 0.72],
+    "cap": [0.85, 0.55, 0.45],
+    "accent": [0.70, 0.65, 0.50]
+  },
+  "props": [
+    { "name": "tree", "archetype": "tree", "scale": 2.0 },
+    { "name": "bush", "archetype": "bush", "scale": 1.0 },
+    { "name": "grass", "archetype": "grass", "scale": 0.6 },
+    { "name": "flower", "archetype": "flower", "scale": 0.7 },
+    { "name": "rock", "archetype": "rock", "scale": 0.8 },
+    { "name": "lantern", "archetype": "lantern", "scale": 1.3 },
+    { "name": "crate", "archetype": "crate", "scale": 0.9 },
+    { "name": "barrel", "archetype": "barrel", "scale": 0.9 },
+    { "name": "sign", "archetype": "sign", "scale": 0.9 },
+    { "name": "building", "archetype": "building", "scale": 2.2 }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "image": "res://assets/art/env/whispering_forest.png",
+  "cell": [
+    128,
+    128
+  ],
+  "props": {
+    "tree": {
+      "region": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "pivot": [
+        0.0,
+        53.333
+      ],
+      "default_scale": 2.2,
+      "archetype": "tree"
+    },
+    "bush": {
+      "region": [
+        128,
+        0,
+        128,
+        128
+      ],
+      "pivot": [
+        0.0,
+        31.605
+      ],
+      "default_scale": 1.0,
+      "archetype": "bush"
+    },
+    "fern": {
+      "region": [
+        256,
+        0,
+        128,
+        128
+      ],
+      "pivot": [
+        0.0,
+        53.333
+      ],
+      "default_scale": 0.9,
+      "archetype": "fern"
+    },
+    "mushroom": {
+      "region": [
+        384,
+        0,
+        128,
+        128
+      ],
+      "pivot": [
+        0.0,
+        46.061
+      ],
+      "default_scale": 0.7,
+      "archetype": "mushroom"
+    },
+    "rock": {
+      "region": [
+        512,
+        0,
+        128,
+        128
+      ],
+      "pivot": [
+        0.0,
+        32.374
+      ],
+      "default_scale": 0.8,
+      "archetype": "rock"
+    },
+    "dead_tree": {
+      "region": [
+        640,
+        0,
+        128,
+        128
+      ],
+      "pivot": [
+        0.0,
+        53.333
+      ],
+      "default_scale": 2.0,
+      "archetype": "dead_tree"
+    }
+  }
+}

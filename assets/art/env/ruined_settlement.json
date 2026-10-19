@@ -1,0 +1,107 @@
+{
+  "image": "res://assets/art/env/ruined_settlement.png",
+  "cell": [
+    128,
+    128
+  ],
+  "props": {
+    "pillar": {
+      "region": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "pivot": [
+        0.0,
+        53.333
+      ],
+      "default_scale": 1.6,
+      "archetype": "pillar"
+    },
+    "broken_pillar": {
+      "region": [
+        128,
+        0,
+        128,
+        128
+      ],
+      "pivot": [
+        0.0,
+        53.333
+      ],
+      "default_scale": 1.1,
+      "archetype": "broken_pillar"
+    },
+    "rubble": {
+      "region": [
+        256,
+        0,
+        128,
+        128
+      ],
+      "pivot": [
+        0.0,
+        20.168
+      ],
+      "default_scale": 0.7,
+      "archetype": "rubble"
+    },
+    "crate": {
+      "region": [
+        384,
+        0,
+        128,
+        128
+      ],
+      "pivot": [
+        0.0,
+        50.0
+      ],
+      "default_scale": 0.9,
+      "archetype": "crate"
+    },
+    "grass": {
+      "region": [
+        512,
+        0,
+        128,
+        128
+      ],
+      "pivot": [
+        0.0,
+        52.174
+      ],
+      "default_scale": 0.6,
+      "archetype": "grass"
+    },
+    "rock": {
+      "region": [
+        640,
+        0,
+        128,
+        128
+      ],
+      "pivot": [
+        0.0,
+        32.374
+      ],
+      "default_scale": 0.8,
+      "archetype": "rock"
+    },
+    "banner": {
+      "region": [
+        768,
+        0,
+        128,
+        128
+      ],
+      "pivot": [
+        0.0,
+        53.333
+      ],
+      "default_scale": 1.5,
+      "archetype": "banner"
+    }
+  }
+}

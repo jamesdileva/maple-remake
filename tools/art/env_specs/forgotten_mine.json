@@ -1,0 +1,28 @@
+{
+  "id": "forgotten_mine",
+  "display_name": "Forgotten Mine Kit",
+  "cell": 128,
+  "palette": {
+    "trunk": [0.35, 0.28, 0.22],
+    "leaf": [0.40, 0.42, 0.30],
+    "leaf_dark": [0.30, 0.32, 0.24],
+    "rock": [0.45, 0.42, 0.40],
+    "rock_dark": [0.32, 0.30, 0.30],
+    "wood": [0.48, 0.35, 0.22],
+    "stone": [0.50, 0.48, 0.45],
+    "cloth": [0.55, 0.40, 0.30],
+    "metal": [0.55, 0.52, 0.48],
+    "glow": [1.0, 0.75, 0.35],
+    "flower": [0.70, 0.60, 0.40],
+    "cap": [0.70, 0.50, 0.35],
+    "accent": [0.55, 0.45, 0.35]
+  },
+  "props": [
+    { "name": "rock", "archetype": "rock", "scale": 0.9 },
+    { "name": "ore", "archetype": "ore", "scale": 0.9 },
+    { "name": "crystal", "archetype": "crystal", "scale": 1.0 },
+    { "name": "beam", "archetype": "beam", "scale": 1.6 },
+    { "name": "cart", "archetype": "cart", "scale": 1.1 },
+    { "name": "crate", "archetype": "crate", "scale": 0.9 }
+  ]
+}

@@ -84,11 +84,40 @@ def build_board(spec):
     return board
 
 
+def build_env_board(spec):
+    width, height = 640, 360
+    board = Image.new("RGBA", (width, height), (26, 30, 34, 255))
+    draw = ImageDraw.Draw(board)
+
+    draw.text((16, 12), f"{spec['display_name']}  ({spec['id']})", fill=(235, 240, 235, 255))
+    draw.text((16, 30), "environment kit board - approve before render", fill=(150, 160, 150, 255))
+
+    y = 60
+    for name, component in spec["palette"].items():
+        draw.rectangle([16, y, 52, y + 18], fill=rgb(component) + (255,), outline=(70, 76, 70, 255))
+        draw.text((60, y + 2), name, fill=(215, 220, 215, 255))
+        y += 24
+
+    draw.text((240, 60), f"cell {spec['cell']}px  |  {len(spec['props'])} props", fill=(200, 210, 200, 255))
+    x = 240
+    yy = 84
+    for prop in spec["props"]:
+        label = f"{prop['name']}  ({prop.get('archetype', prop['name'])})"
+        draw.rectangle([x, yy + 2, x + 8, yy + 10], fill=rgb(spec["palette"].get("leaf", [0.5, 0.6, 0.4])) + (255,))
+        draw.text((x + 14, yy), label, fill=(210, 218, 210, 255))
+        yy += 20
+        if yy > height - 30:
+            yy = 84
+            x += 200
+    return board
+
+
 def main():
     if len(sys.argv) < 3:
         raise SystemExit("usage: concept.py <spec.json> <out.png>")
     spec = load_spec(sys.argv[1])
-    build_board(spec).save(sys.argv[2])
+    board = build_env_board(spec) if "props" in spec else build_board(spec)
+    board.save(sys.argv[2])
     print(f"CONCEPT_OK {sys.argv[2]}")
 
 

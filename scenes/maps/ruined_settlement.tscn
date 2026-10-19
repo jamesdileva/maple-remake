@@ -5,6 +5,8 @@
 [ext_resource type="Resource" path="res://data/mobs/hollow_rat.tres" id="3_njctx"]
 [ext_resource type="Resource" path="res://data/mobs/ruin_sentinel.tres" id="4_q22t8"]
 [ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="5_3ag66"]
+[ext_resource type="PackedScene" path="res://scenes/world/prop_layer.tscn" id="prop_layer"]
+[ext_resource type="Resource" path="res://data/decor/ruined_settlement.tres" id="decor_plan"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_45tw5"]
 size = Vector2(2600, 40)
@@ -151,45 +153,6 @@ offset_bottom = 12.0
 mouse_filter = 2
 color = Color(0.4, 0.36, 0.34, 1)
 
-[node name="Decor1" type="ColorRect" parent="." unique_id=281564478]
-offset_left = -1080.0
-offset_top = -180.0
-offset_right = -1010.0
-offset_bottom = -20.0
-mouse_filter = 2
-color = Color(0.38, 0.34, 0.32, 1)
-
-[node name="Decor2" type="ColorRect" parent="." unique_id=933367927]
-offset_left = -1010.0
-offset_top = -120.0
-offset_right = -970.0
-offset_bottom = -20.0
-mouse_filter = 2
-color = Color(0.32, 0.3, 0.3, 1)
-
-[node name="Decor3" type="ColorRect" parent="." unique_id=221089482]
-offset_left = 1040.0
-offset_top = -180.0
-offset_right = 1110.0
-offset_bottom = -20.0
-mouse_filter = 2
-color = Color(0.38, 0.34, 0.32, 1)
-
-[node name="Decor4" type="ColorRect" parent="." unique_id=1832640284]
-offset_left = -60.0
-offset_top = -60.0
-offset_bottom = -20.0
-mouse_filter = 2
-color = Color(0.3, 0.28, 0.28, 1)
-
-[node name="Decor5" type="ColorRect" parent="." unique_id=292606414]
-offset_left = 300.0
-offset_top = -60.0
-offset_right = 340.0
-offset_bottom = -20.0
-mouse_filter = 2
-color = Color(0.3, 0.28, 0.28, 1)
-
 [node name="Portal1" type="Area2D" parent="." unique_id=1023352690]
 position = Vector2(-1200, -60)
 script = ExtResource("1_mbf11")
@@ -257,3 +220,6 @@ spawn_tag = &"west"
 position = Vector2(1000, -60)
 script = ExtResource("5_3ag66")
 spawn_tag = &"east"
+
+[node name="PropLayer" parent="." instance=ExtResource("prop_layer")]
+plan = ExtResource("decor_plan")
