@@ -8,4 +8,5 @@ script = ExtResource("1")
 id = &"forgotten_mine"
 display_name = "Forgotten Mine"
 scene = ExtResource("2")
+recommended_level = 16
 default_spawn_tag = &"default"

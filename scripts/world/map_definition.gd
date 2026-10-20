@@ -5,3 +5,4 @@ extends Resource
 @export var display_name := "Test Map"
 @export var scene: PackedScene
 @export var default_spawn_tag := &"default"
+@export var recommended_level := 1

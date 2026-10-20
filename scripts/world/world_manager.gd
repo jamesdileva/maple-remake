@@ -40,6 +40,9 @@ func register_map(definition: MapDefinition) -> void:
 func is_registered(map_id: StringName) -> bool:
 	return _registry.has(map_id)
 
+func get_definition(map_id: StringName) -> MapDefinition:
+	return _registry.get(map_id) as MapDefinition
+
 func boot() -> bool:
 	return travel_to(starting_map_id, "")
 
@@ -69,7 +72,12 @@ func travel_to(map_id: StringName, spawn_tag: StringName) -> bool:
 	current_map_id = map_id
 	_travel_grace = TRAVEL_GRACE
 	map_changed.emit(map_id)
-	DebugManager.register_combat_event("map_travel", {"map": map_id})
+	var player_level := int(player.get("level")) if player != null else 0
+	DebugManager.register_combat_event("map_travel", {
+		"map": map_id,
+		"recommended_level": definition.recommended_level,
+		"player_level": player_level,
+	})
 	return true
 
 func _world_host() -> Node:

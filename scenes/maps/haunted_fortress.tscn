@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="5_edclm"]
 [ext_resource type="PackedScene" path="res://scenes/world/prop_layer.tscn" id="prop_layer"]
 [ext_resource type="Resource" path="res://data/decor/haunted_fortress.tres" id="decor_plan"]
+[ext_resource type="PackedScene" path="res://scenes/world/npc.tscn" id="npc_scene"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t5fye"]
 size = Vector2(2600, 40)
@@ -224,3 +225,8 @@ spawn_tag = &"east"
 
 [node name="PropLayer" parent="." instance=ExtResource("prop_layer")]
 plan = ExtResource("decor_plan")
+[node name="Orin" parent="." instance=ExtResource("npc_scene")]
+position = Vector2(760, -40)
+npc_id = &"orin"
+display_name = "Deserter Orin"
+dialogue_line = "No one returns from the Sanctum. Fill your mana before the last gate -- Blightheart is Lv 28."

@@ -8,4 +8,5 @@ script = ExtResource("1")
 id = &"hollow_forest"
 display_name = "Hollow Forest"
 scene = ExtResource("2")
+recommended_level = 12
 default_spawn_tag = &"default"

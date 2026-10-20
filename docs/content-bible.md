@@ -21,8 +21,24 @@ Core contrast:
 
 ## 3. Continent Structure
 
-Suggested regions:
+Recommended-level route (`recommended_level` on `data/maps/*.tres`, advertised by portals):
 
+| Map | Level |
+| --- | --- |
+| Brightwood Outskirts | 1 |
+| Sunlit Meadow | 2 |
+| Whispering Forest | 5 |
+| Thornhollow Ring (side arena) | 6 |
+| Hollow Forest | 12 |
+| Forgotten Mine | 16 |
+| Ruined Settlement | 20 |
+| Haunted Fortress | 24 |
+| Blightheart Sanctum | 28 |
+
+Waypoint NPCs (Maren, Rhea, Ivo, Nela, Orin) stand near each region's entry spawn and
+point at the next area's level and boss.
+
+Suggested regions:
 ### Region 1 — Brightwood Village
 Purpose:
 - tutorial

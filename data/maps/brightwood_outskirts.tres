@@ -8,4 +8,5 @@ script = ExtResource("1")
 id = &"brightwood_outskirts"
 display_name = "Brightwood Outskirts"
 scene = ExtResource("2")
+recommended_level = 1
 default_spawn_tag = &"default"

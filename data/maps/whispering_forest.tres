@@ -8,4 +8,5 @@ script = ExtResource("1")
 id = &"whispering_forest"
 display_name = "Whispering Forest"
 scene = ExtResource("2")
+recommended_level = 5
 default_spawn_tag = &"default"

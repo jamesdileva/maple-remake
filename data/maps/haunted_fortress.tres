@@ -8,4 +8,5 @@ script = ExtResource("1")
 id = &"haunted_fortress"
 display_name = "Haunted Fortress"
 scene = ExtResource("2")
+recommended_level = 24
 default_spawn_tag = &"default"

@@ -8,4 +8,5 @@ script = ExtResource("1")
 id = &"blightheart_sanctum"
 display_name = "Blightheart Sanctum"
 scene = ExtResource("2")
+recommended_level = 28
 default_spawn_tag = &"default"

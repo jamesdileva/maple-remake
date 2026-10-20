@@ -8,4 +8,5 @@ script = ExtResource("1")
 id = &"sunlit_meadow"
 display_name = "Sunlit Meadow"
 scene = ExtResource("2")
+recommended_level = 2
 default_spawn_tag = &"default"

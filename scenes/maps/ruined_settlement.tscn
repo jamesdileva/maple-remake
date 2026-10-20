@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="5_3ag66"]
 [ext_resource type="PackedScene" path="res://scenes/world/prop_layer.tscn" id="prop_layer"]
 [ext_resource type="Resource" path="res://data/decor/ruined_settlement.tres" id="decor_plan"]
+[ext_resource type="PackedScene" path="res://scenes/world/npc.tscn" id="npc_scene"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_45tw5"]
 size = Vector2(2600, 40)
@@ -223,3 +224,8 @@ spawn_tag = &"east"
 
 [node name="PropLayer" parent="." instance=ExtResource("prop_layer")]
 plan = ExtResource("decor_plan")
+[node name="Nela" parent="." instance=ExtResource("npc_scene")]
+position = Vector2(760, -40)
+npc_id = &"nela"
+display_name = "Survivor Nela"
+dialogue_line = "You made it out of the mine. The Haunted Fortress runs Lv 24, and Blightheart Sanctum beyond it is Lv 28."

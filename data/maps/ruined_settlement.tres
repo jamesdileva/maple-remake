@@ -8,4 +8,5 @@ script = ExtResource("1")
 id = &"ruined_settlement"
 display_name = "Ruined Settlement"
 scene = ExtResource("2")
+recommended_level = 20
 default_spawn_tag = &"default"

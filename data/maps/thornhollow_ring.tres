@@ -8,4 +8,5 @@ script = ExtResource("1")
 id = &"thornhollow_ring"
 display_name = "Thornhollow Ring"
 scene = ExtResource("2")
+recommended_level = 6
 default_spawn_tag = &"default"

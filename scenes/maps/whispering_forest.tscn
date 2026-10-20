@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="6_5775x"]
 [ext_resource type="PackedScene" path="res://scenes/world/prop_layer.tscn" id="prop_layer"]
 [ext_resource type="Resource" path="res://data/decor/whispering_forest.tres" id="decor_plan"]
+[ext_resource type="PackedScene" path="res://scenes/world/npc.tscn" id="npc_scene"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dvit0"]
 size = Vector2(2600, 40)
@@ -229,3 +230,8 @@ spawn_tag = &"east"
 
 [node name="PropLayer" parent="." instance=ExtResource("prop_layer")]
 plan = ExtResource("decor_plan")
+[node name="Ivo" parent="." instance=ExtResource("npc_scene")]
+position = Vector2(-760, -40)
+npc_id = &"ivo"
+display_name = "Ranger Ivo"
+dialogue_line = "Hollow Forest is no place below Lv 12. Something old named Mawroot roots near the far shrine."

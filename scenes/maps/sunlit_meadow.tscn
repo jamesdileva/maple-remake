@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/world/map_spawn.gd" id="5_kr4r3"]
 [ext_resource type="PackedScene" path="res://scenes/world/prop_layer.tscn" id="prop_layer"]
 [ext_resource type="Resource" path="res://data/decor/sunlit_meadow.tres" id="decor_plan"]
+[ext_resource type="PackedScene" path="res://scenes/world/npc.tscn" id="npc_scene"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gfvvr"]
 size = Vector2(2400, 40)
@@ -224,3 +225,8 @@ spawn_tag = &"east"
 
 [node name="PropLayer" parent="." instance=ExtResource("prop_layer")]
 plan = ExtResource("decor_plan")
+[node name="Rhea" parent="." instance=ExtResource("npc_scene")]
+position = Vector2(-760, -40)
+npc_id = &"rhea"
+display_name = "Trailwarden Rhea"
+dialogue_line = "Meadow slimes are easy hunting. Beyond the west trees, Whispering Forest turns fierce around Lv 5."
