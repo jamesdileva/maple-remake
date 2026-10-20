@@ -1,17 +1,46 @@
-[gd_resource type="Resource" script_class="LootTable" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="LootTable" format=3]
 
 [ext_resource type="Script" path="res://scripts/core/loot_table.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/core/loot_entry.gd" id="2"]
 [ext_resource type="Resource" path="res://data/items/gold.tres" id="3"]
+[ext_resource type="Resource" path="res://data/equipment/sanctum_blade.tres" id="3_6y20m"]
+[ext_resource type="Resource" path="res://data/equipment/sanctum_staff.tres" id="4_1skcm"]
+[ext_resource type="Resource" path="res://data/equipment/blight_helm.tres" id="5_utp1r"]
+[ext_resource type="Resource" path="res://data/equipment/warden_plate.tres" id="6_3cood"]
+[ext_resource type="Resource" path="res://data/equipment/ashwood_longbow.tres" id="7_sb01x"]
 
 [sub_resource type="Resource" id="LootEntry_hoard"]
 script = ExtResource("2")
 item = ExtResource("3")
-weight = 1.0
 min_amount = 90
 max_amount = 140
+
+[sub_resource type="Resource" id="Resource_caogk"]
+script = ExtResource("2")
+item = ExtResource("3_6y20m")
+weight = 0.15
+
+[sub_resource type="Resource" id="Resource_exj16"]
+script = ExtResource("2")
+item = ExtResource("4_1skcm")
+weight = 0.15
+
+[sub_resource type="Resource" id="Resource_uf61h"]
+script = ExtResource("2")
+item = ExtResource("5_utp1r")
+weight = 0.15
+
+[sub_resource type="Resource" id="Resource_nc3nd"]
+script = ExtResource("2")
+item = ExtResource("6_3cood")
+weight = 0.12
+
+[sub_resource type="Resource" id="Resource_vkrwk"]
+script = ExtResource("2")
+item = ExtResource("7_sb01x")
+weight = 0.1
 
 [resource]
 script = ExtResource("1")
 rolls = 3
-entries = Array[Resource]([SubResource("LootEntry_hoard")])
+entries = Array[ExtResource("2")]([SubResource("LootEntry_hoard"), SubResource("Resource_caogk"), SubResource("Resource_exj16"), SubResource("Resource_uf61h"), SubResource("Resource_nc3nd"), SubResource("Resource_vkrwk")])

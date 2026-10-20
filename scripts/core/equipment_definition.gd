@@ -1,16 +1,21 @@
 class_name EquipmentDefinition
-extends Resource
+extends ItemDefinition
 
 enum Slot { WEAPON, TOP, BOTTOM, HELMET }
 
-@export var id := &"rusty_blade"
-@export var display_name := "Rusty Blade"
 @export var slot: Slot = Slot.WEAPON
 @export var level_requirement := 1
 @export var power := 0.0
 @export var defense_bonus := 0.0
 @export var max_hp_bonus := 0.0
 @export var max_mana_bonus := 0.0
+
+func _init() -> void:
+	kind = Kind.EQUIPMENT
+	max_stack = 1
+
+func gear_score() -> float:
+	return power + defense_bonus * 1.5 + max_hp_bonus * 0.25 + max_mana_bonus * 0.5
 
 func slot_name() -> StringName:
 	match slot:

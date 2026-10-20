@@ -1,7 +1,7 @@
 class_name ItemDefinition
 extends Resource
 
-enum Kind { CURRENCY, MATERIAL }
+enum Kind { CURRENCY, MATERIAL, EQUIPMENT }
 
 @export var id := &"gold"
 @export var display_name := "Gold"

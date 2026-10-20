@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EquipmentDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/equipment_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"apprentice_staff"
+display_name = "Apprentice Staff"
+slot = 0
+level_requirement = 3
+power = 12
+defense_bonus = 0
+max_hp_bonus = 0
+max_mana_bonus = 15

@@ -119,6 +119,18 @@ Some mobs can have one special trait:
 
 Do not make every mob a complex mini-boss.
 
+### Loot and gear
+
+Every hunting mob rolls gold and materials from its loot table. Equipment is an
+`ItemDefinition` (`EquipmentDefinition extends ItemDefinition`), so it flows through the
+same auto-loot pipeline. Picked-up gear is worn immediately when it is a usable upgrade;
+under-leveled or worse pieces wait in a four-slot stash and are equipped automatically on
+level-up.
+
+Gear tiers follow the regions: starter cloth and a rusty blade in Brightwood, iron and
+apprentice weapons in the forest, shields and daggers in the deep, and sanctum gear from
+the final hoards. Boss hoards always contain equipment.
+
 ## 5. Chain Mob Examples
 
 ### Bloom Bomb

@@ -352,6 +352,12 @@ func _player_position() -> Dictionary:
 			worn[slot_name] = item.id if item != null else ""
 		data["equipment"] = worn
 		data["equipment_power"] = player.equipment_power()
+		var stash: Array = player.get("stashed_gear")
+		var stashed: Array[String] = []
+		for item in stash:
+			if item != null:
+				stashed.append(String(item.id))
+		data["stashed_gear"] = stashed
 	if player.has_method("lethal_protection_remaining"):
 		data["lethal_protection"] = {
 			"active": player.is_lethal_protected(),

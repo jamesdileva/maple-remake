@@ -46,6 +46,7 @@ var skill_points := 0
 var skill_points_spent := 0
 var ability_levels: Dictionary = {}
 var equipment: Dictionary = {}
+var stashed_gear: Array[EquipmentDefinition] = []
 var _base_run_speed := -1.0
 var _base_jump_velocity := -1.0
 var advanced := false
@@ -401,6 +402,9 @@ func capture_state() -> Dictionary:
 	var items := {}
 	for item_id: StringName in inventory.items:
 		items[String(item_id)] = inventory.items[item_id]
+	var stash: Array[String] = []
+	for item in stashed_gear:
+		stash.append(item.resource_path if item != null else "")
 	return {
 		"level": level,
 		"xp": xp,
@@ -410,6 +414,7 @@ func capture_state() -> Dictionary:
 		"skill_points_spent": skill_points_spent,
 		"ability_levels": levels,
 		"equipment": worn,
+		"stashed_gear": stash,
 		"inventory_items": items,
 		"currency": inventory.currency,
 		"advanced": advanced,
@@ -446,6 +451,15 @@ func restore_state(data: Dictionary) -> void:
 		var loaded: EquipmentDefinition = load(item_path)
 		if loaded != null:
 			equipment[StringName(slot_name)] = loaded
+	stashed_gear.clear()
+	var stored_gear: Array = data.get("stashed_gear", [])
+	for item_path in stored_gear:
+		var path := String(item_path)
+		if path.is_empty():
+			continue
+		var stashed: EquipmentDefinition = load(path)
+		if stashed != null:
+			stashed_gear.append(stashed)
 	inventory.items.clear()
 	var stored_items: Dictionary = data.get("inventory_items", {})
 	for item_id in stored_items:
@@ -639,6 +653,7 @@ func _apply_level_stats() -> void:
 	mana = max_mana
 	if level > 1:
 		add_skill_points(1)
+	_upgrade_stashed_gear()
 
 func _recalculate_stats() -> void:
 	var base_hp := _class_starting_hp()
@@ -707,7 +722,63 @@ func receive_loot(item: ItemDefinition, count: int) -> int:
 		return 0
 	if item.is_currency():
 		return inventory.add_currency(item.value * count)
+	if item is EquipmentDefinition:
+		var accepted := 0
+		for _i in range(count):
+			if _receive_gear(item as EquipmentDefinition):
+				accepted += 1
+		return accepted
 	return inventory.add_item(item, count)
+
+func _receive_gear(item: EquipmentDefinition) -> bool:
+	if item == null:
+		return false
+	if level >= item.level_requirement and _try_equip(item):
+		return true
+	return _stash_gear(item)
+
+func _try_equip(item: EquipmentDefinition) -> bool:
+	if item == null or level < item.level_requirement:
+		return false
+	var slot_name := item.slot_name()
+	var current := equipped_in(slot_name)
+	if current != null and item.gear_score() <= current.gear_score():
+		return false
+	var replaced := equip(item)
+	DebugManager.register_combat_event("auto_equip", {
+		"item": item.id,
+		"slot": slot_name,
+		"replaced": replaced.id if replaced != null else &"",
+	})
+	if replaced != null:
+		_stash_gear(replaced, false)
+	return true
+
+func _stash_gear(item: EquipmentDefinition, allow_equip := true) -> bool:
+	if item == null:
+		return false
+	if allow_equip and level >= item.level_requirement and _try_equip(item):
+		return true
+	var slot_name := item.slot_name()
+	for index in range(stashed_gear.size()):
+		if stashed_gear[index].slot_name() == slot_name:
+			if item.gear_score() > stashed_gear[index].gear_score():
+				stashed_gear[index] = item
+			return true
+	stashed_gear.append(item)
+	return true
+
+func _upgrade_stashed_gear() -> void:
+	if stashed_gear.is_empty():
+		return
+	var candidates := stashed_gear.duplicate()
+	stashed_gear.clear()
+	for item in candidates:
+		if item == null:
+			continue
+		if level >= item.level_requirement and _try_equip(item):
+			continue
+		_stash_gear(item, false)
 
 func _physics_process(delta: float) -> void:
 	_update_timers(delta)
