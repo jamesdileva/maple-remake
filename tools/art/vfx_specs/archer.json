@@ -1,0 +1,16 @@
+{
+  "id": "archer",
+  "display_name": "Archer VFX",
+  "cell": 96,
+  "view": 1.8,
+  "palette": {
+    "glow": [0.62, 1.0, 0.55],
+    "core": [0.90, 1.0, 0.80],
+    "accent": [0.34, 0.70, 0.36],
+    "dark": [0.24, 0.44, 0.26]
+  },
+  "effects": [
+    { "id": "archer_reticle", "kind": "reticle", "frames": 8, "fps": 12, "loop": true },
+    { "id": "archer_bolt", "kind": "bolt_impact", "frames": 5, "fps": 20, "loop": false }
+  ]
+}

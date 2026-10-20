@@ -109,3 +109,36 @@ exist yet.
 
 To dress a new map: add a `data/decor/<map_id>.tres`, then add a `PropLayer` node
 with `plan` pointing at it. No code changes.
+
+## Class VFX
+
+Class effect sets run through the same concept → approval → Blender → atlas →
+Godot flow:
+
+```powershell
+godot --headless --script tools/art/run_vfx_pipeline.gd -- --class mage
+```
+
+| Stage | Tool | Output |
+| --- | --- | --- |
+| Spec | `tools/art/vfx_specs/<class>.json` | palette + effect list (kind, frames, fps, loop) |
+| Concept | `tools/art/concept.py` | `art_src/concept/<class>_vfx_concept.png` |
+| Approval | `tools/art/vfx_specs/<class>.approved` (human) | gate for the next stages |
+| Render | `tools/art/blender/build_vfx.py` | `art_src/vfx/<class>/<effect_id>/*.png` + `manifest.json` |
+| Pack | `tools/art/pack_vfx.py` | `assets/art/effects/<class>_vfx.{png,json}` |
+| Frames | `tools/art/build_spriteframes.gd` | `data/visuals/<class>_vfx_frames.tres` |
+| Scenes | `tools/art/build_vfx_scenes.gd` | `scenes/effects/<effect_id>.tscn` |
+
+Effects are billboarded in the camera plane and built from the same primitives as
+the environment props, so a class set is a palette plus a choice of shared
+archetypes (`sigil`, `charge`, `reticle`, `shroud` for casts; `arcane_burst`,
+`quake_impact`, `bolt_impact`, `edge` for impacts). Cast animations loop (they
+persist for the cast and are freed when it ends); impact animations play once and
+`SpriteEffect` frees them.
+
+Each class ships a cast + impact scene: Mage `mage_sigil`/`mage_arcane_burst`,
+Warrior `warrior_charge`/`warrior_quake`, Archer `archer_reticle`/`archer_bolt`,
+Assassin `assassin_shroud`/`assassin_edge`. They are assigned through
+`AbilityDefinition.cast_effect`/`impact_effect`; abilities not yet wired keep the
+original `cast_telegraph`/`impact_burst` placeholders, so class art lands ability
+by ability.

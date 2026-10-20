@@ -112,11 +112,41 @@ def build_env_board(spec):
     return board
 
 
+def build_vfx_board(spec):
+    width, height = 640, 360
+    board = Image.new("RGBA", (width, height), (26, 30, 34, 255))
+    draw = ImageDraw.Draw(board)
+
+    draw.text((16, 12), f"{spec['display_name']}  ({spec['id']})", fill=(235, 240, 235, 255))
+    draw.text((16, 30), "class VFX board - approve before render", fill=(150, 160, 150, 255))
+
+    y = 60
+    for name, component in spec["palette"].items():
+        draw.rectangle([16, y, 52, y + 18], fill=rgb(component) + (255,), outline=(70, 76, 70, 255))
+        draw.text((60, y + 2), name, fill=(215, 220, 215, 255))
+        y += 24
+
+    draw.text((240, 60), f"cell {spec['cell']}px  view {spec.get('view', 1.8)}", fill=(200, 210, 200, 255))
+    yy = 84
+    for effect in spec["effects"]:
+        loop = "loop" if effect.get("loop") else "one-shot"
+        label = f"{effect['id']}  ({effect.get('kind', effect['id'])})  {effect['frames']}f @ {effect['fps']}fps  {loop}"
+        draw.rectangle([240, yy + 2, 248, yy + 10], fill=rgb(spec["palette"].get("glow", [0.6, 0.8, 1.0])) + (255,))
+        draw.text((254, yy), label, fill=(210, 218, 210, 255))
+        yy += 20
+    return board
+
+
 def main():
     if len(sys.argv) < 3:
         raise SystemExit("usage: concept.py <spec.json> <out.png>")
     spec = load_spec(sys.argv[1])
-    board = build_env_board(spec) if "props" in spec else build_board(spec)
+    if "props" in spec:
+        board = build_env_board(spec)
+    elif "effects" in spec:
+        board = build_vfx_board(spec)
+    else:
+        board = build_board(spec)
     board.save(sys.argv[2])
     print(f"CONCEPT_OK {sys.argv[2]}")
 

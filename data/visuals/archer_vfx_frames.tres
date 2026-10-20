@@ -1,0 +1,107 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/effects/archer_vfx.png" id="1_qvywa"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lpq8m"]
+atlas = ExtResource("1_qvywa")
+region = Rect2(0, 96, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y3vpj"]
+atlas = ExtResource("1_qvywa")
+region = Rect2(96, 96, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r8bjf"]
+atlas = ExtResource("1_qvywa")
+region = Rect2(192, 96, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a3g6j"]
+atlas = ExtResource("1_qvywa")
+region = Rect2(288, 96, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3trs8"]
+atlas = ExtResource("1_qvywa")
+region = Rect2(384, 96, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pdlqm"]
+atlas = ExtResource("1_qvywa")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qxavt"]
+atlas = ExtResource("1_qvywa")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rynmx"]
+atlas = ExtResource("1_qvywa")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cjahg"]
+atlas = ExtResource("1_qvywa")
+region = Rect2(288, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a541v"]
+atlas = ExtResource("1_qvywa")
+region = Rect2(384, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4usrb"]
+atlas = ExtResource("1_qvywa")
+region = Rect2(480, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ao8mj"]
+atlas = ExtResource("1_qvywa")
+region = Rect2(576, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c0fns"]
+atlas = ExtResource("1_qvywa")
+region = Rect2(672, 0, 96, 96)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lpq8m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y3vpj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r8bjf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a3g6j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3trs8")
+}],
+"loop": 0,
+"name": &"archer_bolt",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pdlqm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qxavt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rynmx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cjahg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a541v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4usrb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ao8mj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c0fns")
+}],
+"loop": 1,
+"name": &"archer_reticle",
+"speed": 12.0
+}]

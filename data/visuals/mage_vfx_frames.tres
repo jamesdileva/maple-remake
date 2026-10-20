@@ -1,0 +1,114 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/effects/mage_vfx.png" id="1_53qn0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yf71m"]
+atlas = ExtResource("1_53qn0")
+region = Rect2(0, 96, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wts6q"]
+atlas = ExtResource("1_53qn0")
+region = Rect2(96, 96, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6hoby"]
+atlas = ExtResource("1_53qn0")
+region = Rect2(192, 96, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0a612"]
+atlas = ExtResource("1_53qn0")
+region = Rect2(288, 96, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l4308"]
+atlas = ExtResource("1_53qn0")
+region = Rect2(384, 96, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uupvj"]
+atlas = ExtResource("1_53qn0")
+region = Rect2(480, 96, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vakbf"]
+atlas = ExtResource("1_53qn0")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ai0dx"]
+atlas = ExtResource("1_53qn0")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uf4kk"]
+atlas = ExtResource("1_53qn0")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4cykg"]
+atlas = ExtResource("1_53qn0")
+region = Rect2(288, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i6cug"]
+atlas = ExtResource("1_53qn0")
+region = Rect2(384, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5dui4"]
+atlas = ExtResource("1_53qn0")
+region = Rect2(480, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ii2x"]
+atlas = ExtResource("1_53qn0")
+region = Rect2(576, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_edg4o"]
+atlas = ExtResource("1_53qn0")
+region = Rect2(672, 0, 96, 96)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yf71m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wts6q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6hoby")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0a612")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l4308")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uupvj")
+}],
+"loop": 0,
+"name": &"mage_arcane_burst",
+"speed": 18.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vakbf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ai0dx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uf4kk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4cykg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i6cug")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5dui4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7ii2x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_edg4o")
+}],
+"loop": 1,
+"name": &"mage_sigil",
+"speed": 12.0
+}]

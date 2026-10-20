@@ -1,0 +1,16 @@
+{
+  "id": "assassin",
+  "display_name": "Assassin VFX",
+  "cell": 96,
+  "view": 1.8,
+  "palette": {
+    "glow": [0.78, 0.48, 1.0],
+    "core": [0.55, 0.36, 0.72],
+    "accent": [0.92, 0.30, 0.52],
+    "dark": [0.20, 0.15, 0.30]
+  },
+  "effects": [
+    { "id": "assassin_shroud", "kind": "shroud", "frames": 8, "fps": 14, "loop": true },
+    { "id": "assassin_edge", "kind": "edge", "frames": 6, "fps": 18, "loop": false }
+  ]
+}

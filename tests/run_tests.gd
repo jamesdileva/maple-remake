@@ -43,6 +43,7 @@ const TEST_SUITES := [
 	"res://tests/mobs/test_mob_roster.gd",
 	"res://tests/art/test_art_pipeline.gd",
 	"res://tests/art/test_environment_kits.gd",
+	"res://tests/art/test_class_vfx.gd",
 	"res://tests/tutorial/test_tutorial.gd",
 	"res://tests/entities/test_mob.gd",
 ]
