@@ -169,6 +169,17 @@ Bosses should have:
 - recognizable attacks
 - large readable telegraphs
 
+### Final Boss - Blightheart
+
+Blightheart closes the MVP continent in Blightheart Sanctum at level 28.
+
+- Three phases at full / 66% / 33% HP.
+- Phase one teaches Crush and Ring; phase two adds adds; phase three adds the Wave.
+- Every attack warns for at least 0.6s and deals no contact damage, so a weaker player
+  can learn the fight while a strong player can burst it down.
+- The kill raises `EventBus.final_boss_defeated`, pays 1200 XP, and rolls the sanctum
+  hoard (blade, staff, helm).
+
 ## 7. Ability Visual Philosophy
 
 Abilities should be spectacular without requiring unique art for every frame.

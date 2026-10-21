@@ -61,6 +61,15 @@ func apply_damage(amount: float) -> float:
 		_update_phase()
 	return remaining
 
+func die(event: DamageEvent) -> void:
+	if dead:
+		return
+	var final_boss := _boss_definition != null and _boss_definition.is_final
+	super.die(event)
+	if final_boss:
+		EventBus.final_boss_defeated.emit(mob_id())
+		DebugManager.register_combat_event("final_boss_defeated", {"boss": mob_id()})
+
 func reset() -> void:
 	if dead:
 		return

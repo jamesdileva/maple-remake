@@ -2,6 +2,7 @@ extends Node
 
 signal mob_died(mob_id: StringName, xp: float, definition: Resource)
 signal mob_died_at(mob_id: StringName, xp: float, definition: Resource, position: Vector2)
+signal final_boss_defeated(boss_id: StringName)
 signal player_died
 signal damage_applied(result: DamageResult)
 signal ability_cast_started(ability: AbilityDefinition)

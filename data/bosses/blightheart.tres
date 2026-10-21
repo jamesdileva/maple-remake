@@ -24,6 +24,7 @@ max_chain_depth = 0
 chain = null
 loot_table = ExtResource("6")
 is_boss = true
+is_final = true
 phases = Array[Resource]([ExtResource("3"), ExtResource("4"), ExtResource("5")])
 display_scale = 1.7
 tint = Color(0.8, 0.25, 0.35, 1)
