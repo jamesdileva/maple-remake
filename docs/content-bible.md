@@ -43,7 +43,7 @@ Suggested regions:
 Purpose:
 - tutorial
 - shops
-- class introduction
+- class introduction (first-boot picker offers Mage, Warrior, Archer, Assassin)
 - safe hub
 
 Visual:
