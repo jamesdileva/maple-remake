@@ -65,6 +65,7 @@ func run(t) -> void:
 		portals_by_map[map_id] = portals
 		t.assert_true(not portals.is_empty(),
 			"%s has at least one portal" % map_id)
+		_check_portal_traps(t, root, map_id)
 
 		var npcs := root.find_children("*", "NPC", true, false)
 		if not npcs.is_empty():
@@ -121,3 +122,36 @@ func _load(t, map_id: StringName) -> MapDefinition:
 	if definition != null:
 		t.assert_true(definition.scene != null, "%s has a scene" % map_id)
 	return definition if definition != null and definition.scene != null else null
+
+func _check_portal_traps(t, root: Node2D, map_id: StringName) -> void:
+	var spawn_x_values: Array = []
+	for node in root.find_children("*", "MapSpawn", true, false):
+		var spawn := node as MapSpawn
+		if spawn != null:
+			spawn_x_values.append(spawn.global_position.x)
+	var portals: Array = []
+	for node in root.find_children("*", "Portal", true, false):
+		var portal := node as Portal
+		if portal == null:
+			continue
+		var half_width := 48.0
+		var collision := portal.get_node_or_null("Collision") as CollisionShape2D
+		if collision != null and collision.shape is RectangleShape2D:
+			half_width = (collision.shape as RectangleShape2D).size.x * 0.5
+		portals.append({
+			"x": portal.global_position.x,
+			"half": half_width,
+			"target": String(portal.target_map_id),
+		})
+	var traps := []
+	for spawn_x: float in spawn_x_values:
+		for portal: Dictionary in portals:
+			for other: Dictionary in portals:
+				if other == portal:
+					continue
+				var span_low := minf(spawn_x, float(portal["x"])) - 24.0
+				var span_high := maxf(spawn_x, float(portal["x"])) + 24.0
+				if float(other["x"]) + float(other["half"]) > span_low \
+						and float(other["x"]) - float(other["half"]) < span_high:
+					traps.append("spawn %.0f -> %s crosses %s" % [spawn_x, portal["target"], other["target"]])
+	t.assert_eq(traps.size(), 0, "%s has no portal traps (%s)" % [map_id, ", ".join(PackedStringArray(traps))])

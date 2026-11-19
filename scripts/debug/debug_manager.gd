@@ -130,6 +130,10 @@ func reset_counters() -> void:
 	counters.deaths = 0
 	_get_log().log_event("counters_reset", {})
 
+func set_file_logging(enabled: bool) -> void:
+	_get_log().set_file_logging(enabled)
+	register_combat_event("flag_file_logging", {"value": enabled})
+
 func frame_time_ms() -> float:
 	return float(Performance.get_monitor(Performance.TIME_PROCESS)) * 1000.0
 

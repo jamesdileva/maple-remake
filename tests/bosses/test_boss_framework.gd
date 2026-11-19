@@ -181,6 +181,50 @@ func run(t) -> void:
 	await t.physics_frame
 	await t.physics_frame
 
+	var encounter := BossEncounter.new()
+	var encounter_shape := CollisionShape2D.new()
+	var encounter_rect := RectangleShape2D.new()
+	encounter_rect.size = Vector2(120.0, 120.0)
+	encounter_shape.shape = encounter_rect
+	encounter.add_child(encounter_shape)
+	encounter.definition = definition
+	world.add_child(encounter)
+	encounter.global_position = Vector2(-300.0, -60.0)
+	player.global_position = encounter.global_position
+	player.hp = player.max_hp
+	var spawned: Boss = null
+	for _i in range(60):
+		await t.physics_frame
+		spawned = encounter._boss
+		if spawned != null and is_instance_valid(spawned):
+			break
+
+	t.assert_true(spawned != null, "the encounter spawns its boss when entered")
+	if spawned != null:
+		t.assert_almost_eq(spawned.global_position.x, -300.0, 3.0,
+			"the encounter boss spawns on the encounter")
+		spawned.take_damage(60.0, player)
+		var death := {"seen": false}
+		var on_death := func(): death["seen"] = true
+		EventBus.player_died.connect(on_death)
+		for _i in range(30):
+			if bool(death["seen"]):
+				break
+			player.global_position = Vector2(100.0, -60.0)
+			player.velocity = Vector2.ZERO
+			player.hp = 10.0
+			player.take_damage(999999.0, null)
+			await t.physics_frame
+		EventBus.player_died.disconnect(on_death)
+		t.assert_true(bool(death["seen"]), "the hero actually dies for the reset check")
+
+		t.assert_true(is_instance_valid(spawned), "the reset boss survives the death")
+		t.assert_true(absf(spawned.global_position.x - encounter.global_position.x) < 60.0,
+			"a dead player resets the boss to the encounter, not the origin")
+		t.assert_eq(spawned.hp, 200.0, "the reset restores full hp")
+	encounter.queue_free()
+	await t.physics_frame
+
 	DebugManager.god_mode = false
 	DebugManager.disable_ai = false
 	world.queue_free()

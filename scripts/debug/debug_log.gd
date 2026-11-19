@@ -56,3 +56,14 @@ func close() -> void:
 
 func file_path() -> String:
 	return _file_path
+
+func set_file_logging(enabled: bool) -> void:
+	if enabled:
+		if _file == null:
+			_open_file_if_enabled()
+			log_event("log_reopen", {})
+		return
+	if _file != null:
+		_file.close()
+		_file = null
+		_file_path = ""

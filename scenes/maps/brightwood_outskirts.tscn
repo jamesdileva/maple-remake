@@ -432,7 +432,7 @@ shape = SubResource("Portal_1")
 
 [node name="ThornhollowGate" type="Area2D" parent="."]
 script = ExtResource("2")
-position = Vector2(860, -60)
+position = Vector2(-1150, -60)
 target_map_id = &"thornhollow_ring"
 target_spawn_tag = &"default"
 
@@ -440,9 +440,9 @@ target_spawn_tag = &"default"
 shape = SubResource("Portal_1")
 
 [node name="GateVines" type="ColorRect" parent="."]
-offset_left = 832.0
+offset_left = -1178.0
 offset_top = -120.0
-offset_right = 888.0
+offset_right = -1122.0
 offset_bottom = 0.0
 color = Color(0.35, 0.18, 0.2, 1)
 
