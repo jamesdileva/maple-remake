@@ -37,7 +37,7 @@ enum State { IDLE, RUN, JUMP, FALL }
 @export var max_summons := 3
 @export var xp_table: XpTable
 @export var hp_per_level := 8.0
-@export var mana_per_level := 4.0
+@export var mana_per_level := 6.0
 
 var inventory := Inventory.new()
 var level := 1

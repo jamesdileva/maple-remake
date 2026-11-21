@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" path="res://scenes/world/npc.tscn" id="npc_scene"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gfvvr"]
-size = Vector2(2400, 40)
+size = Vector2(2400, 240)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0lecy"]
 size = Vector2(240, 24)
@@ -67,6 +67,7 @@ polygon = PackedVector2Array(-1400, 0, -1000, -220, -560, -120, -120, -260, 360,
 
 [node name="Collision" type="CollisionShape2D" parent="Floor" unique_id=391131488]
 shape = SubResource("RectangleShape2D_gfvvr")
+position = Vector2(0, 100)
 
 [node name="Visual" type="ColorRect" parent="Floor" unique_id=1103759211]
 offset_left = -1200.0

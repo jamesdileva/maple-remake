@@ -8,11 +8,11 @@
 script = ExtResource("1")
 id = &"shade_moth"
 display_name = "Shade Moth"
-max_hp = 16.0
+max_hp = 110.0
 move_speed = 110.0
 contact_damage = 4.0
 contact_interval = 0.7
-xp = 6.0
+xp = 1.0
 gravity = 900.0
 defense = 0.0
 mob_scene = ExtResource("2")

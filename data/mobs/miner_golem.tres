@@ -8,11 +8,11 @@
 script = ExtResource("1")
 id = &"miner_golem"
 display_name = "Miner Golem"
-max_hp = 90.0
+max_hp = 420.0
 move_speed = 50.0
 contact_damage = 9.0
 contact_interval = 1.0
-xp = 14.0
+xp = 9.0
 gravity = 900.0
 defense = 8.0
 mob_scene = ExtResource("2")

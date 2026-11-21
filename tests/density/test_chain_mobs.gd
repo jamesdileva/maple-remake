@@ -76,7 +76,7 @@ func run(t) -> void:
 	var child_xp_before: float = 0.0
 	for child in children:
 		child_xp_before += child.xp_reward()
-	t.assert_eq(child_xp_before, 5.0, "children carry their own xp")
+	t.assert_eq(child_xp_before, 2.5, "children carry their own xp")
 
 	var explosion_seen := false
 	for _i in range(6):
@@ -96,7 +96,7 @@ func run(t) -> void:
 	var total_xp := 0.0
 	for entry in xp_events:
 		total_xp += entry.xp
-	t.assert_eq(total_xp, 10.0, "xp is awarded for every mob in the chain (%s)" % total_xp)
+	t.assert_eq(total_xp, 5.0, "xp is awarded for every mob in the chain (%s)" % total_xp)
 
 	DebugManager.reset_counters()
 	await _kill_everything.call()

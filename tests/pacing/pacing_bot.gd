@@ -20,8 +20,8 @@ const ARENA_INSERT_AFTER := &"hollow_forest"
 const SAMPLE_KILLS := 25
 const SAMPLE_GAME_SECONDS := 30.0
 const WALK_GAME_SECONDS := 60.0
-const BOSS_GAME_SECONDS := 120.0
-const BOSS_ATTEMPTS_CAP := 3
+const BOSS_GAME_SECONDS := 150.0
+const BOSS_ATTEMPTS_CAP := 5
 const GRANT_CHUNK_SECONDS := 4.0
 const MIN_XP_PER_SEC := 1.0
 const ARRIVE_SLACK_PX := 24.0
@@ -181,6 +181,7 @@ func _run_segment(map_id: StringName, target_level: int) -> Dictionary:
 		"loot": [],
 		"notes": [],
 	}
+	_segment = segment
 	var counters_start := _counter_snapshot()
 	var travel := await _travel_to(map_id, segment)
 	world = _map_root()
@@ -233,6 +234,7 @@ func _run_arena() -> Dictionary:
 		"loot": [],
 		"notes": [],
 	}
+	_segment = segment
 	var counters_start := _counter_snapshot()
 	var travel := await _travel_to(ARENA_MAP, segment)
 	world = _map_root()
@@ -328,6 +330,8 @@ func _fight_boss(definition: MobDefinition, segment: Dictionary, synthetic: bool
 	}
 	if synthetic:
 		await _spawn_synthetic_boss(definition)
+	if _fight_map == &"" or not WorldManager.is_registered(_fight_map):
+		_fight_map = WorldManager.current_map_id
 	for _attempt in range(BOSS_ATTEMPTS_CAP):
 		if fight["killed"]:
 			break
@@ -617,10 +621,10 @@ func _engage(cap_frames: int, stop: Callable, focus_id: StringName = &"") -> Dic
 				Input.action_release("attack")
 				attack_held = false
 			var retreat_dir := ""
-			var nearest := _pick_target(&"")
-			if nearest != null:
-				var threat_dx := nearest.global_position.x - player.global_position.x
-				var threat_dy := absf(nearest.global_position.y - player.global_position.y)
+			var anchor := target
+			if anchor != null:
+				var threat_dx := anchor.global_position.x - player.global_position.x
+				var threat_dy := absf(anchor.global_position.y - player.global_position.y)
 				if absf(threat_dx) < THREAT_RANGE_PX and threat_dy < 60.0:
 					retreat_dir = "move_left" if threat_dx >= 0.0 else "move_right"
 					if _portal_blocks(retreat_dir):

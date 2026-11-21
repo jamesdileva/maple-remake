@@ -13,7 +13,7 @@
 size = Vector2(900, 240)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tf2rt"]
-size = Vector2(2000, 40)
+size = Vector2(2000, 240)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jm2mo"]
 size = Vector2(240, 24)
@@ -61,6 +61,7 @@ polygon = PackedVector2Array(-1400, 0, -1000, -220, -560, -120, -120, -260, 360,
 
 [node name="Collision" type="CollisionShape2D" parent="Floor" unique_id=1955746044]
 shape = SubResource("RectangleShape2D_tf2rt")
+position = Vector2(0, 100)
 
 [node name="Visual" type="ColorRect" parent="Floor" unique_id=565439287]
 offset_left = -1000.0

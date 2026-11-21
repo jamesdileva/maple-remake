@@ -8,11 +8,11 @@
 script = ExtResource("1")
 id = &"ruin_sentinel"
 display_name = "Ruin Sentinel"
-max_hp = 180.0
+max_hp = 560.0
 move_speed = 45.0
 contact_damage = 11.0
 contact_interval = 1.0
-xp = 40.0
+xp = 125.0
 gravity = 900.0
 defense = 12.0
 mob_scene = ExtResource("2")

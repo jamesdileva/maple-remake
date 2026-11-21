@@ -8,11 +8,11 @@
 script = ExtResource("1")
 id = &"thorn_crawler"
 display_name = "Thorn Crawler"
-max_hp = 45.0
+max_hp = 260.0
 move_speed = 55.0
 contact_damage = 7.0
 contact_interval = 0.9
-xp = 9.0
+xp = 1.5
 gravity = 900.0
 defense = 6.0
 mob_scene = ExtResource("2")

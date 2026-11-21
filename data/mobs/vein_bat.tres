@@ -8,11 +8,11 @@
 script = ExtResource("1")
 id = &"vein_bat"
 display_name = "Vein Bat"
-max_hp = 18.0
+max_hp = 110.0
 move_speed = 115.0
 contact_damage = 5.0
 contact_interval = 0.6
-xp = 8.0
+xp = 5.5
 gravity = 900.0
 defense = 0.0
 mob_scene = ExtResource("2")

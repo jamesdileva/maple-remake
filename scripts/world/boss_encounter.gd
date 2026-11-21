@@ -40,7 +40,7 @@ func _spawn() -> void:
 		return
 	var boss: Boss = packed.instantiate()
 	boss.definition = definition
-	boss.global_position = global_position
+	boss.global_position = global_position + Vector2(220.0, -20.0)
 	host.add_child(boss)
 	_boss = boss
 	DebugManager.register_combat_event("boss_encounter", {"boss": definition.id})

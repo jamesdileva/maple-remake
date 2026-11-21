@@ -13,7 +13,7 @@
 [ext_resource type="Resource" path="res://data/decor/brightwood_outskirts.tres" id="decor_plan"]
 
 [sub_resource type="RectangleShape2D" id="Floor_1"]
-size = Vector2(2400, 40)
+size = Vector2(2400, 240)
 
 [sub_resource type="RectangleShape2D" id="PlatA"]
 size = Vector2(200, 24)
@@ -284,6 +284,7 @@ color = Color(0.55, 0.55, 0.58, 1)
 [node name="Floor" type="StaticBody2D" parent="."]
 
 [node name="Collision" type="CollisionShape2D" parent="Floor"]
+position = Vector2(0, 100)
 shape = SubResource("Floor_1")
 
 [node name="Visual" type="ColorRect" parent="Floor"]

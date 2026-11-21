@@ -8,11 +8,11 @@
 script = ExtResource("1")
 id = &"night_stalker"
 display_name = "Night Stalker"
-max_hp = 120.0
+max_hp = 480.0
 move_speed = 95.0
 contact_damage = 12.0
 contact_interval = 0.9
-xp = 45.0
+xp = 65.0
 gravity = 900.0
 defense = 6.0
 mob_scene = ExtResource("2")

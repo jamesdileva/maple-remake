@@ -201,8 +201,8 @@ func run(t) -> void:
 
 	t.assert_true(spawned != null, "the encounter spawns its boss when entered")
 	if spawned != null:
-		t.assert_almost_eq(spawned.global_position.x, -300.0, 3.0,
-			"the encounter boss spawns on the encounter")
+		t.assert_almost_eq(spawned.global_position.x, -80.0, 3.0,
+			"the encounter boss spawns offset from the player")
 		spawned.take_damage(60.0, player)
 		var death := {"seen": false}
 		var on_death := func(): death["seen"] = true
@@ -219,8 +219,8 @@ func run(t) -> void:
 		t.assert_true(bool(death["seen"]), "the hero actually dies for the reset check")
 
 		t.assert_true(is_instance_valid(spawned), "the reset boss survives the death")
-		t.assert_true(absf(spawned.global_position.x - encounter.global_position.x) < 60.0,
-			"a dead player resets the boss to the encounter, not the origin")
+		t.assert_true(absf(spawned.global_position.x - (encounter.global_position.x + 220.0)) < 60.0,
+			"a dead player resets the boss to its spawn, not the origin")
 		t.assert_eq(spawned.hp, 200.0, "the reset restores full hp")
 	encounter.queue_free()
 	await t.physics_frame

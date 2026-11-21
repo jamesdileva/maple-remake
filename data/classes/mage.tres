@@ -27,4 +27,4 @@ starting_mana = 100.0
 defense = 0.0
 crit_chance = 0.05
 crit_multiplier = 2.0
-mana_regen_per_second = 8.0
+mana_regen_per_second = 11.0

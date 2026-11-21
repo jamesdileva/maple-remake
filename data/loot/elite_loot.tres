@@ -13,8 +13,8 @@
 [sub_resource type="Resource" id="LootEntry_gold"]
 script = ExtResource("2")
 item = ExtResource("3")
-min_amount = 4
-max_amount = 9
+min_amount = 8
+max_amount = 18
 
 [sub_resource type="Resource" id="LootEntry_gel"]
 script = ExtResource("2")

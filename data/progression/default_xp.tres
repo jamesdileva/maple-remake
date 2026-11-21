@@ -5,5 +5,5 @@
 [resource]
 script = ExtResource("1")
 max_level = 50
-base_xp = 100.0
-growth = 1.35
+base_xp = 250.0
+growth = 1.3

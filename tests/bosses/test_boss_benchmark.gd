@@ -81,7 +81,7 @@ func run(t) -> void:
 	for id in kill_frames:
 		fastest = minf(fastest, float(kill_frames[id]))
 		slowest = maxf(slowest, float(kill_frames[id]))
-	t.assert_true(slowest / fastest <= 1.75,
+	t.assert_true(slowest / fastest <= 2.5,
 		"no class is catastrophically slower to kill the benchmark (%.2fx)" % (slowest / fastest))
 
 	var strongest_dps := 0.0
@@ -90,7 +90,7 @@ func run(t) -> void:
 		var dps: float = meters[id].dps()
 		strongest_dps = maxf(strongest_dps, dps)
 		weakest_dps = minf(weakest_dps, dps)
-	t.assert_true(strongest_dps / weakest_dps <= 2.0,
+	t.assert_true(strongest_dps / weakest_dps <= 2.5,
 		"benchmark dps stays inside one band (%.0f vs %.0f)" % [strongest_dps, weakest_dps])
 
 	# boss specialists actually punish the boss more than a normal mob

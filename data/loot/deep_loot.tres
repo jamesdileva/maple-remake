@@ -14,8 +14,8 @@
 script = ExtResource("2")
 item = ExtResource("3")
 weight = 0.75
-min_amount = 2
-max_amount = 5
+min_amount = 4
+max_amount = 10
 
 [sub_resource type="Resource" id="LootEntry_gel"]
 script = ExtResource("2")

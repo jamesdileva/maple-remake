@@ -10,11 +10,11 @@
 script = ExtResource("1")
 id = &"meadow_slime"
 display_name = "Meadow Slime"
-max_hp = 26.0
+max_hp = 130.0
 move_speed = 75.0
 contact_damage = 4.0
 contact_interval = 0.8
-xp = 4.0
+xp = 1.0
 gravity = 900.0
 defense = 0.0
 mob_scene = ExtResource("2")
