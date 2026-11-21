@@ -48,6 +48,7 @@ func run(t) -> void:
 	t.assert_true(definition.phases[1].attacks.size() >= definition.phases[0].attacks.size(),
 		"phase two adds pressure")
 	t.assert_true(_has_summon(definition), "the final boss calls adds")
+	t.assert_true(_summon_id(definition) == &"blight_add", "the finale summons dedicated chaff, not field mobs")
 	t.assert_true(_has_attack(definition, &"blight_wave"), "the last phase adds the wave")
 
 	var hoard_ids := {}
@@ -79,6 +80,13 @@ func _has_summon(definition: BossDefinition) -> bool:
 			if attack.summon_count > 0 and attack.summon != null:
 				return true
 	return false
+
+func _summon_id(definition: BossDefinition) -> StringName:
+	for phase: BossPhaseDefinition in definition.phases:
+		for attack: BossAttackDefinition in phase.attacks:
+			if attack.summon_count > 0 and attack.summon != null:
+				return attack.summon.id
+	return &""
 
 func _has_attack(definition: BossDefinition, attack_id: StringName) -> bool:
 	for phase: BossPhaseDefinition in definition.phases:

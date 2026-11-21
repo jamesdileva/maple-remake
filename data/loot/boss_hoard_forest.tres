@@ -18,17 +18,17 @@ max_amount = 70
 [sub_resource type="Resource" id="Resource_iypjh"]
 script = ExtResource("2")
 item = ExtResource("3_huyhm")
-weight = 0.16
+weight = 0.35
 
 [sub_resource type="Resource" id="Resource_4ruhq"]
 script = ExtResource("2")
 item = ExtResource("4_dkfnk")
-weight = 0.1
+weight = 0.22
 
 [sub_resource type="Resource" id="Resource_mqssr"]
 script = ExtResource("2")
 item = ExtResource("5_81lls")
-weight = 0.12
+weight = 0.26
 
 [sub_resource type="Resource" id="Resource_kkwc0"]
 script = ExtResource("2")

@@ -17,7 +17,7 @@ max_amount = 90
 [sub_resource type="Resource" id="Resource_6djod"]
 script = ExtResource("2")
 item = ExtResource("3_0wy2s")
-weight = 0.16
+weight = 0.35
 
 [sub_resource type="Resource" id="Resource_e2wo2"]
 script = ExtResource("2")
@@ -27,7 +27,7 @@ weight = 0.16
 [sub_resource type="Resource" id="Resource_m183r"]
 script = ExtResource("2")
 item = ExtResource("5_hhe5q")
-weight = 0.12
+weight = 0.26
 
 [sub_resource type="Resource" id="Resource_a18lt"]
 script = ExtResource("2")

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BossAttackDefinition" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/bosses/boss_attack.gd" id="1"]
-[ext_resource type="Resource" path="res://data/mobs/corrupted_slime.tres" id="2"]
+[ext_resource type="Resource" path="res://data/mobs/blight_add.tres" id="2"]
 
 [resource]
 script = ExtResource("1")
