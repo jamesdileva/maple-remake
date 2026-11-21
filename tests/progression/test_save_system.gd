@@ -111,6 +111,69 @@ func run(t) -> void:
 	t.assert_eq(reloaded.level, baseline.level, "restoring empty state is a no-op")
 	t.assert_eq(reloaded.inventory.currency, baseline.currency, "empty restore leaves currency alone")
 
+	# --- sprint 16.3 save/load QA: fresh save ---
+	var mage_class: ClassDefinition = load("res://data/classes/mage.tres")
+	var rookie: Player = load("res://scenes/player/player.tscn").instantiate()
+	t.root.add_child(rookie)
+	await t.physics_frame
+	rookie.apply_class(mage_class)
+	var fresh_payload: Dictionary = rookie.capture_state()
+	t.assert_eq(fresh_payload.level, 1, "a fresh save records level 1")
+	t.assert_eq(fresh_payload.class_path, mage_class.resource_path, "a fresh save records the class")
+	SaveSystem.save_game(fresh_payload)
+	var rookie_restored: Player = load("res://scenes/player/player.tscn").instantiate()
+	t.root.add_child(rookie_restored)
+	await t.physics_frame
+	rookie_restored.restore_state(SaveSystem.load_game())
+	t.assert_eq(rookie_restored.level, 1, "the fresh save restores level 1")
+	t.assert_eq(rookie_restored.class_definition.id, mage_class.id, "the fresh save restores the class")
+	t.assert_eq(rookie_restored.ability_at(0).id, rookie.ability_at(0).id, "the fresh save restores the kit")
+	t.assert_eq(rookie_restored.capture_state(), fresh_payload, "the fresh save round-trips exactly")
+	rookie.queue_free()
+	rookie_restored.queue_free()
+	await t.physics_frame
+
+	# --- sprint 16.3 save/load QA: old save with missing fields ---
+	var veteran: Player = load("res://scenes/player/player.tscn").instantiate()
+	t.root.add_child(veteran)
+	await t.physics_frame
+	veteran.apply_class(mage_class)
+	veteran.set_level(28)
+	veteran.advance()
+	veteran.wield_alternate = true
+	veteran.inventory.currency = 4321
+	veteran.receive_loot(load("res://data/equipment/iron_sword.tres"), 1)
+	veteran.receive_loot(load("res://data/equipment/sanctum_blade.tres"), 1)
+	var late_payload: Dictionary = veteran.capture_state()
+	t.assert_true(bool(late_payload.advanced), "the late-game save records advancement")
+	t.assert_true((late_payload.stashed_gear as Array).size() > 0, "the late-game save records the stash")
+	late_payload.erase("wield_alternate")
+	late_payload.erase("stashed_gear")
+	late_payload.erase("skill_points_spent")
+	late_payload.erase("advanced")
+	late_payload.erase("class_path")
+	late_payload["future_field"] = 42
+	var old_save_player: Player = load("res://scenes/player/player.tscn").instantiate()
+	t.root.add_child(old_save_player)
+	await t.physics_frame
+	old_save_player.apply_class(mage_class)
+	old_save_player.restore_state(late_payload)
+	t.assert_false(old_save_player.advanced, "an old save without the field leaves advancement off")
+	t.assert_false(old_save_player.wield_alternate, "an old save without the field leaves the stance default")
+	t.assert_true(old_save_player.stashed_gear.is_empty(), "an old save without the stash restores an empty stash")
+	t.assert_eq(old_save_player.skill_points_spent, 0, "an old save without the counter starts at zero")
+	t.assert_eq(old_save_player.inventory.currency, 4321, "the old save still restores the fields it has")
+	t.assert_eq(old_save_player.class_definition.id, mage_class.id, "an old save without the class keeps the current class")
+	var clamped: Dictionary = late_payload.duplicate(true)
+	clamped["hp"] = 999999.0
+	clamped["mana"] = -50.0
+	old_save_player.restore_state(clamped)
+	t.assert_eq(old_save_player.hp, old_save_player.max_hp, "an over-max hp clamps to full")
+	t.assert_eq(old_save_player.mana, 0.0, "a negative mana clamps to zero")
+	old_save_player.queue_free()
+	veteran.queue_free()
+	await t.physics_frame
+
 	SaveSystem.delete_save()
 	t.assert_false(SaveSystem.has_save(), "the save is deleted")
 
