@@ -8,6 +8,7 @@ extends SceneTree
 const CATEGORIES := {
 	"combat": [
 		"damage_system", "fma", "player_ability", "weapon_swap", "mob",
+		"combat_feel",
 		"chain_mobs", "mob_density", "party_simulation", "power_budget",
 		"stress", "combat_lab", "damage_meter",
 	],
@@ -27,6 +28,7 @@ const CATEGORIES := {
 	"content": [
 		"content_integration", "mob_roster", "map_framework", "first_map",
 		"continent", "map_integration", "floor_integrity",
+		"ui_structure",
 	],
 	"infrastructure": [
 		"debug_manager", "input_bindings", "player_movement", "art_pipeline",

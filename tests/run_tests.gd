@@ -47,6 +47,7 @@ const TEST_SUITES := [
 	"res://tests/world/test_continent.gd",
 	"res://tests/world/test_map_integration.gd",
 	"res://tests/world/test_floor_integrity.gd",
+	"res://tests/ui/test_ui_structure.gd",
 	"res://tests/mobs/test_mob_roster.gd",
 	"res://tests/art/test_art_pipeline.gd",
 	"res://tests/art/test_environment_kits.gd",

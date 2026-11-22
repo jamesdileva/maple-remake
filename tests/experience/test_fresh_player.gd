@@ -103,14 +103,17 @@ func run(t) -> void:
 	await t.physics_frame
 	await t.physics_frame
 	var xp_before := player.xp
+	var loot := {"count": 0}
+	var on_loot := func(_id: StringName, _amount: int): loot["count"] += 1
+	EventBus.loot_collected.connect(on_loot)
 	victim.take_damage(999999.0, player)
 	for _i in range(600):
-		if player.inventory.currency > 0 or not player.inventory.items.is_empty():
+		if loot["count"] > 0:
 			break
 		await t.physics_frame
+	EventBus.loot_collected.disconnect(on_loot)
 	t.assert_true(player.xp > xp_before, "the first kill grants xp")
-	t.assert_true(player.inventory.currency > 0 or not player.inventory.items.is_empty(),
-		"the first kill auto-loots")
+	t.assert_true(loot["count"] > 0, "the first kill auto-loots")
 
 	player.grant_xp(player.xp_to_next_level())
 	t.assert_true(player.level >= 2, "the first level arrives quickly")
