@@ -299,7 +299,12 @@ func take_damage(amount: float, source: Node = null) -> float:
 	if incoming >= hp and _consume_lethal_protection():
 		return 0.0
 	var event := DamageEvent.create(self, incoming, source)
-	return DamageSystem.apply(event).applied
+	var applied: float = DamageSystem.apply(event).applied
+	if applied > 0.0:
+		var camera := get_node_or_null("Camera")
+		if camera != null and camera.has_method("kick"):
+			camera.kick(3.0 + 6.0 * applied / maxf(1.0, max_hp))
+	return applied
 
 func is_lethal_protected() -> bool:
 	return _lethal_window > 0.0
@@ -902,6 +907,11 @@ func _finish_cast() -> void:
 			if ability.slow_duration > 0.0 and ability.slow_factor > 0.0 and target is Mob:
 				(target as Mob).apply_slow(ability.slow_duration, ability.slow_factor)
 			_spawn_impact_burst(ability, target)
+			if result.killed:
+				var burst := _spawn_impact_burst(ability, target)
+				if burst != null:
+					burst.base_scale = 1.9
+					burst.lifetime = 0.4
 		jump_index += 1
 	if ability.is_summon():
 		_spawn_summons(ability)
@@ -973,17 +983,20 @@ func _free_cast_telegraph() -> void:
 		_cast_telegraph.queue_free()
 		_cast_telegraph = null
 
-func _spawn_impact_burst(ability: AbilityDefinition, target: Object) -> void:
+func _spawn_impact_burst(ability: AbilityDefinition, target: Object) -> ImpactBurst:
 	if ability.impact_effect == null:
-		return
-	var burst: Node2D = ability.impact_effect.instantiate()
+		return null
+	var burst := ability.impact_effect.instantiate() as ImpactBurst
+	if burst == null:
+		return null
 	burst.add_to_group("effects")
 	var world := get_parent()
 	if world == null:
 		burst.queue_free()
-		return
+		return null
 	world.add_child(burst)
 	burst.global_position = (target as Node2D).global_position
+	return burst
 
 func _tick_attack(delta: float) -> void:
 	_attack_timer = maxf(0.0, _attack_timer - delta)

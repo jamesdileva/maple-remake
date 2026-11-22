@@ -77,6 +77,21 @@ static func _publish(event: DamageEvent, result: DamageResult) -> void:
 		"target": _describe(event.target),
 	})
 	EventBus.damage_applied.emit(result)
+	_publish_feedback(event, result)
+
+static func _publish_feedback(event: DamageEvent, result: DamageResult) -> void:
+	if result.killed:
+		HitStop.trigger()
+	var target_node := event.target as Node2D
+	if target_node != null and is_instance_valid(target_node):
+		var kind := DamageNumber.KIND_PLAYER if event.target == _player() else (
+			DamageNumber.KIND_CRIT if result.is_crit else DamageNumber.KIND_DEALT)
+		DamageNumber.spawn(target_node.get_parent(), target_node.global_position,
+			result.applied, kind)
+
+static func _player() -> Node:
+	var tree := Engine.get_main_loop() as SceneTree
+	return tree.get_first_node_in_group("player") if tree != null else null
 
 static func _describe(node) -> String:
 	if not is_instance_valid(node):

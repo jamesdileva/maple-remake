@@ -22,7 +22,7 @@ weight = 0.35
 [sub_resource type="Resource" id="Resource_e2wo2"]
 script = ExtResource("2")
 item = ExtResource("4_tekfe")
-weight = 0.16
+weight = 0.3
 
 [sub_resource type="Resource" id="Resource_m183r"]
 script = ExtResource("2")
@@ -32,7 +32,7 @@ weight = 0.26
 [sub_resource type="Resource" id="Resource_a18lt"]
 script = ExtResource("2")
 item = ExtResource("6_vpdx3")
-weight = 0.12
+weight = 0.24
 
 [resource]
 script = ExtResource("1")

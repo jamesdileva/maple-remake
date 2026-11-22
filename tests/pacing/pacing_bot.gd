@@ -103,6 +103,9 @@ func _boot(class_id: StringName) -> bool:
 	SpawnManager.enabled = true
 	LootManager.enabled = true
 	DebugManager.reset_counters()
+	HitStop.enabled = false
+	DamageNumber.enabled = false
+	CameraShake.kick_enabled = false
 	DebugManager.set_file_logging(false)
 	game = (load(GAME_SCENE) as PackedScene).instantiate()
 	tree.root.add_child(game)
@@ -124,6 +127,9 @@ func _teardown() -> void:
 		Input.action_release(action)
 	DebugManager.disable_ai = false
 	DebugManager.god_mode = false
+	HitStop.enabled = true
+	DamageNumber.enabled = true
+	CameraShake.kick_enabled = true
 	DebugManager.set_file_logging(true)
 	if game != null and is_instance_valid(game):
 		game.queue_free()

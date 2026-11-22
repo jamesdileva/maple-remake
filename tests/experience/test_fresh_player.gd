@@ -104,7 +104,7 @@ func run(t) -> void:
 	await t.physics_frame
 	var xp_before := player.xp
 	victim.take_damage(999999.0, player)
-	for _i in range(360):
+	for _i in range(600):
 		if player.inventory.currency > 0 or not player.inventory.items.is_empty():
 			break
 		await t.physics_frame

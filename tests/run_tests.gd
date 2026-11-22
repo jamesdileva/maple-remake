@@ -7,6 +7,7 @@ const TEST_SUITES := [
 	"res://tests/abilities/test_player_ability.gd",
 	"res://tests/abilities/test_fma.gd",
 	"res://tests/combat/test_damage_system.gd",
+	"res://tests/combat/test_combat_feel.gd",
 	"res://tests/density/test_spawn_manager.gd",
 	"res://tests/density/test_chain_mobs.gd",
 	"res://tests/loot/test_auto_loot.gd",
@@ -101,6 +102,12 @@ func _reset_input_state() -> void:
 			Input.action_release(action_name)
 
 func _reset_debug_flags() -> void:
+	for feedback_path: String in ["res://scripts/feedback/hit_stop.gd",
+			"res://scripts/feedback/damage_number.gd", "res://scripts/feedback/camera_shake.gd"]:
+		var feedback: GDScript = load(feedback_path)
+		if feedback != null:
+			feedback.set("enabled", true)
+			feedback.set("kick_enabled", true)
 	var manager: Node = root.get_node_or_null("DebugManager")
 	if manager == null:
 		return

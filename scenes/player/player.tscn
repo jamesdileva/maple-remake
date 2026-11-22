@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="1"]
 [ext_resource type="Resource" path="res://data/abilities/arcane_burst.tres" id="2"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/level_hud.tscn" id="5"]
 [ext_resource type="Resource" path="res://data/classes/mage.tres" id="6"]
 [ext_resource type="PackedScene" path="res://scenes/ui/class_hud.tscn" id="7"]
+[ext_resource type="Script" path="res://scripts/feedback/camera_shake.gd" id="CS"]
 
 [sub_resource type="CapsuleShape2D" id="Capsule_1"]
 radius = 14.0
@@ -56,6 +57,7 @@ offset_bottom = -10.0
 color = Color(0.55, 0.38, 0.2, 1)
 
 [node name="Camera" type="Camera2D" parent="."]
+script = ExtResource("CS")
 
 [node name="AttackHitbox" type="Area2D" parent="."]
 monitoring = false
