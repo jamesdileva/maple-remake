@@ -29,6 +29,7 @@ const CATEGORIES := {
 		"content_integration", "mob_roster", "map_framework", "first_map",
 		"continent", "map_integration", "floor_integrity",
 		"ui_structure",
+		"mvp_freeze",
 	],
 	"infrastructure": [
 		"debug_manager", "input_bindings", "player_movement", "art_pipeline",

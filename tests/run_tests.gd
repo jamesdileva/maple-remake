@@ -54,6 +54,7 @@ const TEST_SUITES := [
 	"res://tests/art/test_class_vfx.gd",
 	"res://tests/tutorial/test_tutorial.gd",
 	"res://tests/experience/test_fresh_player.gd",
+	"res://tests/release/test_mvp_freeze.gd",
 	"res://tests/entities/test_mob.gd",
 ]
 
