@@ -14,11 +14,17 @@ func _initialize() -> void:
 	Engine.max_physics_steps_per_frame = 64
 	var requested: Array[StringName] = []
 	var out_dir := ""
+	var strict := false
+	var raw_args := OS.get_cmdline_args()
+	if "--strict" in raw_args or "--strict" in OS.get_cmdline_user_args():
+		strict = true
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--class="):
 			requested.append(StringName(arg.trim_prefix("--class=")))
 		elif arg.begins_with("--out="):
 			out_dir = arg.trim_prefix("--out=")
+		elif arg == "--strict":
+			strict = true
 	var wanted := requested if requested.size() > 0 else DEFAULT_CLASSES
 	var bot_script: GDScript = load(BOT_SCRIPT)
 	var writer_script: GDScript = load(WRITER_SCRIPT)
@@ -27,7 +33,7 @@ func _initialize() -> void:
 	for class_id: StringName in wanted:
 		print("pacing_report: booting a fresh %s playthrough" % String(class_id))
 		var bot = bot_script.new()
-		var summary: Dictionary = await bot.run_playthrough(self, class_id)
+		var summary: Dictionary = await bot.run_playthrough(self, class_id, strict)
 		results.append(summary)
 		print("pacing_report: %s finished=%s game_hours=%.2f final_level=%d" % [
 			String(class_id), str(summary.get("completed", false)),
@@ -35,6 +41,8 @@ func _initialize() -> void:
 			int(summary.get("final_level", 0))])
 		if not bool(summary.get("completed", false)):
 			all_completed = false
+	if strict:
+		print("pacing_report: STRICT release-candidate run - no cheats, deaths and bugs recorded")
 	var writer = writer_script.new()
 	var report: Dictionary = writer.write(results, out_dir)
 	print("pacing_report: json -> %s" % report["json_path"])
@@ -42,4 +50,17 @@ func _initialize() -> void:
 	print("pacing_report: findings:")
 	for finding: String in report["findings"]:
 		print("  - %s" % finding)
+	print("pacing_report: release matrix (strict=%s):" % str(strict))
+	for result: Dictionary in results:
+		var failed_bosses := 0
+		var deaths := 0
+		for segment: Dictionary in result.get("segments", []):
+			var boss: Dictionary = segment.get("boss", {}) if segment.get("boss") != null else {}
+			if not boss.is_empty() and not bool(boss.get("killed", false)):
+				failed_bosses += 1
+			deaths += int(segment.get("deaths", 0))
+		print("  %-9s %.2fh completed=%s final_lv=%d deaths=%d failed_bosses=%d segments=%d" % [
+			String(result.get("class", "?")), float(result.get("game_seconds", 0.0)) / 3600.0,
+			str(result.get("completed", false)), int(result.get("final_level", 0)),
+			deaths, failed_bosses, (result.get("segments", []) as Array).size()])
 	quit(0 if all_completed else 1)
