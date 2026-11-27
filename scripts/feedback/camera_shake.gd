@@ -16,7 +16,6 @@ func kick(strength: float) -> void:
 	_shake = minf(10.0, _shake + strength)
 
 func _physics_process(delta: float) -> void:
-	print("cam dbg: process tick shake=", _shake)
 	if _shake <= 0.0:
 		offset = Vector2.ZERO
 		return
