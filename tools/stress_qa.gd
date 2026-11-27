@@ -13,13 +13,17 @@ const BOSS_SCENE := "res://scenes/bosses/boss.tscn"
 
 var _dm: Node
 
+var _load_ms := 0.0
+
 func _initialize() -> void:
 	Engine.time_scale = 1.0
 	_dm = root.get_node("DebugManager")
+	var boot_start := Time.get_ticks_msec()
 	var lab_root: Node2D = (load("res://scenes/lab/combat_lab.tscn") as PackedScene).instantiate()
 	root.add_child(lab_root)
 	await physics_frame
 	await physics_frame
+	_load_ms = float(Time.get_ticks_msec() - boot_start)
 	var lab = lab_root.get_node("Lab")
 	var player = lab_root.get_node("Player")
 	_dm.set("god_mode", true)
@@ -38,6 +42,11 @@ func _initialize() -> void:
 	scenarios.append(await _profile(lab, player, "mobs_250", func() -> void:
 		_spawn_pack(lab_root, "res://data/mobs/miner_golem.tres", 250, Vector2(-1200.0, -46.0))
 		player.global_position = Vector2(0.0, -60.0)))
+	var soak_before := Performance.get_monitor(Performance.MEMORY_STATIC) / 1048576.0
+	scenarios.append(await _profile(lab, player, "mobs_250_soak", func() -> void:
+		_spawn_pack(lab_root, "res://data/mobs/miner_golem.tres", 250, Vector2(-1200.0, -46.0))
+		player.global_position = Vector2(0.0, -60.0)))
+	var soak_delta := Performance.get_monitor(Performance.MEMORY_STATIC) / 1048576.0 - soak_before
 	scenarios.append(await _profile(lab, player, "chain_explosions", func() -> void:
 		_spawn_pack(lab_root, "res://data/mobs/bomb_slime.tres", 60, Vector2(-400.0, -46.0))
 		player.global_position = Vector2(0.0, -60.0)))
@@ -52,6 +61,9 @@ func _initialize() -> void:
 	_clear_field(lab)
 	_dm.set("god_mode", false)
 
+	var live_mobs := get_nodes_in_group("enemies").size()
+	var ceiling := int(_dm.get("max_total_mobs")) if _dm.get("max_total_mobs") != null else 600
+	var ceiling_ok := live_mobs <= ceiling
 	var stamp := Time.get_datetime_string_from_system().replace(":", "").replace("-", "").replace(" ", "_")
 	var path := "user://debug/stress_report_%s.json" % stamp
 	var file := FileAccess.open(path, FileAccess.WRITE)
@@ -60,6 +72,16 @@ func _initialize() -> void:
 			"generated": Time.get_datetime_string_from_system(),
 			"context": "headless (no renderer): frame costs are simulation wall cost, not player-facing fps",
 			"budget_ms": BUDGET_MS,
+			"load_ms": _load_ms,
+			"soak_delta_mb": soak_delta,
+			"live_mobs_at_report": live_mobs,
+			"entity_ceiling_ok": ceiling_ok,
+			"release_readiness": {
+				"load_time_ok": _load_ms < 5000.0,
+				"no_memory_leak": soak_delta < 16.0,
+				"entity_ceilings_ok": ceiling_ok,
+				"frame_budget_ok": not scenarios.any(func(entry): return float(entry["avg_ms"]) > BUDGET_MS),
+			},
 			"scenarios": scenarios,
 		}, "  "))
 		file.close()
@@ -77,7 +99,15 @@ func _initialize() -> void:
 	print("stress_qa: report -> %s" % path)
 	print("stress_qa: bottleneck = %s (%.1f ms avg vs %.1f ms budget)" % [
 		str(ranked[0]["label"]), float(ranked[0]["avg_ms"]), BUDGET_MS])
-	quit(0)
+	print("stress_qa: load %.0f ms | soak delta %.1f mb | live mobs %d (ceiling %d)" % [
+		_load_ms, soak_delta, live_mobs, ceiling])
+	var frame_ok := not scenarios.any(func(entry): return float(entry["avg_ms"]) > BUDGET_MS)
+	var release_ready := _load_ms < 5000.0 and soak_delta < 16.0 and ceiling_ok and frame_ok
+	var detail := ""
+	if not release_ready:
+		detail = " (load %.0fms, soak %.1fmb, ceiling %s, frame %s)" % [
+			_load_ms, soak_delta, str(ceiling_ok), str(frame_ok)]
+	print("stress_qa: release readiness %s%s" % ["PASS" if release_ready else "FAIL", detail])
 
 func _profile(lab, player, label: String, setup: Callable) -> Dictionary:
 	lab.reset_encounter()
