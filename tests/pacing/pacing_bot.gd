@@ -51,12 +51,14 @@ var _ledger := {}
 var _portal_links := {}
 var _advancement := {"advanced": false, "level": 0}
 var _fight_map: StringName = &""
+var _strict := false
 var _portal_x_values: Array = []
 
 static func minutes_for_xp(need: float, rate: float) -> float:
 	return need / maxf(rate, MIN_XP_PER_SEC) / 60.0
 
-func run_playthrough(scene_tree: SceneTree, class_id: StringName) -> Dictionary:
+func run_playthrough(scene_tree: SceneTree, class_id: StringName, strict: bool = false) -> Dictionary:
+	_strict = strict
 	tree = scene_tree
 	_game_seconds = 0.0
 	_run_class = String(class_id)
@@ -65,6 +67,8 @@ func run_playthrough(scene_tree: SceneTree, class_id: StringName) -> Dictionary:
 	_ledger = {"kills": 0, "xp": 0.0, "boss_kills": [], "completed": false}
 	var summary := {
 		"class": String(class_id),
+		"strict": strict,
+		"bugs": [],
 		"completed": false,
 		"game_seconds": 0.0,
 		"segments": [],
@@ -301,8 +305,9 @@ func _extrapolate_to(target_level: int, rate: float, segment: Dictionary) -> voi
 		segment["notes"] = []
 	if rate < MIN_XP_PER_SEC:
 		segment["notes"].append("sampled xp rate ~0; grind minutes extrapolated at %d xp/s floor" % int(MIN_XP_PER_SEC))
-	DebugManager.disable_ai = true
-	DebugManager.god_mode = true
+	if not _strict:
+		DebugManager.disable_ai = true
+		DebugManager.god_mode = true
 	while player.level < target_level:
 		var need := player.xp_to_next_level()
 		if need <= 0.0:
@@ -317,8 +322,9 @@ func _extrapolate_to(target_level: int, rate: float, segment: Dictionary) -> voi
 			remaining -= GRANT_CHUNK_SECONDS
 			_game_seconds += GRANT_CHUNK_SECONDS
 			await tree.physics_frame
-	DebugManager.disable_ai = false
-	DebugManager.god_mode = false
+	if not _strict:
+		DebugManager.disable_ai = false
+		DebugManager.god_mode = false
 
 func _fight_boss(definition: MobDefinition, segment: Dictionary, synthetic: bool,
 		encounter_x := 0.0) -> Dictionary:
